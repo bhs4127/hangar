@@ -27,10 +27,16 @@ HQ ships with no accounts wired in. Everything operator-specific lives in one gi
 file.
 
 ```bash
-cp FLEET.example.md FLEET.md   # then fill it in — org, Cloudflare account, intake domain
+for f in FLEET STATUS TODOS CHANGELOG; do cp $f.example.md $f.md; done
+cp clients/REGISTRY.example.md clients/REGISTRY.md
 gh auth login                  # as the org that will own the spoke repos
 wrangler login                 # the Cloudflare account that will own the Pages projects
 ```
+
+Then fill in `FLEET.md` — your org, Cloudflare account + ID, intake domain. Those copied
+files are all **gitignored**: this repo is public and forkable, but you also operate from
+it, so anything naming a real client, domain, or account stays local. Improvements to
+playbooks and guardrails are what you commit and share. See CLAUDE.md § Two layers.
 
 Then mint a scoped Cloudflare API token (Pages:Edit, Zone:Edit, Zone:Read, DNS:Edit,
 Email Routing:Edit) and store it outside every repo:
@@ -66,6 +72,7 @@ the edit physically lands in the spoke. The full pipeline is written out once in
 |---|---|
 | Guardrails ([CLAUDE.md](CLAUDE.md)) | **Real** |
 | Fleet config ([FLEET.example.md](FLEET.example.md)) | **Real** — copy to `FLEET.md`, fill in, never commit |
+| Private layer (`*.example.md` seeds → gitignored live files) | **Real** — your clients + state stay local |
 | Anatomy of a change ([playbooks/README.md](playbooks/README.md)) | **Real** |
 | Restaurant build playbook ([playbooks/build/restaurant.md](playbooks/build/restaurant.md)) | **Real** — opinionated, argue with it |
 | Change playbooks ×4 ([playbooks/change/](playbooks/change/)) | **Real** — menu / hours / image / custom domain; also the template for future change types |
@@ -74,7 +81,7 @@ the edit physically lands in the spoke. The full pipeline is written out once in
 | State layer (STATUS / TODOS / DECISIONS / CHANGELOG) | **Real** — maintained every task |
 | Architecture view ([dev/build-architecture.mjs](dev/build-architecture.mjs) → generated HTML) | **Real** |
 | Law-office build playbook ([playbooks/build/law-office.md](playbooks/build/law-office.md)) | **Stub** — shape + known differences only |
-| Client registry ([clients/](clients/)) | **Real format, empty** — worked fictional example; no clients yet |
+| Client registry ([clients/](clients/)) | **Real format** — worked fictional example; real records are gitignored |
 | Intake adapters + pipeline ([automation/README.md](automation/README.md)) | **Described only** — do not build until a spoke exists |
 | Spoke template / scaffolding automation | **Described only** — the build playbook *is* the template for now |
 | Cloudflare Pages config + per-branch previews | **Real** — direct-upload, agent-deployed; commands in [automation/README.md](automation/README.md) |
@@ -92,8 +99,8 @@ summaries instead of re-reading the repo.
 
 ## Next steps (the short version — TODOS.md is the full queue)
 
-1. **Fill in `FLEET.md`** (see First run above) — nothing else works until HQ knows which
-   GitHub org and Cloudflare account it's driving.
+1. **Copy the seeds and fill in `FLEET.md`** (see First run above) — nothing else works
+   until HQ knows which GitHub org and Cloudflare account it's driving.
 2. **Kick off the first client site.** Run [playbooks/onboard-client.md](playbooks/onboard-client.md):
    intake questions → client record + registry row → new `<slug>-site` repo → build per
    [playbooks/build/restaurant.md](playbooks/build/restaurant.md) → PR. Do it by hand;

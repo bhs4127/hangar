@@ -12,10 +12,26 @@ playbooks, not in shared code — there is no shared component library, by decis
 Every task starts here: read this file, find the client in `clients/REGISTRY.md`, pick
 the playbook in `playbooks/`, then do the work **in the client's spoke repo**.
 
-**This repo is forkable.** It names no GitHub org, no Cloudflare account, and no domain.
-Every operator-specific identifier lives in `FLEET.md` (gitignored; copy it from
-`FLEET.example.md`). If `FLEET.md` is missing or a needed row is `TBD`, stop and say so —
-don't guess an org or an account.
+## Two layers: what ships and what stays
+
+This repo is **public and forkable**, but you also *operate* from it. Those want opposite
+things from git, so the tree is split in two:
+
+| Layer | What's in it | Git |
+|---|---|---|
+| **Shared** | `CLAUDE.md`, `playbooks/`, `schemas/`, `automation/`, `DECISIONS.md`, `dev/build-architecture.mjs`, every `*.example.md` | tracked, pushed public |
+| **Private** | `FLEET.md`, `STATUS.md`, `TODOS.md`, `CHANGELOG.md`, `clients/*.md`, `dev/architecture.html` | **gitignored, never committed** |
+
+Every private file has a tracked `.example` seed. On a fresh clone, copy them:
+
+```bash
+for f in FLEET STATUS TODOS CHANGELOG; do cp $f.example.md $f.md; done
+cp clients/REGISTRY.example.md clients/REGISTRY.md
+```
+
+The practical rule: **anything naming a real client, domain, or account is private.**
+Improvements to instructions are shared. If `FLEET.md` is missing or a needed row is
+`TBD`, stop and say so — don't guess an org or an account.
 
 ## Hard rules
 
@@ -47,15 +63,23 @@ don't guess an org or an account.
    image, sufficient color contrast (4.5:1 for body text). This matters for all clients;
    law firms especially.
 
-9. **Never hardcode fleet identifiers.** GitHub org, Cloudflare account/ID, intake
-   domain, registrar — these are read from `FLEET.md` at the moment they're needed and
-   written into client records, never baked into a playbook, a schema, or this file.
-   `FLEET.md` is gitignored and must never be committed; secrets (the Cloudflare API
-   token) live outside every repo at `~/.config/hq/cloudflare-token`.
+9. **Never let private data reach a tracked file.** GitHub org, Cloudflare account/ID,
+   intake domain, registrar, client names, real domains — these are read from `FLEET.md`
+   or the client record at the moment they're needed, never baked into a playbook, a
+   schema, `DECISIONS.md`, or this file. Before committing, confirm the diff touches only
+   the shared layer. Secrets (the Cloudflare API token) live outside every repo at
+   `~/.config/hq/cloudflare-token` and are never read into a file.
+
+10. **`DECISIONS.md` is shared and public.** It records *architectural* decisions —
+   reasoning another operator could use. A decision that only makes sense for one client
+   ("Marisol's kitchen closes early, show posted hours") is not a decision entry; it goes
+   in that client's record under gotchas, which is private.
 
 ## The state layer is maintained, not optional
 
 The final step of **every** task:
+
+All four of these are **private/gitignored** — they describe your fleet, not the system.
 
 1. Update `STATUS.md` to the new current state (it's a snapshot — overwrite it).
 2. Update `TODOS.md` — check off, add, re-prioritize.
@@ -73,6 +97,7 @@ than none.
 | Path | What it is |
 |---|---|
 | `FLEET.example.md` | Template for `FLEET.md` — your org, Cloudflare account, intake domain |
+| `*.example.md` | Tracked seeds for every gitignored private file |
 | `clients/` | Registry index + one record per client (channels, brand tokens, gotchas) |
 | `playbooks/README.md` | The shared "anatomy of a change" pipeline every playbook plugs into |
 | `playbooks/build/` | How to build a new site per vertical (restaurant is the reference) |
