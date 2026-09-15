@@ -247,3 +247,23 @@ second name for one thing. It turned ambiguous the moment an archived private re
 literally named `hq` existed next to it: "update HQ state" could mean either. One name
 removes the question; a config path that matches the repo name means a fresh fork's
 setup commands and the playbooks agree without translation.
+
+## 2026-09-15 — Two-tier JS budget (playful allowance) + a measured main-thread gate for motion
+
+**Decision:** Inline JS stays counted in raw bytes as shipped, in two tiers: **≤ ~1.5KB by
+default**, **≤ ~3KB only when the client's design brief says Motion comfort: playful**.
+Separately, **any change that adds or changes a motion script must pass a main-thread
+gate**, measured with Lighthouse against production (mobile, median of 3): TBT does not
+rise, no new long tasks, main-thread work +≤ ~250ms. Numbers go in the PR. Typewriter
+reveals are the first recipe in the playful tier (`playbooks/design-language.md`
+§ Motion). Rejected: raising the cap fleet-wide (every site inherits headroom it didn't
+ask for — creep); counting gzipped bytes (hides growth ~2.5× behind an unchanged
+number); hand-compacting scripts to fit (strips the comments the next agent needs).
+**Why:** The first playful-tier recipe shipped at 2.9KB raw / 1.2KB gzipped, over the
+old cap as written. Before/after Lighthouse on that spoke (3 runs each, mobile +
+desktop) showed the bytes are not the cost: all scores unchanged at 100, TBT 0 → 0, script
+parse/compile 1 → 2ms. The real cost was runtime: mobile main-thread work 446 → 648ms
+(+~200ms, layout/paint while typing), spread across frames with no new long tasks. A byte
+cap can't see that — a 500-byte script could be far worse — so the cap is kept only for
+what it is good at (making each script justify itself, with the brief as the
+justification for more), and cost gets its own gate that measures cost.

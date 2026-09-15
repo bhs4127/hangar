@@ -36,7 +36,7 @@ without a brief is how every site comes out the same.
 | Minimal ↔ rich | Section background alternation, texture/flourish usage, spacing scale |
 | Palette | The `@theme` tokens + derived ramp (below) |
 | Typography vibe | `fontHeading`/`fontBody` choice, display sizing aggressiveness |
-| Motion comfort | none → static; subtle → reveals + hovers; playful → + stagger, marquee-grade touches |
+| Motion comfort | none → static; subtle → reveals + hovers; playful → + stagger, marquee-grade touches, [typewriter reveals](#typewriter-reveals-playful-tier), and the playful JS allowance |
 | Never-do's | Hard constraints, recorded in the client record's gotchas |
 
 ## Typography
@@ -107,10 +107,195 @@ Motion is seasoning: felt, barely noticed.
   links use the animated-underline pattern (`background-size` 0%→100%); cards get
   shadow-only. Active state returns to rest.
 - **Load moment:** hero headline/CTA may fade-up once on load (CSS keyframes). Nothing
-  else animates on load.
-- **JS budget** (amends the old "counted scripts" rule): **no frameworks, no external
-  scripts; total inline JS ≤ ~1.5KB.** Currently three tiny scripts: hours-today,
-  form time-trap, reveal observer. Lighthouse ≥ 95 ×4 stays non-negotiable.
+  else animates on load. *(Playful tier with typewriter reveals: the hero types instead.)*
+- **JS budget** (amends the old "counted scripts" rule; two tiers since 2026-09-15 —
+  DECISIONS): **no frameworks, no external scripts.** Inline JS is counted in **raw
+  bytes as shipped** (comments included — never strip comments to fit):
+  - **Default: ≤ ~1.5KB.** Typically three tiny scripts: hours-today, form time-trap,
+    reveal observer.
+  - **Playful allowance: ≤ ~3KB** — only when the client record's design brief says
+    **Motion comfort: playful**. The brief is the justification; without it, the
+    default applies.
+  - Lighthouse ≥ 95 ×4 stays non-negotiable at either tier.
+- **Main-thread gate** — required for any change that adds or changes a motion script,
+  at either tier. The byte cap limits script creep; it does not measure cost (parsing
+  3KB is ~1ms). What costs is the work a script does while running. Measure it, don't
+  estimate it — see [Measuring the main-thread gate](#measuring-the-main-thread-gate).
+  Against the current production build, on **mobile, median of 3 runs**:
+  - Total Blocking Time does not rise (these sites sit at 0ms);
+  - no new long tasks;
+  - main-thread work rises by **≤ ~250ms**.
+
+  Put the before/after numbers in the PR. A failing gate means the motion gets cheaper,
+  not that the gate gets looser.
+
+### Typewriter reveals (playful tier)
+
+Text types out as it scrolls into view, with a cursor riding the last typed character;
+the hero types on load. Suits terminal/tech motifs. It **replaces** the fade-up reveal —
+same `.reveal` markup, same `--reveal-delay` stagger, so switching a spoke over is a
+CSS + script swap (plus hero `rise` → `reveal`), not a markup rewrite.
+
+The mechanism has three non-obvious rules. Get these right and the rest is tuning:
+
+1. **Split on enter, restore after.** Wrapping each character in a span breaks screen
+   readers (VoiceOver reads split words letter by letter) and find-in-page. So text is
+   split into spans only when a block enters view, and the original text nodes are put
+   back the moment it finishes typing (≤ 0.7s). Before and after, the DOM is plain text.
+   Never pre-split at load.
+2. **Hide with `opacity`, not `display`/removal.** Untyped characters keep their layout
+   space, so the page does not shift as text appears (CLS unchanged) and wrapping is
+   already final.
+3. **The cursor is a `box-shadow`** on the last typed character — no inserted element,
+   no reflow.
+
+Fallbacks are the standard motion law: no JS → `.js` never lands → everything visible;
+`prefers-reduced-motion: reduce` → the script never observes and CSS forces everything
+visible. Text inside `svg`, `textarea`, `select`, and `[data-no-type]` is skipped.
+
+**Tunables** (script constants): `MS_PER_CHAR` 12, each block clamped `MIN_MS` 150 –
+`MAX_MS` 700 (long paragraphs speed up rather than drag), `STAGGER_MS` 70 per
+`--reveal-delay` step. Blocks in view type concurrently with the stagger — typing
+sequentially reads as slow.
+
+**Measured cost** (first shipped spoke, 2026-09-15): Lighthouse 100 ×3 unchanged,
+TBT 0 → 0, no new long tasks, mobile main-thread +~200ms (inside the gate), 2.9KB raw
+(inside the playful allowance). *Lighthouse's LCP drops with this recipe because it
+counts the heading at its first typed character — that is a measurement artifact, not
+a speed win; don't claim it.*
+
+CSS (replaces the fade-up reveal block and the hero `rise` keyframes; add `html.js .reveal`
+and `.tw-c` to the reduced-motion override with `transition: none; opacity: 1`):
+
+```css
+html.js .reveal {
+  opacity: 0;
+  transition: opacity 0.15s ease-out; /* containers (cards, pills) fade as text starts */
+}
+html.js .reveal.in-view {
+  opacity: 1;
+}
+.tw-c {
+  opacity: 0;
+}
+.tw-c.tw-on {
+  opacity: 1;
+}
+.tw-cursor {
+  box-shadow: 0.12em 0 0 0 var(--color-accent);
+}
+.bg-secondary .tw-cursor {
+  box-shadow: 0.12em 0 0 0 var(--color-accent-bright); /* dark band */
+}
+.tw-typing .caret {
+  visibility: hidden; /* a blinking caret waits until its line has typed */
+}
+```
+
+Script (inline, end of `<body>` in the layout; replaces the reveal observer):
+
+```html
+<script is:inline>
+  // Arm reveals only when the observer can exist — otherwise content stays visible.
+  if ("IntersectionObserver" in window) {
+    document.documentElement.classList.add("js");
+    const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const MS_PER_CHAR = 12, MIN_MS = 150, MAX_MS = 700, STAGGER_MS = 70;
+    const SKIP = "svg, script, style, textarea, select, [data-no-type]";
+
+    const typeOut = (el) => {
+      // Split only now, while it's on screen: screen readers and find-in-page see
+      // plain text before and after the ~0.7s this takes.
+      const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, {
+        acceptNode: (n) =>
+          n.nodeValue.trim() && !n.parentElement.closest(SKIP)
+            ? NodeFilter.FILTER_ACCEPT
+            : NodeFilter.FILTER_REJECT,
+      });
+      const texts = [];
+      while (walker.nextNode()) texts.push(walker.currentNode);
+      const chars = [], restores = [];
+      for (const node of texts) {
+        const wrap = document.createElement("span");
+        for (const c of node.nodeValue) {
+          if (/\s/.test(c)) { wrap.append(c); continue; }
+          const s = document.createElement("span");
+          s.className = "tw-c";
+          s.textContent = c;
+          wrap.append(s);
+          chars.push(s);
+        }
+        node.replaceWith(wrap);
+        restores.push([wrap, node]);
+      }
+      el.classList.add("in-view", "tw-typing");
+      const total = Math.min(MAX_MS, Math.max(MIN_MS, chars.length * MS_PER_CHAR));
+      let shown = 0, t0;
+      const tick = (t) => {
+        t0 ??= t;
+        const due = Math.min(chars.length, Math.ceil(((t - t0) / total) * chars.length));
+        if (shown) chars[shown - 1].classList.remove("tw-cursor");
+        while (shown < due) chars[shown++].classList.add("tw-on");
+        if (shown < chars.length) {
+          if (shown) chars[shown - 1].classList.add("tw-cursor");
+          requestAnimationFrame(tick);
+        } else {
+          restores.forEach(([wrap, node]) => wrap.replaceWith(node));
+          el.classList.remove("tw-typing");
+        }
+      };
+      requestAnimationFrame(tick);
+    };
+
+    const io = new IntersectionObserver(
+      (entries) =>
+        entries.forEach((e) => {
+          if (!e.isIntersecting) return;
+          io.unobserve(e.target);
+          const delay = (parseFloat(e.target.style.getPropertyValue("--reveal-delay")) || 0) * STAGGER_MS;
+          setTimeout(() => typeOut(e.target), delay);
+        }),
+      { threshold: 0.12, rootMargin: "0px 0px -8% 0px" },
+    );
+    if (!reduced) document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
+  }
+</script>
+```
+
+**Verify before the PR:** screenshot mid-typing (cursor visible, later lines already
+holding their space); after settling, `document.querySelectorAll('.tw-c').length === 0`
+and every `.reveal` has `.in-view`; then run the main-thread gate. Browser automation in
+a hidden/background tab throttles `requestAnimationFrame` — timing checks there are
+meaningless; front the tab or trust screenshots.
+
+### Measuring the main-thread gate
+
+Before = production (`https://<slug>.pages.dev`), after = the branch preview. Ignore the
+SEO score: preview deploys send `x-robots-tag: noindex`, production doesn't.
+
+```bash
+for n in before after; do
+  [ $n = before ] && URL=https://<slug>.pages.dev || URL=https://<branch-slug>.<slug>.pages.dev
+  for i in 1 2 3; do
+    npx -y lighthouse@12 "$URL" --quiet --output=json --output-path=lh/$n-mobile-$i.json --chrome-flags="--headless=new"
+  done
+done
+node -e '
+const fs = require("fs"), med = (a) => a.sort((x, y) => x - y)[1];
+for (const n of ["before", "after"]) {
+  const r = [1, 2, 3].map((i) => JSON.parse(fs.readFileSync(`lh/${n}-mobile-${i}.json`)));
+  console.log(n, {
+    perf: med(r.map((x) => x.categories.performance.score * 100)),
+    tbt: med(r.map((x) => x.audits["total-blocking-time"].numericValue)),
+    longTasks: med(r.map((x) => x.audits["long-tasks"].details?.items.length ?? 0)),
+    mainThreadMs: Math.round(med(r.map((x) => x.audits["mainthread-work-breakdown"].details.items.reduce((s, i) => s + i.duration, 0)))),
+  });
+}'
+```
+
+Run it outside the spoke (a scratch dir), never commit the `lh/` output. Lighthouse
+loads without scrolling, so it measures load-time motion only; scroll-triggered work is
+the same per block, spread out over the scroll.
 
 ## Finishing details (the credibility checklist)
 
