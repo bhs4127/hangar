@@ -4,16 +4,16 @@
 > as a task. Maintained at the end of every task (CLAUDE.md state-layer ritual): check
 > off, add, re-prioritize.
 
-## P0 — make this HQ yours (once, before anything else)
+## P0 — make this hangar yours (once, before anything else)
 
 - [ ] **Fill in `FLEET.md`.** Copy `FLEET.example.md` → `FLEET.md` (gitignored), fill
-  every row or mark it `TBD` deliberately. This is the only place HQ names your GitHub
+  every row or mark it `TBD` deliberately. This is the only place hangar names your GitHub
   org and Cloudflare account.
 - [ ] **`gh auth login`** as the org that will own the spoke repos.
 - [ ] **`wrangler login`** on the Cloudflare account that will own the Pages projects.
 - [ ] **Mint the scoped Cloudflare API token** (5 min, once) — Pages:Edit, Zone:Edit,
   Zone:Read, DNS:Edit, Email Routing:Edit — and drop it at
-  `~/.config/hq/cloudflare-token` (chmod 600). The `wrangler login` OAuth token is
+  `~/.config/hangar/cloudflare-token` (chmod 600). The `wrangler login` OAuth token is
   zone:read only, so without this every domain hookup falls back to dashboard clicking.
   See [playbooks/change/attach-custom-domain.md](playbooks/change/attach-custom-domain.md) § Inputs.
 
@@ -72,14 +72,14 @@ the work is *applying* it.
   practice-areas are both "offerings"), derive `schemas/<vertical>.ts` from the base
   patterns, write the vertical's own opinions, log a DECISIONS entry. The registry's
   `vertical` field is already free text. Acceptance test: a dog groomer or a yoga studio
-  can be onboarded with no HQ changes beyond the two derived files.
+  can be onboarded with no hangar changes beyond the two derived files.
 - [ ] **Write `playbooks/build/law-office.md` for real**, plus `schemas/law-office.ts`,
   after the restaurant loop is proven. The stub lists the known differences to encode
   (practice areas, attorney bios, disclaimers, no ordering slot).
 - [ ] **Approval channel**: Telegram (or Slack) bot that posts "PR ready: <preview link> —
   👍 to ship?" and treats the reaction as approve-to-merge. Attaches at the PR step of the
   pipeline.
-- [ ] **Persistent host**: pick and provision (mini PC vs. VPS), keep HQ + spokes checked
+- [ ] **Persistent host**: pick and provision (mini PC vs. VPS), keep hangar + spokes checked
   out, run the intake loop on it instead of a laptop.
 
 ## P5 — later channels

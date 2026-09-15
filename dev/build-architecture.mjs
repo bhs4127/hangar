@@ -4,7 +4,7 @@
  * the hub-and-spoke system. Derives entirely from the state files so it can't drift:
  *
  *   - Nodes + statuses: the "## Architecture nodes" table in STATUS.md
- *     (columns: Node | Group | Status | Notes; group: intake|hq|spokes|delivery|infra;
+ *     (columns: Node | Group | Status | Notes; group: intake|hangar|spokes|delivery|infra;
  *      status: built|in-progress|stubbed|planned)
  *   - Open queue: unchecked items in TODOS.md
  *   - File tree: the repo itself
@@ -14,7 +14,7 @@
  */
 
 import { readFileSync, writeFileSync, readdirSync } from "node:fs";
-import { join, dirname } from "node:path";
+import { join, dirname, basename } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -98,7 +98,7 @@ const STATUS_META = {
 
 const FLOW_GROUPS = [
   { id: "intake", title: "Intake", sub: "one adapter per channel → one pipeline" },
-  { id: "hq", title: "HQ (this repo)", sub: "mission control — playbooks & guardrails" },
+  { id: "hangar", title: "hangar (this repo)", sub: "mission control — playbooks & guardrails" },
   { id: "spokes", title: "Spokes", sub: "one repo per client site" },
   { id: "delivery", title: "Delivery", sub: "hosting & preview deploys" },
 ];
@@ -152,7 +152,7 @@ const html = `<!doctype html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>HQ — architecture</title>
+<title>hangar — architecture</title>
 <style>
   :root { color-scheme: light; }
   * { box-sizing: border-box; }
@@ -188,8 +188,8 @@ const html = `<!doctype html>
 </style>
 </head>
 <body>
-<h1>HQ — system architecture</h1>
-<div class="meta">Hub-and-spoke: HQ holds the knowledge; each client site is its own repo. Last generated: ${esc(generatedAt)}</div>
+<h1>hangar — system architecture</h1>
+<div class="meta">Hub-and-spoke: hangar holds the knowledge; each client site is its own repo. Last generated: ${esc(generatedAt)}</div>
 <div class="legend">${legend}</div>
 
 <div class="flow">
@@ -212,8 +212,8 @@ ${todoList}
     ${todoMore}
   </div>
   <div class="panel">
-    <h2>HQ file tree</h2>
-    <pre>hq/
+    <h2>File tree</h2>
+    <pre>${esc(basename(ROOT))}/
 ${esc(tree)}</pre>
   </div>
 </div>

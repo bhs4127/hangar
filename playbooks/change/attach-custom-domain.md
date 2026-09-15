@@ -24,7 +24,7 @@ below applies.
 
 1. The exact domain (verbatim from the client — rule 4; confirm spelling, it names certs).
 2. The spoke's Pages project name (= slug, from the client record).
-3. **The scoped API token** at `~/.config/hq/cloudflare-token` (chmod 600, never in any
+3. **The scoped API token** at `~/.config/hangar/cloudflare-token` (chmod 600, never in any
    repo). Permissions: Account→Cloudflare Pages:Edit, Account→Zone:Edit, Zone→Zone:Read,
    Zone→DNS:Edit, Zone→Email Routing Rules:Edit — all zones. Without it, zone/DNS steps
    are dashboard work the owner must click (the wrangler OAuth token can attach Pages
@@ -34,7 +34,7 @@ below applies.
 
 ## Recipe
 
-Shell setup used below: `TOK=$(cat ~/.config/hq/cloudflare-token)`,
+Shell setup used below: `TOK=$(cat ~/.config/hangar/cloudflare-token)`,
 `ACC=<cloudflare account id>` (from `FLEET.md`), `DOM=<domain>`, `SLUG=<slug>`.
 
 1. **Pre-flight DNS audit — before touching anything** (the step that saves inboxes):

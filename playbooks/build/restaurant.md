@@ -67,7 +67,7 @@ tuned by the client's design brief. The opinions are defaults the brief override
 │   ├── pages/index.astro        # + pages/thanks.astro — no-JS form success page
 │   └── assets/                  # real photos go here (astro:assets); see findings
 ├── functions/api/contact.ts     # Cloudflare Pages Function — the form endpoint
-├── schemas/restaurant.ts        # copied from HQ at birth; the spoke's own contract
+├── schemas/restaurant.ts        # copied from hangar at birth; the spoke's own contract
 └── package.json
 ```
 
@@ -160,7 +160,7 @@ The answers fill every schema slot. Ask exactly these; never fill a blank with a
 
 ## Build steps
 
-*(Described for the future build — do not execute while working in HQ.)*
+*(Described for the future build — do not execute while working in hangar.)*
 
 1. Scaffold: `npm create astro@latest` (minimal template), `npx astro add tailwind`,
    `npm i zod @fontsource-variable/<heading> @fontsource-variable/<body>`. Reality check
@@ -171,7 +171,7 @@ The answers fill every schema slot. Ask exactly these; never fill a blank with a
    (`Missing field \`tsconfigPaths\``). Fix: pin one vite in the spoke's package.json —
    `"overrides": { "vite": "^7.3.2" }` — until upstream settles; verify with
    `npm ls vite` (every copy deduped to 7.x).
-2. Copy `schemas/restaurant.ts` from HQ into the spoke. Wire `src/content.config.ts`
+2. Copy `schemas/restaurant.ts` from hangar into the spoke. Wire `src/content.config.ts`
    data collections to it so each file in `src/content/data/` validates on every build.
    Proven pattern: one collection per top-level key, each
    `glob({ pattern: "<key>.json", base: "./src/content/data" })`. An empty `ordering`
@@ -193,7 +193,7 @@ The answers fill every schema slot. Ask exactly these; never fill a blank with a
    deploys are agent-performed direct uploads (live pattern — commands in
    automation/README.md § Hosting).
 10. Owner reviews the preview → merge → custom domain. Then update the client record,
-    REGISTRY.md, and HQ's state layer.
+    REGISTRY.md, and hangar's state layer.
 
 ## Definition of done
 
@@ -203,14 +203,14 @@ The answers fill every schema slot. Ask exactly these; never fill a blank with a
 - [ ] Contact form delivers — a real test submission received
 - [ ] `tel:` links work on a phone; hours match the intake answers and the client confirmed them
 - [ ] Lighthouse ≥ 95 on all four scores; alt text is real; contrast passes
-- [ ] PR + preview reviewed by the owner; merged; registry row + HQ state layer updated
+- [ ] PR + preview reviewed by the owner; merged; registry row + hangar state layer updated
 
 ## Rehearsal findings (2026-06-10 — first spoke built with this playbook)
 
 What the first end-to-end run taught us. Corrections are folded into the sections above;
 this list is the provenance.
 
-- Astro 6 + Tailwind 4 + zod 4 all worked together; the HQ schema needed zero changes.
+- Astro 6 + Tailwind 4 + zod 4 all worked together; the hangar schema needed zero changes.
 - Tailwind v4 has no config file — brand tokens live in a CSS `@theme` block.
 - "One allowed script" became two: the form time-trap also needs inline JS.
 - A no-JS form needs a `/thanks` success page (303 redirect from the Pages Function).

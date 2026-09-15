@@ -55,7 +55,7 @@ interface IntakeRequest {
 6. **PR + preview link.**
 7. **Approval** — the owner; later, a 👍 from the chat approval channel.
 8. **Merge → production deploy; draft the client reply.**
-9. **Update HQ's state layer.**
+9. **Update hangar's state layer.**
 
 ## Adapter roster
 
@@ -64,7 +64,7 @@ interface IntakeRequest {
 | Email | Cloudflare Email Routing → Worker (preferred — same platform as hosting). Alternative: Mailgun/Postmark inbound webhook. | **Build first** | Per-client aliases (`<slug>@requests.<domain>`) make client-matching trivial. |
 | SMS | Twilio inbound webhook. | Future — **easy second channel** | Sender phone number is the identifier. |
 | Signal | `signal-cli` daemon on the persistent host. | Future — **fiddliest, do last** | Needs a registered number + linked device; no managed inbound webhook exists. |
-| Owner-direct | Me, typing into Claude Code in HQ. | Works today | The "adapter" is me phrasing the request; it bypasses nothing downstream. |
+| Owner-direct | Me, typing into Claude Code in hangar. | Works today | The "adapter" is me phrasing the request; it bypasses nothing downstream. |
 
 ## Hosting — LIVE since 2026-06-10 (the one non-deferred thing here)
 
@@ -95,7 +95,7 @@ client (TODOS).
 - **Approval channel:** a Telegram or Slack bot that posts *"PR ready: <preview link> —
   👍 to ship?"* and treats the reaction as approval-to-merge, so approvals work from a
   phone. It moves the human gate closer to the human; it never removes it.
-- **Persistent host:** the always-on machine (mini PC or small VPS) that keeps HQ + all
+- **Persistent host:** the always-on machine (mini PC or small VPS) that keeps hangar + all
   spokes checked out, runs the intake loop, and hosts the `signal-cli` daemon. Until it
   exists, the loop runs when I open Claude Code manually.
 

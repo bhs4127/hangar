@@ -5,14 +5,14 @@
 
 ## Summary
 
-**Fresh HQ. No clients yet.** Everything in this repo is *knowledge* — guardrails,
+**Fresh hangar. No clients yet.** Everything in this repo is *knowledge* — guardrails,
 playbooks, a reference schema, and the state layer — carried over from a fleet where the
 full loop was proven end to end: request → playbook → branch → validated edit → PR →
 preview → approval → merge → deploy, hosting included (agent-performed Cloudflare Pages
 direct uploads). None of that fleet's clients, accounts, or domains came with it.
 
 **Before your first task:** copy `FLEET.example.md` → `FLEET.md` and fill it in. That
-file is the only place HQ names your GitHub org and Cloudflare account; nothing else in
+file is the only place hangar names your GitHub org and Cloudflare account; nothing else in
 the repo hardcodes them. Then run its first-run checklist (`gh auth login`,
 `wrangler login`, mint the scoped API token).
 
@@ -39,7 +39,7 @@ through manually (DECISIONS.md — HQ-first build order).
 
 - `playbooks/build/law-office.md` — shape and known differences only
 - Derived verticals (`creator`, `portfolio`, anything else) — the *pattern* is decided
-  (derive inline, schema stays in the spoke, promote to HQ on a second client of the
+  (derive inline, schema stays in the spoke, promote to hangar on a second client of the
   same vertical) but no derived playbook ships here
 
 ## Described only (design captured in docs, no code)
@@ -56,26 +56,26 @@ through manually (DECISIONS.md — HQ-first build order).
 
 <!-- Machine-read by dev/build-architecture.mjs — keep the table shape.
      Columns: Node | Group | Status | Notes
-     Group:  intake | hq | spokes | delivery | infra
+     Group:  intake | hangar | spokes | delivery | infra
      Status: built | in-progress | stubbed | planned -->
 
 | Node | Group | Status | Notes |
 |---|---|---|---|
-| Guardrails (CLAUDE.md) | hq | built | rules every task runs under |
-| Fleet config (FLEET.md) | hq | planned | copy FLEET.example.md and fill it in — first step |
-| Client registry | hq | built | format + worked example; **0 clients** |
-| Restaurant build playbook | hq | built | opinionated, full |
-| Law-office build playbook | hq | stubbed | shape + known differences only |
-| Change playbooks ×4 | hq | built | menu / hours / image / attach-custom-domain — template for new types |
-| Onboarding playbook | hq | built | manual-first by design |
-| Restaurant schema (reference) | hq | built | copied into each spoke at birth |
-| State layer + architecture view | hq | built | maintained at the end of every task |
+| Guardrails (CLAUDE.md) | hangar | built | rules every task runs under |
+| Fleet config (FLEET.md) | hangar | planned | copy FLEET.example.md and fill it in — first step |
+| Client registry | hangar | built | format + worked example; **0 clients** |
+| Restaurant build playbook | hangar | built | opinionated, full |
+| Law-office build playbook | hangar | stubbed | shape + known differences only |
+| Change playbooks ×4 | hangar | built | menu / hours / image / attach-custom-domain — template for new types |
+| Onboarding playbook | hangar | built | manual-first by design |
+| Restaurant schema (reference) | hangar | built | copied into each spoke at birth |
+| State layer + architecture view | hangar | built | maintained at the end of every task |
 | Email adapter | intake | planned | first adapter to build; needs an intake domain in FLEET.md |
 | SMS adapter (Twilio) | intake | planned | easy second channel |
 | Signal adapter (signal-cli) | intake | planned | fiddliest; needs persistent host; last |
 | Intake pipeline | intake | planned | normalize → classify → playbook → spoke → PR |
 | Client spokes | spokes | planned | none yet — TODOS P1 creates the first |
-| Derived verticals | hq | planned | derive inline, schema in-spoke, promote on a 2nd client |
+| Derived verticals | hangar | planned | derive inline, schema in-spoke, promote on a 2nd client |
 | Spoke scaffolding/template | spokes | planned | build playbook is the template for now |
 | Cloudflare Pages + previews | delivery | built | direct upload, agent-deployed; commands proven — needs `wrangler login` |
 | Approval channel (Telegram/Slack) | infra | planned | "👍 to ship" from the phone |

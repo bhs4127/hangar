@@ -26,7 +26,7 @@ The posted weekly hours change: open/close times, a day becoming closed or open.
    `"21:30"`.
 4. Untouched days stay byte-identical.
 5. **Future-dated changes** ("starting next month"): there's no scheduling. Ask whether
-   to ship now or hold the PR until the date; if held, note it in HQ's TODOS.md with the
+   to ship now or hold the PR until the date; if held, note it in hangar's TODOS.md with the
    date.
 
 ## Validate

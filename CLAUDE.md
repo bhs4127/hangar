@@ -1,10 +1,11 @@
-# HQ — Mission Control
+# hangar — Mission Control
 
-*(This repo is named `hangar`; "HQ" is what it's called throughout these docs.)*
+*(Formerly called "HQ". Older DECISIONS and CHANGELOG entries still use that name — it
+means this repo.)*
 
-HQ is the control repo for a fleet of small static client websites (restaurants, law
+Hangar is the control repo for a fleet of small static client websites (restaurants, law
 offices, …). It holds the instructions, guardrails, client registry, and playbooks for
-building and changing those sites. **HQ never contains client site code.** Each client's
+building and changing those sites. **Hangar never contains client site code.** Each client's
 site lives in its own repo (a "spoke"). The leverage here is in the quality of the
 playbooks, not in shared code — there is no shared component library, by decision
 (see DECISIONS.md).
@@ -35,8 +36,8 @@ Improvements to instructions are shared. If `FLEET.md` is missing or a needed ro
 
 ## Hard rules
 
-1. **Edits land in spokes, never in HQ.** Client content changes happen in that client's
-   own repo. Changes to HQ are changes to instructions, the registry, or the state docs —
+1. **Edits land in spokes, never in hangar.** Client content changes happen in that client's
+   own repo. Changes to hangar are changes to instructions, the registry, or the state docs —
    nothing else.
 2. **Never push to a client repo's `main`/production branch.** Every change is a branch +
    pull request with a preview deploy. No exceptions, including "tiny" fixes.
@@ -68,7 +69,7 @@ Improvements to instructions are shared. If `FLEET.md` is missing or a needed ro
    or the client record at the moment they're needed, never baked into a playbook, a
    schema, `DECISIONS.md`, or this file. Before committing, confirm the diff touches only
    the shared layer. Secrets (the Cloudflare API token) live outside every repo at
-   `~/.config/hq/cloudflare-token` and are never read into a file.
+   `~/.config/hangar/cloudflare-token` and are never read into a file.
 
 10. **`DECISIONS.md` is shared and public.** It records *architectural* decisions —
    reasoning another operator could use. A decision that only makes sense for one client

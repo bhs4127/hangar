@@ -9,7 +9,7 @@ step 6, the edit itself). All of CLAUDE.md applies at every step.
 ```
 request → normalize → identify client → classify → clarity gate → pull spoke → branch
         → apply playbook → validate (build) → PR → preview → approve → merge
-        → draft reply → update HQ state layer
+        → draft reply → update hangar state layer
 ```
 
 1. **A request arrives** through some channel — email today; SMS, Signal, or the owner
@@ -69,7 +69,7 @@ request → normalize → identify client → classify → clarity gate → pull
 11. **Draft the client reply.** Plain language: what changed, when it's live, the link.
     Draft only — the owner sends it (for now).
 
-12. **Update HQ's state layer** (CLAUDE.md). Yes, for every change.
+12. **Update hangar's state layer** (CLAUDE.md). Yes, for every change.
 
 ## The change/ playbooks are templates of a pattern
 

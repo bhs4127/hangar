@@ -4,16 +4,16 @@ Mission control for producing and maintaining simple static websites for local-b
 clients (restaurants, law offices, …). Sites are built, serviced, and dispatched from
 here — the hangar itself never ships any of them.
 
-> Throughout these docs this repo is called **HQ**: the hub in hub-and-spoke. `hangar` is
-> what the repo is named; `HQ` is the role it plays. Same thing.
+> Formerly called **HQ**. Older DECISIONS entries still use that name — it means this
+> repo, the hub in hub-and-spoke.
 
 The architecture is hub-and-spoke:
 
-- **HQ (this repo)** is the brain: guardrails, client registry, playbooks, reference
+- **Hangar (this repo)** is the brain: guardrails, client registry, playbooks, reference
   schemas, and the state layer. It contains *knowledge*, never client site code.
 - **Spokes** are per-client repos, one website each (Astro + Tailwind + Content
   Collections validated by a Zod schema). None exist yet.
-- **There is no CMS.** Clients send requests in plain language; an agent reads HQ to find
+- **There is no CMS.** Clients send requests in plain language; an agent reads hangar to find
   the client and the right playbook, edits content files in the spoke, and opens a PR.
   The agent is the CMS. The typed schema is the contract that makes that safe — a
   malformed edit fails the spoke's build instead of shipping.
@@ -23,7 +23,7 @@ The architecture is hub-and-spoke:
 
 ## First run (fork this, then do these five things)
 
-HQ ships with no accounts wired in. Everything operator-specific lives in one gitignored
+Hangar ships with no accounts wired in. Everything operator-specific lives in one gitignored
 file.
 
 ```bash
@@ -42,7 +42,7 @@ Then mint a scoped Cloudflare API token (Pages:Edit, Zone:Edit, Zone:Read, DNS:E
 Email Routing:Edit) and store it outside every repo:
 
 ```bash
-mkdir -p ~/.config/hq && printf '%s' 'PASTE_TOKEN_HERE' > ~/.config/hq/cloudflare-token && chmod 600 ~/.config/hq/cloudflare-token
+mkdir -p ~/.config/hangar && printf '%s' 'PASTE_TOKEN_HERE' > ~/.config/hangar/cloudflare-token && chmod 600 ~/.config/hangar/cloudflare-token
 ```
 
 Fifth: open Claude Code here and work TODOS P1 — onboard client #1 **by hand**,
@@ -54,15 +54,15 @@ every automation that comes after it.
 ```
 request arrives from the client (email today; SMS / Signal later)
   → channel adapter normalizes it to one internal request object
-  → HQ: identify client (registry channels) + pick playbook
+  → hangar: identify client (registry channels) + pick playbook
   → pull that client's spoke repo, create a branch
   → apply the playbook, run the build (Zod schema validates the edit)
   → open a PR on the spoke → Cloudflare Pages preview deploy
   → owner approves & merges → production
-  → a client reply is drafted → HQ state layer updated
+  → a client reply is drafted → hangar state layer updated
 ```
 
-Nothing is ever pushed straight to a client's production branch. HQ is mission control;
+Nothing is ever pushed straight to a client's production branch. Hangar is mission control;
 the edit physically lands in the spoke. The full pipeline is written out once in
 [playbooks/README.md](playbooks/README.md).
 
@@ -88,7 +88,7 @@ the edit physically lands in the spoke. The full pipeline is written out once in
 | Approval channel (Telegram/Slack "👍 to ship") | **Described only** |
 | Persistent host (checked-out repos + intake loop) | **Described only** |
 
-## Using HQ day to day
+## Using hangar day to day
 
 Open Claude Code in this repo and state the task ("Marisol says the carnitas taco is $14
 now"). The agent follows CLAUDE.md: `FLEET.md` → registry → playbook → spoke → branch →
@@ -100,7 +100,7 @@ summaries instead of re-reading the repo.
 ## Next steps (the short version — TODOS.md is the full queue)
 
 1. **Copy the seeds and fill in `FLEET.md`** (see First run above) — nothing else works
-   until HQ knows which GitHub org and Cloudflare account it's driving.
+   until hangar knows which GitHub org and Cloudflare account it's driving.
 2. **Kick off the first client site.** Run [playbooks/onboard-client.md](playbooks/onboard-client.md):
    intake questions → client record + registry row → new `<slug>-site` repo → build per
    [playbooks/build/restaurant.md](playbooks/build/restaurant.md) → PR. Do it by hand;

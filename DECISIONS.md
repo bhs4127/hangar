@@ -7,7 +7,8 @@
 > Template:
 > `## YYYY-MM-DD — Title` / `**Decision:** …` / `**Why:** …`
 >
-> Entries below the fork point were inherited from the upstream HQ template and
+> Entries below the fork point were inherited from the upstream template (then called HQ —
+> read "HQ" in them as this repo) and
 > generalized (client names and domains removed). They are the reasoning the playbooks
 > assume — read them before arguing with a playbook. Your own entries append after them.
 
@@ -233,3 +234,16 @@ exception; "site launched, catering inbox died" is the reputation-ending version
 task. The one-time token converts every future hookup to agent-work plus one paste;
 Cloudflare Registrar removes even that for domains we originate. This also keeps hosting,
 DNS, and future email intake on the one platform already decided above.
+
+## 2026-09-15 — Retire the "HQ" name; the repo is `hangar` everywhere, including its config path
+
+**Decision:** The control repo is called `hangar` in every doc, the architecture view, and
+the node-group key (`hangar`, formerly `hq`). The scoped Cloudflare token moves to
+`~/.config/hangar/cloudflare-token`, superseding the `~/.config/hq/` path in the
+2026-08-20 domain-hookups entry. Earlier entries keep "HQ" as written (append-only);
+read it as this repo. Titles cited elsewhere (e.g. "HQ-first build order") stay verbatim.
+**Why:** The repo was published as `hangar` while the docs kept calling it "HQ" — a
+second name for one thing. It turned ambiguous the moment an archived private repo
+literally named `hq` existed next to it: "update HQ state" could mean either. One name
+removes the question; a config path that matches the repo name means a fresh fork's
+setup commands and the playbooks agree without translation.

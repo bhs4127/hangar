@@ -1,6 +1,6 @@
 # Playbook — onboard a client (how a spoke is born)
 
-Takes a signed client to a live site plus a complete HQ registry entry. Steps marked
+Takes a signed client to a live site plus a complete hangar registry entry. Steps marked
 *(manual for now)* get automated later; the sequence stays. The workflow law applies from
 the very first commit: branch + PR + preview, even during the initial build.
 
@@ -34,7 +34,7 @@ the very first commit: branch + PR + preview, even during the initial build.
    only if onboarding #2/#3 shows real repetition.
 
 5. **Build the site** per `build/<vertical>.md`, on a `build/initial-site` branch:
-   schema copied in from HQ `schemas/`, content collections wired, content files from
+   schema copied in from hangar `schemas/`, content collections wired, content files from
    the intake answers.
 
 6. **Hosting** *(live pattern)*: the agent creates a direct-upload Pages project —

@@ -1,9 +1,9 @@
 # FLEET — this operator's identifiers
 
 > **Copy this file to `FLEET.md` and fill it in. `FLEET.md` is gitignored and never
-> committed.** It is the single place HQ names your accounts; playbooks and client
+> committed.** It is the single place hangar names your accounts; playbooks and client
 > records reference *this file* instead of hardcoding an org, an account, or a domain.
-> That is what makes HQ forkable — the instructions are shared, the identifiers are not.
+> That is what makes hangar forkable — the instructions are shared, the identifiers are not.
 >
 > If a value isn't real yet, write `TBD`. A `TBD` here blocks the step that needs it,
 > which is the point (CLAUDE.md rule 5).
@@ -22,7 +22,7 @@
 |---|---|---|
 | **Account email** | `TBD` | `wrangler login`, dashboard steps |
 | **Account ID** | `TBD` | `$ACC` in attach-custom-domain.md (Dashboard → any domain → right sidebar) |
-| **Scoped API token path** | `~/.config/hq/cloudflare-token` | `$TOK` in attach-custom-domain.md |
+| **Scoped API token path** | `~/.config/hangar/cloudflare-token` | `$TOK` in attach-custom-domain.md |
 | **Registrar for new domains** | Cloudflare Registrar | DECISIONS.md — domain hookups |
 
 The scoped token needs: **Pages:Edit, Zone:Edit, Zone:Read, DNS:Edit, Email
@@ -30,7 +30,7 @@ Routing:Edit**. Mint it at Dashboard → My Profile → API Tokens → Create To
 Store it outside every repo:
 
 ```bash
-mkdir -p ~/.config/hq && printf '%s' 'PASTE_TOKEN_HERE' > ~/.config/hq/cloudflare-token && chmod 600 ~/.config/hq/cloudflare-token
+mkdir -p ~/.config/hangar && printf '%s' 'PASTE_TOKEN_HERE' > ~/.config/hangar/cloudflare-token && chmod 600 ~/.config/hangar/cloudflare-token
 ```
 
 The `wrangler login` OAuth token is **zone:read only** and cannot do DNS work — that's

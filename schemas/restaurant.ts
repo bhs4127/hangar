@@ -1,7 +1,7 @@
 /**
  * Reference Zod schema for a restaurant spoke.
  *
- * This is HQ's reference copy. When a spoke is born (playbooks/onboard-client.md), this
+ * This is hangar's reference copy. When a spoke is born (playbooks/onboard-client.md), this
  * file is COPIED into the spoke and wired into Astro Content Collections
  * (src/content.config.ts), one data collection per top-level key, so every build
  * validates every content file. The spoke's copy is the live contract; this one is the
