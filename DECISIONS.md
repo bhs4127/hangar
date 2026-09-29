@@ -296,3 +296,18 @@ a client's forwarding during the first domain hookup — and avoids the free tie
 verifying every client's. The cost is a second vendor outside Cloudflare and a shared
 100/day free-tier ceiling across the fleet; the first is acceptable because intake is
 not on the hosting critical path, and the second is a watch item, not a blocker.
+
+## 2026-09-29 — Registrar is the operator's choice; DNS always lives at Cloudflare
+
+**Decision:** The 2026-08-20 default (register new domains at Cloudflare Registrar)
+applies to **client** domains we originate. The operator's own domains may be registered
+anywhere — consolidating with an existing registrar is a legitimate reason. The
+requirement that does not bend: **nameservers point at Cloudflare**, so DNS is
+agent-performed with the scoped token. Registering elsewhere costs exactly one manual
+step, the nameserver paste, which is already a human step by the 2026-08-20 entry.
+**Why:** Registrar and DNS host are separate choices and only the DNS host affects
+automation. Scripting a second registrar's DNS is the part that doesn't pay: the common
+alternative gates API access behind account thresholds and IP allowlisting, which a
+laptop on a changing IP fails. On a freshly registered domain the nameserver flip is
+risk-free — no existing mail or site to break — so the usual pre-flight DNS audit
+applies only to domains that already carry traffic.
