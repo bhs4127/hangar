@@ -51,17 +51,19 @@ the work is *applying* it.
 
 ## P3 — close the loop on automation
 
-- [ ] **Decide + wire contact-form delivery** (`CONTACT_FORWARD_TO`): the Pages Function
-  validates and spam-checks but only logs. Candidates: Resend free tier vs. Cloudflare
-  Email Routing `send_email` binding (destination must be a verified Email Routing
-  address — workable, it's the client's own email). Decide at first real client; test
-  end-to-end delivery as part of their go-live checklist.
-- [ ] **Pick the intake domain** and record it in `FLEET.md` — per-client aliases are
-  `<slug>@requests.<domain>`. Blocks the email adapter.
-- [ ] **Build the email intake adapter** — Cloudflare Email Routing on
-  `requests.<your-domain>` → Worker that emits the normalized `IntakeRequest` object
-  (shape in `automation/README.md`) for ONE client alias. Output can land somewhere you
-  can read (a file, a queue, an issue); classification and auto-editing come later.
+- [ ] **Wire contact-form delivery** per
+  [playbooks/change/wire-contact-delivery.md](playbooks/change/wire-contact-delivery.md)
+  — provider is decided (Resend, DECISIONS 2026-09-29). Each spoke's function
+  validates and spam-checks but only logs until its secrets are set and a real
+  submission is tested; do it as part of that client's go-live.
+- [ ] **Pick + register the intake domain** and record it in `FLEET.md` — per-client
+  aliases are `<slug>@requests.<domain>`. Blocks email intake.
+- [ ] **Set up email intake** per
+  [playbooks/setup-email-intake.md](playbooks/setup-email-intake.md): Resend account +
+  two API keys, `requests.<domain>` verified for sending *and* receiving, DNS written
+  with the scoped Cloudflare token, a DMARC record, then the two smoke tests. Aliases
+  are catch-all, so every client gets one for free — no per-client DNS. Classification
+  and unattended runs come later.
 
 ## P4 — widen
 

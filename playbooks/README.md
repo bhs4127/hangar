@@ -73,8 +73,8 @@ request → normalize → identify client → classify → clarity gate → pull
 
 ## The change/ playbooks are templates of a pattern
 
-`add-or-edit-menu-item`, `update-hours`, and `replace-an-image` are the three concrete
-recipes — and also the template for every future change type (swap a testimonial, change
+`add-or-edit-menu-item`, `update-hours`, `replace-an-image`, and `wire-contact-delivery`
+are the concrete recipes — and also the template for every future change type (swap a testimonial, change
 the reservation link, update the parking note, …). A new change type = a new file in
 `change/` with the same shape: **Use when / Inputs required / Recipe / Validate / PR &
 reply / Edge cases.**

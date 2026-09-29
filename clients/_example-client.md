@@ -23,7 +23,7 @@ whose source identifier matches nothing here is held for the owner — never gue
 
 | Channel type | Identifier | Notes |
 |---|---|---|
-| email | `marisols-taqueria@requests.example.com` | per-client alias via Cloudflare Email Routing |
+| email | `marisols-taqueria@requests.example.com` | per-client alias on the intake domain (Resend, catch-all — no DNS per client) |
 | sms | `+15125550143` | Marisol's cell — same as primary contact |
 | signal | `+15125550143` | future channel, same number |
 

@@ -45,6 +45,11 @@ Email Routing:Edit) and store it outside every repo:
 mkdir -p ~/.config/hangar && printf '%s' 'PASTE_TOKEN_HERE' > ~/.config/hangar/cloudflare-token && chmod 600 ~/.config/hangar/cloudflare-token
 ```
 
+Email (when you get to step 5) adds one more, alongside it: a **full-access** Resend key
+at `~/.config/hangar/resend-token` for the agent, plus a **sending-only** key that lives
+in each spoke's Pages secrets. Two keys on purpose — a leaked site secret can then send
+mail but never read yours.
+
 Fifth: open Claude Code here and work TODOS P1 — onboard client #1 **by hand**,
 correcting the playbooks with whatever they get wrong. That manual run is the spec for
 every automation that comes after it.
@@ -82,7 +87,8 @@ the edit physically lands in the spoke. The full pipeline is written out once in
 | Architecture view ([dev/build-architecture.mjs](dev/build-architecture.mjs) → generated HTML) | **Real** |
 | Law-office build playbook ([playbooks/build/law-office.md](playbooks/build/law-office.md)) | **Stub** — shape + known differences only |
 | Client registry ([clients/](clients/)) | **Real format** — worked fictional example; real records are gitignored |
-| Intake adapters + pipeline ([automation/README.md](automation/README.md)) | **Described only** — do not build until a spoke exists |
+| Email intake ([playbooks/setup-email-intake.md](playbooks/setup-email-intake.md)) | **Playbook ready** (Resend) — set it up once a spoke exists |
+| Other intake adapters + pipeline ([automation/README.md](automation/README.md)) | **Described only** — SMS, Signal, unattended runs |
 | Spoke template / scaffolding automation | **Described only** — the build playbook *is* the template for now |
 | Cloudflare Pages config + per-branch previews | **Real** — direct-upload, agent-deployed; commands in [automation/README.md](automation/README.md) |
 | Approval channel (Telegram/Slack "👍 to ship") | **Described only** |
@@ -110,8 +116,11 @@ summaries instead of re-reading the repo.
    commands in automation/README.md § Hosting).
 4. **Process one change request manually** through a change playbook. That manual run is
    the spec for the first adapter.
-5. **Only then build the email intake adapter** (Cloudflare Email Routing → Worker →
-   normalized request object). SMS is the easy second channel; Signal is the fiddly last
-   one. (Spoke contact forms are *not* intake — they're customer→client mail, forwarded
+5. **Only then set up email intake** — [playbooks/setup-email-intake.md](playbooks/setup-email-intake.md)
+   walks it end to end: an intake domain, Resend verified for send + receive on
+   `requests.<domain>`, per-client aliases that need no DNS, and how the agent reads the
+   mail. Wire each spoke's contact form with
+   [playbooks/change/wire-contact-delivery.md](playbooks/change/wire-contact-delivery.md).
+   SMS is the easy second channel; Signal is the fiddly last one. (Spoke contact forms are *not* intake — they're customer→client mail, forwarded
    to the client's email.) The approval channel attaches at the PR step; the persistent
    host is what eventually runs the intake loop unattended.

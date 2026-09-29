@@ -104,7 +104,8 @@ than none.
 | `playbooks/build/` | How to build a new site per vertical (restaurant is the reference) |
 | `playbooks/change/` | Recipes for routine edits — also the template for new change types |
 | `playbooks/onboard-client.md` | How a new spoke is born and registered |
+| `playbooks/setup-email-intake.md` | One-time email setup (Resend) + the per-request loop |
 | `schemas/` | Reference Zod schemas — copied into each spoke at birth |
-| `automation/` | Intake-layer design (adapters → one pipeline). **Described, not built.** |
+| `automation/` | Intake-layer design (adapters → one pipeline). Email has a working playbook; SMS/Signal **described, not built**. |
 | `STATUS.md` / `TODOS.md` / `DECISIONS.md` / `CHANGELOG.md` | The state layer (see above) |
 | `dev/` | `build-architecture.mjs` → generated `architecture.html` overview |

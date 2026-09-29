@@ -48,7 +48,7 @@ through manually (DECISIONS.md — HQ-first build order).
   build. Intake is client→agency only; spoke contact forms are customer→client mail,
   outside this system entirely (DECISIONS.md)
 - Spoke template / scaffolding automation — the build playbook is the template for now
-- Contact-form delivery provider (`CONTACT_FORWARD_TO`) — undecided; functions log only
+- Contact-form delivery — provider decided (Resend); each spoke's function logs only until `change/wire-contact-delivery.md` runs for it
 - Approval channel (Telegram/Slack "👍 to ship")
 - Persistent host (keeps repos checked out, runs the intake loop)
 
@@ -70,7 +70,7 @@ through manually (DECISIONS.md — HQ-first build order).
 | Onboarding playbook | hangar | built | manual-first by design |
 | Restaurant schema (reference) | hangar | built | copied into each spoke at birth |
 | State layer + architecture view | hangar | built | maintained at the end of every task |
-| Email adapter | intake | planned | first adapter to build; needs an intake domain in FLEET.md |
+| Email adapter | intake | planned | Resend; playbook ready — needs an intake domain in FLEET.md |
 | SMS adapter (Twilio) | intake | planned | easy second channel |
 | Signal adapter (signal-cli) | intake | planned | fiddliest; needs persistent host; last |
 | Intake pipeline | intake | planned | normalize → classify → playbook → spoke → PR |

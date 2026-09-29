@@ -220,5 +220,5 @@ this list is the provenance.
 - **Unresolved — image pipeline:** the rehearsal used labeled SVG placeholders in
   `public/images/`; real photos should go through `src/assets/` + `astro:assets` for
   responsive output. Decide the concrete pattern when the first real photos arrive.
-- **Unresolved — form delivery provider** (`CONTACT_FORWARD_TO`): decide when wiring
-  Cloudflare Pages (Resend free tier vs. Email Routing send).
+- **Form delivery is decided** (Resend — DECISIONS 2026-09-29): wire it per
+  [change/wire-contact-delivery.md](../change/wire-contact-delivery.md) at go-live.
