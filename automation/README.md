@@ -61,7 +61,7 @@ interface IntakeRequest {
 
 | Channel | Transport | Status | Notes |
 |---|---|---|---|
-| Email | Cloudflare Email Routing → Worker (preferred — same platform as hosting). Alternative: Mailgun/Postmark inbound webhook. | **Build first** | Per-client aliases (`<slug>@requests.<domain>`) make client-matching trivial. |
+| Email | **Resend inbound** — MX on `requests.<intake-domain>`, catch-all; agent reads via Resend MCP or CLI (DECISIONS 2026-09-29). Setup + loop: [playbooks/setup-email-intake.md](../playbooks/setup-email-intake.md). | **Build first** — blocked only on registering the intake domain | Per-client aliases (`<slug>@requests.<domain>`) make client-matching trivial. No webhook/Worker until polling hurts. |
 | SMS | Twilio inbound webhook. | Future — **easy second channel** | Sender phone number is the identifier. |
 | Signal | `signal-cli` daemon on the persistent host. | Future — **fiddliest, do last** | Needs a registered number + linked device; no managed inbound webhook exists. |
 | Owner-direct | Me, typing into Claude Code in hangar. | Works today | The "adapter" is me phrasing the request; it bypasses nothing downstream. |
@@ -84,11 +84,10 @@ locally, so the Pages build image / NODE_VERSION never matters. Account: the one
 `FLEET.md`. Custom domains: added per client when one goes live (Pages
 → the project → custom domains; still unlimited-bandwidth free tier).
 
-Still open: contact-form delivery (`CONTACT_FORWARD_TO`) — the function validates and
-spam-checks but only logs. Candidates: Resend free tier, or Cloudflare Email Routing's
-`send_email` binding (can only send to addresses verified as Email Routing destinations
-— workable, since the destination is the client's own address). Decide at first real
-client (TODOS).
+Contact-form delivery is **decided: Resend** (DECISIONS 2026-09-29), sending from the
+agency domain with the visitor as `Reply-To`. Per-spoke recipe:
+[playbooks/change/wire-contact-delivery.md](../playbooks/change/wire-contact-delivery.md).
+Still unwired on every live spoke until that playbook runs for each.
 
 ## Also described here, also deferred
 
@@ -102,7 +101,7 @@ client (TODOS).
 ## Build order (mirrors TODOS.md)
 
 1. First spoke, manually, end to end ← **next**
-2. Email adapter (one client, one alias)
+2. Email adapter (one client, one alias) — Resend; see setup-email-intake.md
 3. Cloudflare Pages previews wired and documented
 4. Approval channel
 5. SMS → then Signal

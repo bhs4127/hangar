@@ -40,8 +40,8 @@ why the scoped token exists. Deploys work with OAuth alone; domain hookups don't
 
 | Key | Value | Used by |
 |---|---|---|
-| **Intake domain** | `TBD` | per-client aliases `<slug>@requests.<domain>` (automation/README.md) |
-| **Contact-form forward provider** | `TBD` | spoke `CONTACT_FORWARD_TO` — undecided by default |
+| **Intake domain** | `TBD` | per-client aliases `<slug>@requests.<domain>` — MX to Resend (playbooks/setup-email-intake.md) |
+| **Contact-form forward provider** | Resend | spoke `CONTACT_FORWARD_TO` (playbooks/change/wire-contact-delivery.md) |
 
 ## First-run checklist
 
@@ -49,6 +49,8 @@ why the scoped token exists. Deploys work with OAuth alone; domain hookups don't
 - [ ] `gh auth login` as the org above
 - [ ] `wrangler login` on the Cloudflare account above
 - [ ] Mint + store the scoped API token (command above)
+- [ ] Register the intake domain + store the Resend API key at
+      `~/.config/hangar/resend-token` (chmod 600) — `playbooks/setup-email-intake.md`
 - [ ] Read `CLAUDE.md`, then `playbooks/README.md`
 - [ ] Onboard client #1 via `playbooks/onboard-client.md` — manually, correcting the
       playbooks as you go

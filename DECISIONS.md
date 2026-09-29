@@ -267,3 +267,32 @@ parse/compile 1 → 2ms. The real cost was runtime: mobile main-thread work 446 
 cap can't see that — a 500-byte script could be far worse — so the cap is kept only for
 what it is good at (making each script justify itself, with the brief as the
 justification for more), and cost gets its own gate that measures cost.
+
+## 2026-09-29 — Resend for both mail directions; intake addresses live on the agency domain
+
+**Decision:** Email uses **Resend** on both sides. **Inbound (client→agency intake):** an
+MX record on `requests.<intake-domain>` makes every address at that subdomain arrive
+catch-all, so a new client costs one alias (`<slug>@requests.<intake-domain>`) in their
+record and no DNS at all. The agent reads mail through Resend's MCP server
+interactively, or its CLI (`resend emails receiving list|get|listen`) when scripted; no
+webhook and no Worker until polling actually hurts. **Outbound (visitor→client contact
+forms):** Pages Functions send via the Resend API **from the agency domain with the
+visitor as `Reply-To`**, never as the client's domain. Secrets live outside every repo at
+`~/.config/hangar/resend-token`. Client-facing addresses are **never** put on a client's
+own domain, and the two flows stay separate (2026-06-10) — one provider, two playbooks.
+Sender identity must be proved by the `authentication` object (SPF/DKIM/DMARC) on each
+received email before it is matched to a client; a `From` header alone is not identity.
+Supersedes the Cloudflare Email Routing → Worker leaning in the 2026-06-10 hosting entry
+and the undecided `CONTACT_FORWARD_TO` question.
+**Why:** Email Routing hands you a raw MIME message and a Worker to write; Resend parses
+the message, stores it, exposes an authenticated read API, and ships both an MCP server
+and a CLI — which is the entire "how does the agent get at it" problem solved by a
+vendor, before any infrastructure exists to run. It also computes SPF/DKIM/DMARC per
+message, which is what makes rule 7's sender-matching safe against a forged `From`; a
+Worker would have to do that itself. Keeping addresses on the agency domain avoids
+touching MX on domains whose mail we don't control — the exact hazard that nearly killed
+a client's forwarding during the first domain hookup — and avoids the free tier's
+3-domain cap, which is also why contact mail sends from the agency domain rather than
+verifying every client's. The cost is a second vendor outside Cloudflare and a shared
+100/day free-tier ceiling across the fleet; the first is acceptable because intake is
+not on the hosting critical path, and the second is a watch item, not a blocker.
