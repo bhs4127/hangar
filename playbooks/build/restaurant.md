@@ -203,6 +203,12 @@ The answers fill every schema slot. Ask exactly these; never fill a blank with a
 - [ ] Contact form delivers — a real test submission received
 - [ ] `tel:` links work on a phone; hours match the intake answers and the client confirmed them
 - [ ] Lighthouse ≥ 95 on all four scores; alt text is real; contrast passes
+- [ ] **`public/robots.txt` and a sitemap ship with the site.** Cloudflare Pages answers
+      a missing path with the HTML page, so *without a real file* a crawler asking for
+      `/robots.txt` gets the homepage and Lighthouse SEO drops (caught at 92 on a live
+      site, 2026-09-29). Use `@astrojs/sitemap`, which needs `site` set in the Astro
+      config, and point robots.txt at `sitemap-index.xml`
+- [ ] **`fetchpriority="high"` on the hero image** when it's the LCP element
 - [ ] PR + preview reviewed by the owner; merged; registry row + hangar state layer updated
 
 ## Rehearsal findings (2026-06-10 — first spoke built with this playbook)
