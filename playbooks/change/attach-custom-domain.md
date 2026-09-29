@@ -89,7 +89,11 @@ Shell setup used below: `TOK=$(cat ~/.config/hangar/cloudflare-token)`,
    minutes; activation follows). On active: kick validation once per hostname —
    `PATCH .../pages/projects/$SLUG/domains/$DOM` with `{}` — then loop
    `curl -w '%{http_code}' https://$DOM` and `https://www.$DOM` until 200. Universal SSL
-   on a fresh zone takes ~5–15 min; a transient `status: error` on a hostname during
+   on a fresh zone takes ~5–15 min (seen up to ~40); until it issues, `openssl s_client
+   -connect $DOM:443 -servername $DOM` fails with **TLS alert 40 and no cert offered**, and
+   Pages validation just sits `pending`. Watch for the edge cert to appear, then kick the
+   PATCH validation once more; a stale "CNAME record not set" on `www` clears on its own
+   after that. A transient `status: error` on a hostname during
    re-validation self-heals — only act if it persists after the other hostname goes
    live (delete + re-add that domain via the API).
 
