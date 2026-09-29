@@ -17,3 +17,6 @@ dev/architecture.html
 clients/*.md
 !clients/_example-client.md
 !clients/REGISTRY.example.md
+
+# playwright MCP scratch output
+.playwright-mcp/
