@@ -12,7 +12,8 @@ The architecture is hub-and-spoke:
 - **Hangar (this repo)** is the brain: guardrails, client registry, playbooks, reference
   schemas, and the state layer. It contains *knowledge*, never client site code.
 - **Spokes** are per-client repos, one website each (Astro + Tailwind + Content
-  Collections validated by a Zod schema). None exist yet.
+  Collections validated by a Zod schema). They live outside this repo; a fresh fork has
+  none until you onboard client #1.
 - **There is no CMS.** Clients send requests in plain language; an agent reads hangar to find
   the client and the right playbook, edits content files in the spoke, and opens a PR.
   The agent is the CMS. The typed schema is the contract that makes that safe — a
@@ -23,8 +24,9 @@ The architecture is hub-and-spoke:
 
 ## First run (fork this, then do these five things)
 
-Hangar ships with no accounts wired in. Everything operator-specific lives in one gitignored
-file.
+Hangar ships with no accounts wired in. Everything operator-specific lives in gitignored
+files (`FLEET.md` and the rest of the private layer), and secrets live outside every repo
+in `~/.config/hangar/`.
 
 ```bash
 for f in FLEET STATUS TODOS CHANGELOG; do cp $f.example.md $f.md; done
@@ -45,10 +47,10 @@ Email Routing:Edit) and store it outside every repo:
 mkdir -p ~/.config/hangar && printf '%s' 'PASTE_TOKEN_HERE' > ~/.config/hangar/cloudflare-token && chmod 600 ~/.config/hangar/cloudflare-token
 ```
 
-Email (when you get to step 5) adds one more, alongside it: a **full-access** Resend key
-at `~/.config/hangar/resend-token` for the agent, plus a **sending-only** key that lives
-in each spoke's Pages secrets. Two keys on purpose — a leaked site secret can then send
-mail but never read yours.
+Email intake (Next steps §5, later) adds two more keys alongside it: a **full-access**
+Resend key at `~/.config/hangar/resend-token` for the agent, and a **sending-only** key
+that lives in each spoke's Pages secrets. Two keys on purpose — a leaked site secret can
+then send mail but never read yours.
 
 Fifth: open Claude Code here and work TODOS P1 — onboard client #1 **by hand**,
 correcting the playbooks with whatever they get wrong. That manual run is the spec for
@@ -80,8 +82,9 @@ the edit physically lands in the spoke. The full pipeline is written out once in
 | Private layer (`*.example.md` seeds → gitignored live files) | **Real** — your clients + state stay local |
 | Anatomy of a change ([playbooks/README.md](playbooks/README.md)) | **Real** |
 | Restaurant build playbook ([playbooks/build/restaurant.md](playbooks/build/restaurant.md)) | **Real** — opinionated, argue with it |
-| Change playbooks ×4 ([playbooks/change/](playbooks/change/)) | **Real** — menu / hours / image / custom domain; also the template for future change types |
+| Change playbooks ×5 ([playbooks/change/](playbooks/change/)) | **Real** — menu / hours / image / custom domain / contact-form delivery; also the template for future change types |
 | Onboarding playbook ([playbooks/onboard-client.md](playbooks/onboard-client.md)) | **Real** — manual-first by design |
+| Design language ([playbooks/design-language.md](playbooks/design-language.md)) | **Real** — the premium bar, the design brief, and the motion system |
 | Reference restaurant schema ([schemas/restaurant.ts](schemas/restaurant.ts)) | **Real** — copied into each spoke at birth |
 | State layer (STATUS / TODOS / DECISIONS / CHANGELOG) | **Real** — maintained every task |
 | Architecture view ([dev/build-architecture.mjs](dev/build-architecture.mjs) → generated HTML) | **Real** |
@@ -116,11 +119,16 @@ summaries instead of re-reading the repo.
    commands in automation/README.md § Hosting).
 4. **Process one change request manually** through a change playbook. That manual run is
    the spec for the first adapter.
-5. **Only then set up email intake** — [playbooks/setup-email-intake.md](playbooks/setup-email-intake.md)
-   walks it end to end: an intake domain, Resend verified for send + receive on
-   `requests.<domain>`, per-client aliases that need no DNS, and how the agent reads the
-   mail. Wire each spoke's contact form with
+5. **Only then set up email intake** —
+   [playbooks/setup-email-intake.md](playbooks/setup-email-intake.md) walks it end to
+   end: register an intake domain, verify `requests.<domain>` in Resend for sending
+   *and* receiving, then per-client aliases that need no DNS at all. Clients email
+   `<slug>@requests.<domain>`; the agent reads it, and the same pipeline runs.
+6. **Wire each live spoke's contact form** —
    [playbooks/change/wire-contact-delivery.md](playbooks/change/wire-contact-delivery.md).
-   SMS is the easy second channel; Signal is the fiddly last one. (Spoke contact forms are *not* intake — they're customer→client mail, forwarded
-   to the client's email.) The approval channel attaches at the PR step; the persistent
-   host is what eventually runs the intake loop unattended.
+   This is the *other* mail direction: a visitor writes, the client receives, and it
+   never enters intake.
+
+Later, in rough order: SMS is the easy second channel and Signal the fiddly last one;
+the approval channel ("👍 to ship" from a phone) attaches at the PR step; a persistent
+host is what eventually runs the intake loop unattended.
