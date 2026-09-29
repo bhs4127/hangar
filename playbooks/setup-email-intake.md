@@ -30,22 +30,53 @@ account, or key into this file (rule 9).
 
 1. **Register the intake domain** *(owner, once)* — Cloudflare Registrar, per DECISIONS.
    Record it in `FLEET.md` § Intake. Everything below is blocked until this exists.
-2. **Create the Resend account + API key** *(owner, once)*. Store the key outside every
-   repo, next to the Cloudflare one:
+2. **Create the Resend account + two API keys** *(owner, once)*. Two, because they have
+   different blast radii:
+
+   | Key | Permission | Lives at | Used by |
+   |---|---|---|---|
+   | `hangar-agent` | **Full access** | `~/.config/hangar/resend-token` | the agent: reads inbound mail, manages domains |
+   | `spoke-contact-forms` | **Sending access** | a Pages secret per spoke | contact forms, which only ever send |
+
+   A sending-only key can't read your mail if a spoke's secret leaks. Name keys after
+   *who uses them* — the name is what shows up in Resend's logs. Neither key is ever
+   read into a repo, a file, or a PR. Shell use:
+   `RESEND_API_KEY=$(cat ~/.config/hangar/resend-token)`.
+
+   *Sending access is not enough for setup or intake* — the API answers
+   `restricted_api_key` on every read. Use the full-access key for everything below.
+3. **Add `requests.<intake-domain>` to Resend and turn receiving on.** Agent-performed:
 
    ```bash
-   mkdir -p ~/.config/hangar && printf '%s' 'PASTE_KEY_HERE' > ~/.config/hangar/resend-token && chmod 600 ~/.config/hangar/resend-token
+   KEY=$(cat ~/.config/hangar/resend-token)
+   curl -s -X POST -H "Authorization: Bearer $KEY" -H 'Content-Type: application/json' \
+     --data '{"name":"requests.<intake-domain>","region":"us-east-1"}' https://api.resend.com/domains
+   # receiving is DISABLED on a new domain — enable it, then re-read to get the inbound MX
+   curl -s -X PATCH -H "Authorization: Bearer $KEY" -H 'Content-Type: application/json' \
+     --data '{"capabilities":{"receiving":"enabled"}}' https://api.resend.com/domains/<domain_id>
+   curl -s -H "Authorization: Bearer $KEY" https://api.resend.com/domains/<domain_id>
    ```
 
-   Never read it into a file, a repo, or a PR. Shell use: `RESEND_API_KEY=$(cat ~/.config/hangar/resend-token)`.
-3. **Add `requests.<intake-domain>` to Resend** (Domains → Add). Verify it for **both**
-   sending and receiving: the DKIM/SPF `TXT` records it shows, plus the receiving `MX`
-   record (copy the exact values from the dashboard — they are account-specific).
-   Sending matters because replies go *from* this subdomain.
+   The create call returns four **sending** records (DKIM `TXT`, SPF `MX`, SPF `TXT`, a
+   `CNAME`); the **Receiving `MX`** appears only after receiving is enabled. Sending
+   matters because replies go *from* this subdomain. Record values are account-specific —
+   always read them from the API, never copy them from this playbook.
 4. **Add those DNS records in Cloudflare.** Agent-performed with the scoped token
    (DNS:Edit) exactly as in [change/attach-custom-domain.md](change/attach-custom-domain.md);
-   the intake domain is in your own account, so there is no client handoff. Confirm in
-   Resend that the domain verifies.
+   the intake domain is in your own account, so there is no client handoff. Three traps:
+   - Resend's `name` fields are **relative to the registrable domain**, not to the
+     subdomain: `resend._domainkey.requests` means
+     `resend._domainkey.requests.<intake-domain>`.
+   - The `CNAME` must be **unproxied** (`"proxied": false`). A proxied mail record breaks
+     verification.
+   - Verification lags DNS by a few minutes and can read `pending` →
+     `partially_verified` → `verified`; `POST /domains/<id>/verify` nudges it. Don't
+     "fix" records while it settles.
+
+   Also add a **DMARC** record for the intake domain once —
+   `TXT _dmarc.<intake-domain>` = `v=DMARC1; p=none;`. Without it, mail *from* your
+   domain evaluates as `dmarc: "gray"`, which costs deliverability on client replies and
+   contact-form mail.
 5. **Give Claude access** *(owner, once — interactive terminal, OAuth can't run inside a
    session)*:
 
@@ -60,9 +91,14 @@ account, or key into this file (rule 9).
    npm install -g resend-cli   # or: brew install resend/cli/resend
    RESEND_API_KEY=$(cat ~/.config/hangar/resend-token) resend emails receiving list
    ```
-6. **Smoke-test:** send a mail to `test@requests.<intake-domain>` from your own address,
-   then read it back (`resend emails receiving get <id>`). Confirm the `authentication`
-   object shows SPF/DKIM/DMARC results — step 3 of the loop depends on it.
+6. **Smoke-test, twice.** First a self-addressed one (no human needed): send via the
+   API to `intake-test@requests.<intake-domain>`, then
+   `GET /emails/receiving` → `GET /emails/receiving/{id}`. It should arrive in seconds
+   with `text`, `headers`, `message_id` and an `authentication` object — step 3 of the
+   loop depends on that object existing. Then a **real** one: have the owner send from
+   their own mail client, which is the only way to prove third-party mail routes in and
+   that a real sender authenticates (`spf`/`dkim` pass, `dmarc` pass rather than
+   `gray`).
 
 ## Per-client wiring
 
