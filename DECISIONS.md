@@ -369,3 +369,28 @@ personal account. The explicit handover step keeps the agency from staying an ow
 a site it no longer runs. If a client already owns a property, that stands: we ask to
 be added, and don't make a duplicate.
 
+
+## 2026-09-29 — Handoff-ready: hosting belongs to the care plan, and leaving is a defined, paid step
+
+**Decision:** The one-time build no longer includes open-ended hosting. At launch a client
+either takes the **care plan** (the agency hosts, deploys and makes changes) or gets a
+**handoff** (the domain, hosting, DNS, code, form mail and search reports all move into
+accounts the client owns). There's no third option: hosting without the care plan exists
+only while a handoff is actively in progress. A handoff is a **flat fee** and can happen
+**any time**, at launch or years later when a care client cancels. There's no deadline.
+To make "any time" real, every site is kept **handoff-ready**: the client's domain is
+**registered in the client's name and account, never the agency's** (this supersedes
+point 2 of the 2026-08-20 domain-hookups entry and the client-domain default in the
+2026-09-29 registrar entry; the operator's own domains are unaffected). Repos build on
+their own, and agency-specific values live in platform secrets, never in code. The steps
+live in `playbooks/handoff.md`.
+**Why:** "Hosting included, no monthly fee" costs nothing on the free tier, but it's an
+indefinite commitment. It left the agency holding the infrastructure, and the support
+expectations, for every client who stopped paying, with no end date. The operator
+wants no ownership of anything once the business relationship ends. Moving hosting
+into the care plan fixes the cost side. Handoff-readiness fixes the ownership side:
+the domain is the one thing that's hard to untangle later, so it starts in the client's
+name. A handoff is several hours of account work (zone move with its mail records, a
+new Git-connected hosting project, form mail, search console, removing access). A flat
+fee pays for that, and making it any-time rather than deadline-driven keeps "the site
+is yours" literally true, not a lock-in.

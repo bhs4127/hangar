@@ -49,8 +49,9 @@ the very first commit: branch + PR + preview, even during the initial build.
 8. **Domain**: per [change/attach-custom-domain.md](change/attach-custom-domain.md) —
    pre-flight DNS audit (mail on the domain blocks the flip), zone onto Cloudflare,
    proxied CNAMEs, attach apex + `www` to the Pages project, registrar nameserver flip
-   (the one human step), verify HTTPS end-to-end. Client has no domain yet → register it
-   on Cloudflare Registrar instead and most of that vanishes (DECISIONS 2026-08-20).
+   (the one human step), verify HTTPS end-to-end. Client has no domain yet → the client
+   registers it in their own name and account, never the agency's (DECISIONS
+   2026-09-29, handoff-ready).
 
 9. **Contact form test**: one real submission, received end-to-end.
 

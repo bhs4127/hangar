@@ -23,7 +23,7 @@
 | **Account email** | `TBD` | `wrangler login`, dashboard steps |
 | **Account ID** | `TBD` | `$ACC` in attach-custom-domain.md (Dashboard → any domain → right sidebar) |
 | **Scoped API token path** | `~/.config/hangar/cloudflare-token` | `$TOK` in attach-custom-domain.md |
-| **Registrar for new domains** | Cloudflare Registrar | DECISIONS.md — domain hookups |
+| **Registrar for new domains** | Client domains: **the client's own registrar account, in their name**, never this account (DECISIONS 2026-09-29, handoff-ready). The operator's own domains: your choice. | DECISIONS.md — domain hookups |
 
 The scoped token needs: **Pages:Edit, Zone:Edit, Zone:Read, DNS:Edit, Email
 Routing:Edit**. Mint it at Dashboard → My Profile → API Tokens → Create Token → Custom.

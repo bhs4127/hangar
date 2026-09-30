@@ -3,8 +3,8 @@
 Takes a live spoke from `<slug>.pages.dev` to the client's real domain, HTTPS on apex +
 `www`, without breaking anything already riding on that domain (email is the classic
 casualty). Written from a first real run and the decisions it produced (DECISIONS.md —
-domain hookups: scoped token, Cloudflare Registrar for new domains, registrar flip stays
-human).
+domain hookups: scoped token, registrar flip stays human; client domains are always
+registered in the client's name, per the 2026-09-29 handoff-ready entry).
 
 **The shape of the job:** apex custom domains on Cloudflare Pages require the domain's
 DNS to be **on Cloudflare** (external ALIAS/IP records do not work: Pages has no stable
@@ -15,10 +15,11 @@ registrar nameserver flip (the one human step) → verify → migrate email if i
 ## Use when
 
 A client says "hook up my domain" / go-live reaches onboarding step 8. Applies to
-client-owned domains at any registrar. If the client doesn't own a domain yet, don't use
-this playbook — register it on **Cloudflare Registrar** in the agency account instead
-(DECISIONS 2026-08-20) and the DNS/NS steps vanish; only "Attach + records + verify"
-below applies.
+client-owned domains at any registrar. If the client doesn't own a domain yet, **the
+client registers it, in their own name and their own registrar account**. Send them the
+exact name to buy and nothing else, and never register it in the agency's account
+(DECISIONS 2026-09-29, handoff-ready). This playbook then runs as usual. A fresh domain
+carries no mail, so the pre-flight audit is quick and the nameserver flip is risk-free.
 
 ## Inputs required
 
@@ -134,9 +135,9 @@ verified).
   bare domain broken; not acceptable for go-live.
 - **Client can't do the flip / stalls** — everything else can sit attached-and-pending
   indefinitely; the site stays live on pages.dev. No cleanup needed to wait.
-- **Domain transfer temptation** — moving the registration to Cloudflare Registrar
+- **Domain transfer temptation** — moving the registration to another registrar
   mid-task adds a 60-day transfer process to a 10-minute job. Flip nameservers now;
-  transfer later if ever.
+  transfer later if ever, and only ever into an account the client owns.
 - **Fresh pages.dev TLS** — a brand-new Pages project's subdomain (and especially
   two-level branch aliases) can take minutes to get a cert on first deploy; don't
   diagnose DNS for what is just cert issuance lag.
