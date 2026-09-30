@@ -331,3 +331,20 @@ client's facts to fit a layout opinion is the wrong trade. The one-pager's actua
 a page nav. Deviation recorded per the 2026-08-05 rule that standing opinions are opted
 out of loudly.
 
+
+## 2026-09-29 — Navigation scroll-spy is a playful-tier feature, not a default
+
+**Decision:** The fleet-default header ships **without** scroll-spy (current-section
+highlighting) on default-tier spokes. Scroll-spy is included only when the client's
+design brief says **Motion comfort: playful**, where it is paid for out of the ~3 KB
+playful allowance. The default JS tier stays at ~1.5 KB — it is not raised to make room.
+**Why:** Making navigation a fleet default added ~1 KB of inline JS to every spoke; with
+scroll-spy, the first two default-tier adoptions went over 1.5 KB (measured: one spoke at
+1964 B with the spy, 1478 B without; the other 657 B → 1394 B with the pattern minus the
+spy), while the playful-tier reference keeps it at 2409 B, inside 3 KB. Both default-tier
+rollouts had already dropped the spy to fit, so this rule matches what shipped rather
+than asking shipped code to change. The two ways out were
+loosening the default tier for everyone, or reserving the most expensive and least
+missed piece — on a short one-page site, the reader can see where they are — for the
+briefs that asked for extra motion. The owner chose the second: the budget tiers keep
+meaning what they say, and "playful" keeps buying something visible.

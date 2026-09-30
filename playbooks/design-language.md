@@ -104,14 +104,17 @@ rejected attempts are recorded here so nobody re-litigates them.
   *Trap:* a transparent header left in normal flow renders as an empty white bar above
   the hero (white text on the page background). It has to be `fixed` to sit over the
   image.
-- **Items are quiet pills.** A soft plate on hover (`rgb(255 255 255 / 0.1)`), a held
-  plate with accent text for the current section. **Rejected:** a sliding underline, and
+- **Items are quiet pills.** A soft plate on hover (`rgb(255 255 255 / 0.1)`); on
+  playful-tier spokes, a held plate with accent text for the current section (see
+  scroll-spy below). **Rejected:** a sliding underline, and
   a rolling-label effect where the word swaps for a duplicate — both were cleverer than
   the navigation deserves. On a business's marketing site, the nav recedes.
-- **The current section is tracked**, not guessed: a scroll-spy observer with
-  `rootMargin: "-45% 0px -50% 0px"` marks whichever section crosses the middle.
-  **Observe the hero too** — it has no nav link, so when it crosses the middle every
-  item clears, instead of leaving the last section lit at the top of the page.
+- **Scroll-spy is playful-tier only** (DECISIONS 2026-09-29). Default-tier spokes ship
+  the header without it — no held plate, no current-section tracking. When the brief says
+  **Motion comfort: playful**, the current section is tracked, not guessed: a scroll-spy
+  observer with `rootMargin: "-45% 0px -50% 0px"` marks whichever section crosses the
+  middle. **Observe the hero too** — it has no nav link, so when it crosses the middle
+  every item clears, instead of leaving the last section lit at the top of the page.
 - **Phones get a real menu.** A `<details>` disclosure: it opens and closes with **no
   JS**, so the site keeps working when the script doesn't. Burger morphs to an X in CSS;
   panel items stagger in. Script's only job is closing it after a destination is picked.
@@ -122,11 +125,13 @@ rejected attempts are recorded here so nobody re-litigates them.
   flow, so a hero that previously sat below a `sticky` header will hide its first line
   underneath. Measure the clearance after converting; a 12px overlap is invisible in a
   screenshot and obvious to a reader.
-- **Budget check before you adopt it.** The full pattern is ~1 KB of inline JS. On a
-  spoke already near the default 1.5 KB tier it may not fit — drop the scroll-spy first
-  (it is the largest piece and the least missed on a short page) rather than stripping
-  comments, which the budget rule forbids. Only a brief that says *playful* buys the
-  3 KB allowance.
+- **Budget check before you adopt it.** Without scroll-spy (the default-tier header) the
+  pattern is the sentinel plus the menu-close script; with it, ~1 KB of inline JS — the
+  scroll-spy is the largest piece and the least missed on a short page, which is why it
+  is the piece reserved for playful briefs. If even the default-tier header doesn't fit
+  under 1.5 KB, raise it with the owner — never strip comments to make room (the budget
+  rule forbids it), and never add scroll-spy to a default-tier spoke to "match" a playful
+  one.
 - **Adapt the palette, don't copy it.** The active pill's text must clear 4.5:1 on that
   site's header background. Where a brand's accent is decorative-only (a 3.15:1 brass,
   say), the label stays in the readable ink and the accent marks the active item some
@@ -155,11 +160,11 @@ Motion is seasoning: felt, barely noticed.
 - **JS budget** (amends the old "counted scripts" rule; two tiers since 2026-09-15 —
   DECISIONS): **no frameworks, no external scripts.** Inline JS is counted in **raw
   bytes as shipped** (comments included — never strip comments to fit):
-  - **Default: ≤ ~1.5KB.** Typically three tiny scripts: hours-today, form time-trap,
-    reveal observer.
+  - **Default: ≤ ~1.5KB.** Typically: hours-today, form time-trap, reveal observer,
+    and the navigation header's sentinel + menu-close script (no scroll-spy).
   - **Playful allowance: ≤ ~3KB** — only when the client record's design brief says
     **Motion comfort: playful**. The brief is the justification; without it, the
-    default applies.
+    default applies. The nav's scroll-spy lives here, alongside typewriter reveals.
   - Lighthouse ≥ 95 ×4 stays non-negotiable at either tier.
 - **Main-thread gate** — required for any change that adds or changes a motion script,
   at either tier. The byte cap limits script creep; it does not measure cost (parsing
