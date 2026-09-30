@@ -118,6 +118,19 @@ rejected attempts are recorded here so nobody re-litigates them.
   Hiding the links behind a `md:` breakpoint with no menu — which is easy to ship by
   accident — leaves phones with no navigation at all.
 - **The logo carries the flourish motif** and animates on hover, quietly.
+- **Reserve the header's height in the first section.** `fixed` takes the header out of
+  flow, so a hero that previously sat below a `sticky` header will hide its first line
+  underneath. Measure the clearance after converting; a 12px overlap is invisible in a
+  screenshot and obvious to a reader.
+- **Budget check before you adopt it.** The full pattern is ~1 KB of inline JS. On a
+  spoke already near the default 1.5 KB tier it may not fit — drop the scroll-spy first
+  (it is the largest piece and the least missed on a short page) rather than stripping
+  comments, which the budget rule forbids. Only a brief that says *playful* buys the
+  3 KB allowance.
+- **Adapt the palette, don't copy it.** The active pill's text must clear 4.5:1 on that
+  site's header background. Where a brand's accent is decorative-only (a 3.15:1 brass,
+  say), the label stays in the readable ink and the accent marks the active item some
+  other way — a dot, not the text.
 - Everything above is CSS plus two small observers; it cost **~0.5 KB** of inline JS and
   measured *no* main-thread regression on the gate.
 
