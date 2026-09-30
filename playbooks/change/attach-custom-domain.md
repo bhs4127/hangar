@@ -111,6 +111,10 @@ Shell setup used below: `TOK=$(cat ~/.config/hangar/cloudflare-token)`,
 - If mail existed: test message delivered to the destination.
 - The old host (audit step 1) is no longer reachable via the domain.
 
+Then register the domain with search engines:
+[register-search-console.md](register-search-console.md). It needs the zone this
+playbook just created, and it's a TXT record, so do it while the token is in hand.
+
 ## PR & reply
 
 No spoke PR for the hookup itself — it's all DNS/platform state. Optional follow-up

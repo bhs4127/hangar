@@ -348,3 +348,24 @@ loosening the default tier for everyone, or reserving the most expensive and lea
 missed piece — on a short one-page site, the reader can see where they are — for the
 briefs that asked for extra motion. The owner chose the second: the budget tiers keep
 meaning what they say, and "playful" keeps buying something visible.
+
+
+## 2026-09-29 — Search Console properties belong to the agency account
+
+**Decision:** Every live client domain is registered with Google Search Console as a
+**Domain property**, verified by DNS TXT, and **owned by the agency's Google account**
+(named in `FLEET.md`, never here). Bing Webmaster Tools is imported from it. Clients who
+want the reports are added as **Full users**, not owners. At handover the client
+verifies their own ownership, and the agency's TXT record and access are removed. The
+step lives in `playbooks/change/register-search-console.md` and is part of the build
+definition of done.
+**Why:** Search Console is the only direct view of what Google does with a site
+(indexing, queries, crawl errors), and the agency runs the site, so the agency needs
+the reports without waiting on a client login. A Domain property covers apex, `www`,
+http and https in one go, and DNS verification uses a zone we already manage. It
+doesn't depend on a file or tag inside the site, which a redesign could drop.
+Keeping ownership in one agency account means no property is stranded in someone's
+personal account. The explicit handover step keeps the agency from staying an owner of
+a site it no longer runs. If a client already owns a property, that stands: we ask to
+be added, and don't make a duplicate.
+

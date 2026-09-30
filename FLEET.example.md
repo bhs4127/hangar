@@ -43,6 +43,12 @@ why the scoped token exists. Deploys work with OAuth alone; domain hookups don't
 | **Intake domain** | `TBD` | per-client aliases `<slug>@requests.<domain>` — MX to Resend (playbooks/setup-email-intake.md) |
 | **Contact-form forward provider** | Resend | spoke `CONTACT_FORWARD_TO` (playbooks/change/wire-contact-delivery.md) |
 
+## Google
+
+| Key | Value | Used by |
+|---|---|---|
+| **Agency Google account** | `TBD` | owns every Search Console property; Bing Webmaster Tools sign-in (playbooks/change/register-search-console.md) |
+
 ## First-run checklist
 
 - [ ] Copy this file to `FLEET.md`, fill every row (or `TBD` deliberately)

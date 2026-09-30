@@ -55,7 +55,9 @@ the very first commit: branch + PR + preview, even during the initial build.
 9. **Contact form test**: one real submission, received end-to-end.
 
 10. **Go-live checklist**: the build playbook's definition of done, plus the client
-    confirms hours, prices, and contact info on the live URL.
+    confirms hours, prices, and contact info on the live URL. Once the custom domain is
+    live, register it with search engines
+    ([change/register-search-console.md](change/register-search-console.md)).
 
 11. **State layer** (CLAUDE.md): registry row status → `live`; update STATUS.md and
     TODOS.md; CHANGELOG line; DECISIONS entry only if a real decision was made.

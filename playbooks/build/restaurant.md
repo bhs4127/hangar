@@ -209,6 +209,9 @@ The answers fill every schema slot. Ask exactly these; never fill a blank with a
       site, 2026-09-29). Use `@astrojs/sitemap`, which needs `site` set in the Astro
       config, and point robots.txt at `sitemap-index.xml`
 - [ ] **`fetchpriority="high"` on the hero image** when it's the LCP element
+- [ ] **Registered with Google Search Console + Bing** once the custom domain is live
+      ([change/register-search-console.md](../change/register-search-console.md)).
+      Domain property on the agency Google account, sitemap submitted
 - [ ] PR + preview reviewed by the owner; merged; registry row + hangar state layer updated
 
 ## Rehearsal findings (2026-06-10 — first spoke built with this playbook)

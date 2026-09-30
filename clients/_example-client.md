@@ -89,6 +89,18 @@ Collected at intake per [playbooks/design-language.md](../playbooks/design-langu
 | Loves / hates | loves neighborhood-institution feels; hates corporate chain sites |
 | Never-do's | no sombrero/cactus clichés |
 
+## Search & listings
+
+Off-site presence. None of this lives in the repo, so it's tracked here.
+(`playbooks/change/register-search-console.md`)
+
+| Item | State |
+|---|---|
+| Google Search Console | TBD. Domain property on the agency account (FLEET.md), verified `<date>`, sitemap submitted |
+| Bing Webmaster Tools | TBD. Imported from Search Console |
+| Client access | TBD. None / Full user (`<address>`) |
+| Google Business Profile | TBD. Claimed by the client? Name/address/phone match the site exactly? |
+
 ## Gotchas / notes
 
 - Menu prices change roughly quarterly. Marisol sends a *photo* of the printed menu —
