@@ -180,7 +180,8 @@ send from the agency domain rather than per-client domains. Revisit at ~10 clien
 - Inbound volume limits aren't documented; confirm with Resend before the fleet grows.
 - Received-email retention isn't documented either. If a request needs to outlive the
   dashboard, the PR is the durable record — quote the request in it (pipeline step 8).
-- Everything here is **manual-triggered**: the loop runs when the owner opens Claude
-  Code. `resend emails receiving listen` polls for new mail and is the bridge to the
+- The loop itself is **manual-triggered**: it runs when the owner opens Claude Code.
+  The scheduled [daily-mail-sweep.md](daily-mail-sweep.md) reads and triages new mail
+  each weekday but acts on none of it. `resend emails receiving listen` polls for new mail and is the bridge to the
   persistent host (TODOS P4); a `email.received` webhook → Worker is the event-driven
   version, worth building only when polling actually hurts.

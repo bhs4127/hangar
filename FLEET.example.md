@@ -42,6 +42,9 @@ why the scoped token exists. Deploys work with OAuth alone; domain hookups don't
 |---|---|---|
 | **Intake domain** | `TBD` | per-client aliases `<slug>@requests.<domain>` — MX to Resend (playbooks/setup-email-intake.md) |
 | **Contact-form forward provider** | Resend | spoke `CONTACT_FORWARD_TO` (playbooks/change/wire-contact-delivery.md) |
+| **Lead alias** | `TBD` | playbooks/daily-mail-sweep.md — class *lead* |
+| **Portfolio alias** | `TBD` *(optional)* | playbooks/daily-mail-sweep.md — class *portfolio enquiry* |
+| **Sweep push** | `TBD` (e.g. Telegram; destination id in `~/.config/hangar/`, never here) | playbooks/daily-mail-sweep.md step 7 |
 
 ## Google
 

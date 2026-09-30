@@ -394,3 +394,21 @@ name. A handoff is several hours of account work (zone move with its mail record
 new Git-connected hosting project, form mail, search console, removing access). A flat
 fee pays for that, and making it any-time rather than deadline-driven keeps "the site
 is yours" literally true, not a lock-in.
+
+## 2026-09-30 — The mail sweep reports and drafts; it never acts
+
+**Decision:** Inbound mail is read by a scheduled agent run on the operator's machine
+(`playbooks/daily-mail-sweep.md`), with a short digest pushed to the owner's phone.
+The unattended run may read, classify, apply the authentication and client-identity
+gates, summarise, and draft replies and change plans. It may **not** send mail, open
+branches or PRs, edit a spoke, merge, deploy, or delete anything. Acting on what it finds
+happens in an attended session. Where the sweep stopped is kept in a watermark file
+outside every repo, because the mail provider has no read/unread state. The sweep runs
+locally, not as a cloud routine, since it needs the private layer and local secrets.
+**Why:** The sweep is the one job that runs with nobody watching, and its whole input is
+written by strangers. Report-only keeps the blast radius of a forged or injected message
+at "a wrong paragraph in a report". The alternative is "a PR someone might approve on
+autopilot", or worse. The approval gate stays with a person, not a timer. Opening PRs
+unattended would be compatible with the approval rule, but it moves spoke checkouts and
+builds into an unwatched session for little gain at the current volume. Revisit when
+requests arrive often enough that drafting the PR by hand is the bottleneck.
