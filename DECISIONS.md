@@ -311,3 +311,23 @@ alternative gates API access behind account thresholds and IP allowlisting, whic
 laptop on a changing IP fails. On a freshly registered domain the nameserver flip is
 risk-free — no existing mail or site to break — so the usual pre-flight DNS audit
 applies only to domains that already carry traffic.
+
+## 2026-09-29 — Multi-page spokes are allowed when the content outgrows one page
+
+**Decision:** The "one page" build opinion is a default, not a rule. A derived vertical
+may ship as a small multi-page site when the client's real content can't be made
+findable on one page (dozens of bios, a directory table, several distinct offerings each
+with its own funnel). The content contract keeps its shape: **one JSON file per page**
+(instead of per section), each validated by the spoke's Zod schema, so a change playbook
+still names exactly one target file. Pages are built as files (`build.format: 'file'`)
+so extensionless URLs serve directly instead of 308-redirecting to a trailing slash.
+Navigation stays zero-JS (a `<details>` menu on small screens). Everything else in the
+build playbook applies per page: one `h1`, the JS tier, Lighthouse ≥ 95 ×4.
+**Why:** The first client migrating from an existing site brought 17 pages, 24 trainer
+bios, a 30-row certification directory and a 90-name client list. Forcing that onto one
+page would either bury it or cut real content the client published — and cutting a
+client's facts to fit a layout opinion is the wrong trade. The one-pager's actual goal
+(findability, one-file edits) survives intact in this shape; the anchor nav just becomes
+a page nav. Deviation recorded per the 2026-08-05 rule that standing opinions are opted
+out of loudly.
+
