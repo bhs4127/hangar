@@ -90,6 +90,37 @@ better content hierarchy — not less padding.
 - Real photos still beat all of this — the brief's adjectives guide the *shot list* we
   ask the client for.
 
+## Navigation (the fleet default)
+
+Every spoke's header is the same shape unless a brief argues otherwise. Settled on
+capefearwebsites after three rounds of the owner saying "more professional"; the
+rejected attempts are recorded here so nobody re-litigates them.
+
+- **Overlay the hero, then materialise.** The header is `fixed` and transparent over the
+  hero so the imagery runs full-bleed; once the page scrolls it gains a tinted blur,
+  hairline and shadow, and tightens its height. Driven by a **1px sentinel** at the top
+  of the page watched by an IntersectionObserver — never a scroll handler, which would
+  run on every frame of every scroll.
+  *Trap:* a transparent header left in normal flow renders as an empty white bar above
+  the hero (white text on the page background). It has to be `fixed` to sit over the
+  image.
+- **Items are quiet pills.** A soft plate on hover (`rgb(255 255 255 / 0.1)`), a held
+  plate with accent text for the current section. **Rejected:** a sliding underline, and
+  a rolling-label effect where the word swaps for a duplicate — both were cleverer than
+  the navigation deserves. On a business's marketing site, the nav recedes.
+- **The current section is tracked**, not guessed: a scroll-spy observer with
+  `rootMargin: "-45% 0px -50% 0px"` marks whichever section crosses the middle.
+  **Observe the hero too** — it has no nav link, so when it crosses the middle every
+  item clears, instead of leaving the last section lit at the top of the page.
+- **Phones get a real menu.** A `<details>` disclosure: it opens and closes with **no
+  JS**, so the site keeps working when the script doesn't. Burger morphs to an X in CSS;
+  panel items stagger in. Script's only job is closing it after a destination is picked.
+  Hiding the links behind a `md:` breakpoint with no menu — which is easy to ship by
+  accident — leaves phones with no navigation at all.
+- **The logo carries the flourish motif** and animates on hover, quietly.
+- Everything above is CSS plus two small observers; it cost **~0.5 KB** of inline JS and
+  measured *no* main-thread regression on the gate.
+
 ## Motion
 
 Motion is seasoning: felt, barely noticed.
