@@ -534,3 +534,31 @@ is what renders it. (3) The theme editor and apps can drift the live theme away 
 git. Every change syncs live drift first, and production is never a theme swap. (4) A
 hybrid (Buy Button or Storefront API on a Pages site) is still rejected, for the same
 two-systems reason as before.
+
+
+## 2026-10-01 — Client domains: the client chooses who holds it; the client is always the registrant
+
+**Decision:** This amends the domain rule in the 2026-09-29 "Handoff-ready" entry ("registered
+in the client's name and account, never the agency's"). A client chooses how their
+domain is held:
+- **Client-held:** in their own registrar account. Nothing changes for us beyond the
+  nameserver paste.
+- **Agency-held:** on Cloudflare Registrar in the agency's account. The agency renews it
+  (auto-renew on) and **invoices the domain fee yearly**. The fee is never part of the
+  care plan or the build price.
+
+Either way **the client is the registrant of record**, so the domain is legally theirs,
+and an agency-held domain transfers to them as part of any handoff. Hosting and DNS stay
+as decided: the zone is on Cloudflare in the agency account while we run the site.
+**Why:** Many small-business owners don't want another account to manage. "We'll handle
+it" is a real service, and forcing them to hold a registrar login works against the
+care plan's whole promise. What handoff-ready actually needs is not *which account* the
+domain sits in but *whose name is on it* and a defined way out. The registrant contact
+gives the first, and the handoff playbook's transfer step gives the second. Domain
+prices vary by orders of magnitude (a common `.com` against a premium name), so folding
+them into a flat plan would mean either overcharging most clients or eating the
+outliers. A yearly pass-through invoice keeps the plan price honest. Cloudflare
+Registrar keeps agency-held registration and DNS on one platform, with no second
+registrar to script. The cost is the registry lock: a domain within 60 days of
+registration or of a transfer can't leave, so a very early handoff finishes that one
+step late.

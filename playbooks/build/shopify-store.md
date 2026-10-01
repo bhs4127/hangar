@@ -213,8 +213,10 @@ Ask exactly these. Every blank is `TBD` in the client record, never a guess (rul
    alerts.
 9. **Plan:** confirm they've seen the fees above and which plan they'll pick at
    transfer.
-10. **Domain:** who holds the registrar account (always the client, in their name), and
-    whether mail runs on the domain. Mail decides how carefully the DNS flip is done.
+10. **Domain:** client-held or agency-held (the client is the registrant either way;
+    DECISIONS 2026-10-01). Shopify can also sell the domain, and then it's held in
+    their store. Also ask whether mail runs on the domain. Mail decides how carefully
+    the DNS flip is done.
 
 ## Build steps
 

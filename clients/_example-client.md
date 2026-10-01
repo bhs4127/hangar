@@ -12,6 +12,7 @@
 | **Vertical** | restaurant |
 | **Spoke repo** | `https://github.com/<your-org>/marisols-taqueria-site` *(TBD until created — org comes from FLEET.md)* |
 | **Live domain** | marisols-taqueria.com |
+| **Domain held by** | `client` (their registrar account) or `agency` (Cloudflare Registrar, agency account; client is registrant). If agency: **renews** `<yyyy-mm-dd>`, **fee** `$<n>/yr`, **invoiced** yes / no (with the reason) |
 | **Hosting** | Cloudflare Pages — account from FLEET.md, project: `marisols-taqueria` *(Shopify-track clients instead: `Shopify — <handle>.myshopify.com, plan <plan>, client-owned; agency = collaborator` — see playbooks/build/shopify-store.md)* |
 | **Status** | template |
 

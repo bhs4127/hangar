@@ -55,9 +55,10 @@ the very first commit: branch + PR + preview, even during the initial build.
 8. **Domain**: per [change/attach-custom-domain.md](change/attach-custom-domain.md) —
    pre-flight DNS audit (mail on the domain blocks the flip), zone onto Cloudflare,
    proxied CNAMEs, attach apex + `www` to the Pages project, registrar nameserver flip
-   (the one human step), verify HTTPS end-to-end. Client has no domain yet → the client
-   registers it in their own name and account, never the agency's (DECISIONS
-   2026-09-29, handoff-ready).
+   (the one human step), verify HTTPS end-to-end. Client has no domain yet → they choose
+   client-held (they register it) or agency-held (we register and renew it, they're the
+   registrant, and the fee is invoiced yearly). See that playbook's Use when, and
+   DECISIONS 2026-10-01.
 
 9. **Contact form test**: one real submission, received end-to-end.
 

@@ -24,8 +24,12 @@ before starting, and never ask the client for payment yourself.
 A handoff can only happen any time if every site is always ready for one. Every spoke
 keeps these true from day one, and a change that would break one needs an owner decision:
 
-- **The domain is registered in the client's name, in the client's registrar account.**
-  Never in the agency's (see [change/attach-custom-domain.md](change/attach-custom-domain.md)).
+- **The client is the domain's registrant of record**, whichever way it's held
+  (DECISIONS 2026-10-01). It's either **client-held** (their registrar account) or
+  **agency-held** (the agency's registrar account, renewed by us and billed to them
+  yearly). Agency-held domains still carry the client's name as registrant, so they're
+  legally theirs and leave with them (see
+  [change/attach-custom-domain.md](change/attach-custom-domain.md)).
 - **The repo builds on its own:** `npm ci && npm run build` on a clean machine, with no
   hangar paths, no private packages, and no secrets in the tree.
 - **Agency-specific values are Pages secrets, never code.** For example, the contact
@@ -42,7 +46,7 @@ keeps these true from day one, and a change that would break one needs an owner 
 | Client's **Cloudflare account**, with the agency invited as an **Administrator** member | Client creates it (free) | We work inside their account, then remove ourselves. Never ask for their password |
 | Client's **GitHub username** | Client | Optional. Without one, they get a source bundle (Edge cases) |
 | Contact form choice | Client | (a) their own Resend account + their domain, (b) replace the form with an email link, (c) the site has no form |
-| Registrar access | Client keeps it | They paste one nameserver pair. We never hold their registrar login |
+| Registrar access | Client-held: the client keeps it. Agency-held: a registrar account the client owns, to receive the domain | Client-held: they paste one nameserver pair. We never hold their registrar login |
 
 ## Recipe
 
@@ -87,6 +91,16 @@ Shell setup: `TOK=$(cat ~/.config/hangar/cloudflare-token)`, `DOM=<domain>`,
    zone is active in their account, remove the domains from the agency Pages project and
    kick validation on theirs. Expect a few minutes of certificate issuance, so schedule
    it outside the client's busy hours.
+
+   **Agency-held domain:** the registration moves too, and it moves first. Unlock it, get
+   the auth code, and the client starts the transfer at a registrar account they own
+   (Cloudflare Registrar in their own Cloudflare account works, and its zone is then
+   already where step 5 needs it). Check Cloudflare's current docs for an
+   account-to-account move before using a full transfer. **A domain within 60 days of
+   registration or of a previous transfer can't leave yet** (the registry lock). The
+   rest of the handoff goes ahead, and the domain and its zone stay with us, still
+   serving their site, until the lock lifts. Note the date in the client record and in
+   TODOS. Stop billing renewals from the handoff date.
 6. **Contact form, option (a).** The client's own Resend account (free tier) verifies
    *their* domain, whose DNS records go in their zone now. `CONTACT_FROM_DOMAIN` becomes
    their domain. Then send **one real test submission** and confirm it arrives.
@@ -99,7 +113,8 @@ Shell setup: `TOK=$(cat ~/.config/hangar/cloudflare-token)`, `DOM=<domain>`,
    the client record's channels, so any later mail from them stops at rule 7.
 9. **Handoff note to the client** (draft; the owner sends it): what they now own and
    where (domain at their registrar, hosting and DNS in their Cloudflare, code in their
-   GitHub), that **domain renewal is theirs now** with the renewal date, how a change
+   GitHub), that **domain renewal is theirs now** with the renewal date (for an
+   agency-held domain, the transfer usually adds a year), how a change
    gets published (edit, push to `main`), and that it's a standard Astro site any web
    developer can work on.
 10. **State layer:** registry status → `departed`, and in the client record the handoff
