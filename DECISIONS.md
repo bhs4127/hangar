@@ -412,3 +412,25 @@ autopilot", or worse. The approval gate stays with a person, not a timer. Openin
 unattended would be compatible with the approval rule, but it moves spoke checkouts and
 builds into an unwatched session for little gain at the current volume. Revisit when
 requests arrive often enough that drafting the PR by hand is the bottleneck.
+
+## 2026-10-01 — The client approves their own preview before it publishes
+
+**Decision:** Every client change now has two human gates before production. First the
+owner checks the preview ("fit to show the client?"). Then the client gets the preview
+link in-thread and replies with a clear yes, or asks for changes, which loop back onto
+the same branch and the same link. Only after that does the owner give the in-session
+"okay" that merges and deploys. The client's yes is a precondition; the owner's okay
+stays the trigger, so the 2026-06-10 approval protocol is amended, not replaced.
+Silence gets one nudge after 3 business days, and the change never publishes without a
+yes. Owner-direct requests skip the client gate: there the owner is the client.
+Full procedure: playbooks/README.md steps 9–15.
+**Why:** The agency's marketing promises clients a preview link for every change and
+that nothing is published until they've seen it. The pipeline only showed the preview
+to the owner and told the client afterwards, so the promise was false. The client is
+also the best reviewer of most content changes: they know their real hours and prices
+(the hours playbook already called them "the error-catcher of last resort"). Owner
+first keeps a forged or misread request from ever reaching a client. Keeping the
+owner's okay as the merge trigger keeps the "no auto-merge on an email" law intact: a
+forged "looks good" can at most publish something the owner already checked, and still
+needs the owner. **Trade-off:** changes now wait on the client. The turnaround promise
+covers our part (request → preview link), not the client's reply time.

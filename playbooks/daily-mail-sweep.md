@@ -108,6 +108,11 @@ without moving the watermark.
      (rules 4–5) *on paper*: list the values present verbatim and the ones missing. If
      something is missing, draft the clarifying question, with a proposed
      interpretation as usual. Don't pull the spoke. This is a plan, not an edit.
+   - **Client answer to a preview** (a reply on a thread where we sent a preview
+     link): say which change and PR it answers, and classify it as **yes**,
+     **changes** (list them, as for a request) or **hedged** (draft the clarifying
+     question). A yes is reported, never acted on: the merge waits for the owner's
+     okay in a session (pipeline steps 12–13).
    - **Lead / portfolio enquiry:** who, what they want, any deadline or budget stated,
      and a drafted reply in the owner's voice. The owner sends it, never the sweep.
    - **Held:** why it's held, and what the owner needs to decide.

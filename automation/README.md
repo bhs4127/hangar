@@ -16,7 +16,8 @@ from.
 email ───────┐
 SMS ─────────┤   one adapter per channel        ┌→ classify intent → pick playbook
 Signal ──────┼──→ normalized IntakeRequest ─────┤→ pull spoke → apply → validate
-owner-direct ┘                                  └→ open PR → preview → approve → merge
+owner-direct ┘                                  └→ open PR → preview → owner check
+                                                    → client says go → merge
 ```
 
 Intake is **client→agency** mail only: change requests from the people in
@@ -53,9 +54,15 @@ interface IntakeRequest {
 4. **Clarity gate** — anything ambiguous → draft a clarifying question, stop (rules 4–5).
 5. **Execute the playbook** in the spoke: branch, edit, build-validate (rules 1–3).
 6. **PR + preview link.**
-7. **Approval** — the owner; later, a 👍 from the chat approval channel.
-8. **Merge → production deploy; draft the client reply.**
-9. **Update hangar's state layer.**
+7. **Owner check** — fit to show the client? Later, a 👍 from the chat approval channel.
+8. **Preview link to the client** (drafted; the owner sends it), then wait for a clear
+   yes. Changes loop back to stage 5. Owner-direct requests skip this stage.
+9. **Merge → production deploy** on the owner's okay, once the client has said yes;
+   draft the "it's live" reply.
+10. **Update hangar's state layer.**
+
+Full detail, including what counts as a yes: [playbooks/README.md](../playbooks/README.md)
+steps 9–15.
 
 ## Adapter roster
 

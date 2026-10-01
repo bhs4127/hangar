@@ -15,7 +15,8 @@ client emails <slug>@requests.<intake-domain>
    → Resend receives (MX), parses, stores
    → agent lists/reads it (MCP or CLI)
    → normalize → identify client → clarity gate → playbook → PR + preview
-   → owner approves → merge + deploy → reply in-thread → state layer
+   → owner checks → preview link in-thread → client says go
+   → owner okays → merge + deploy → "it's live" in-thread → state layer
 ```
 
 Addresses live on **your** intake domain, never on the client's. One MX record, once;
@@ -132,7 +133,7 @@ Steps 2–9 are the standard pipeline ([README.md](README.md)); only step 1 is n
    owner. Cross-check that the alias it was sent to (`to` / `received_for`) belongs to
    the same client; a mismatch is a red flag, not a tiebreaker.
 4. **Clarity gate** (rules 4–5), then the change playbook, build validation, PR +
-   preview, owner approval, merge + deploy — unchanged.
+   preview, and the owner's check — unchanged.
 5. **Reply in-thread.** From the alias the client wrote to, so replies land back in the
    same place:
 
@@ -147,8 +148,11 @@ Steps 2–9 are the standard pipeline ([README.md](README.md)); only step 1 is n
    ```
 
    For later replies in one thread, append earlier `message_id`s to `References`,
-   space-separated. **The owner sends the reply** — the agent drafts it (pipeline step
-   11); nothing is sent to a client without the owner saying so.
+   space-separated. A change usually has two replies on its thread: the **preview link**
+   (pipeline step 11) and **"it's live"** (step 14). Between them, the client's answer
+   arrives on the same thread and goes through steps 1–3 here like any request. **The
+   owner sends every reply** — the agent drafts them; nothing is sent to a client
+   without the owner saying so.
 6. **State layer**, as with every task.
 
 ## Security — the part that matters
@@ -165,8 +169,10 @@ An inbound email is the one input to this system written by someone outside it.
   never commit anything you have not opened and checked. Images destined for a site go
   through the image playbook like any other asset.
 - **The approval gate is the backstop.** Even a perfectly forged request can only ever
-  produce a PR with a preview that the owner reads before anything merges. Keep it that
-  way: no auto-merge on an email, ever, whatever the message says.
+  produce a PR with a preview that the owner reads before it goes anywhere, the client
+  included. A forged "looks good" can only publish what the owner already checked, and
+  even then the owner gives the final okay. Keep it that way: no auto-merge on an
+  email, ever, whatever the message says.
 - **Never put a client's message or address in a tracked hangar file** (rule 9).
 
 ## Limits and costs

@@ -44,7 +44,9 @@ the very first commit: branch + PR + preview, even during the initial build.
    no git integration (DECISIONS.md, 2026-06-10; commands in automation/README.md).
 
 7. **First PR**: open it on the spoke with the preview link → owner reviews the preview →
-   merge. Registry status → `building` → `live` as it progresses.
+   the client gets the link and reviews it (rounds of changes on the same branch, same
+   link) → their clear go-ahead → owner okays → merge. Same gates as pipeline steps
+   10–14. Registry status → `building` → `live` as it progresses.
 
 8. **Domain**: per [change/attach-custom-domain.md](change/attach-custom-domain.md) —
    pre-flight DNS audit (mail on the domain blocks the flip), zone onto Cloudflare,

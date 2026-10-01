@@ -37,8 +37,9 @@ with no `close`).
 ## PR & reply
 
 The PR lists per-day old → new in **12-hour wording**, because that's what the client
-will check: *"Friday: 11 AM–10 PM → 11 AM–9 PM."* The reply draft echoes the full new
-week back — the person who knows the real hours is the error-catcher of last resort.
+will check: *"Friday: 11 AM–10 PM → 11 AM–9 PM."* The preview email (pipeline step 11)
+echoes the full new week back. The person who knows the real hours is the error-catcher
+of last resort, and their "looks good" is what publishes it.
 
 ## Edge cases seen coming
 

@@ -65,8 +65,9 @@ request arrives from the client (email today; SMS / Signal later)
   → pull that client's spoke repo, create a branch
   → apply the playbook, run the build (Zod schema validates the edit)
   → open a PR on the spoke → Cloudflare Pages preview deploy
-  → owner approves & merges → production
-  → a client reply is drafted → hangar state layer updated
+  → owner checks the preview → the client gets the preview link
+  → client says "looks good" → owner okays, agent merges → production
+  → an "it's live" reply is drafted → hangar state layer updated
 ```
 
 Nothing is ever pushed straight to a client's production branch. Hangar is mission control;
