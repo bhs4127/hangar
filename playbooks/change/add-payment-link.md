@@ -13,7 +13,10 @@ during a migration: one link per product that's still sold.
 
 Not this playbook: a cart, accounts, gated content, or anything that needs to remember a
 customer between visits. That's project work. Escalate it (DECISIONS 2026-10-01, "past
-the line").
+the line"). If the need is a real store (a cart, shipping physical goods, variants with
+inventory, a catalogue the client edits themselves), the answer is the managed Shopify
+track, [build/shopify-store.md](../build/shopify-store.md) § Which track?. That's a
+re-platform the client opts into, fees and all, not a change request.
 
 ## Inputs required — stop and ask if any is missing (rules 4–5)
 

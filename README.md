@@ -85,6 +85,7 @@ the edit physically lands in the spoke. The full pipeline is written out once in
 | Restaurant build playbook ([playbooks/build/restaurant.md](playbooks/build/restaurant.md)) | **Real** — opinionated, argue with it |
 | Change playbooks ×5 ([playbooks/change/](playbooks/change/)) | **Real** — menu / hours / image / custom domain / contact-form delivery; also the template for future change types |
 | Onboarding playbook ([playbooks/onboard-client.md](playbooks/onboard-client.md)) | **Real** — manual-first by design |
+| Managed Shopify track ([playbooks/build/shopify-store.md](playbooks/build/shopify-store.md) + [product changes](playbooks/change/add-or-edit-shopify-product.md)) | **Written, not yet run** — the first Shopify client corrects it |
 | Design language ([playbooks/design-language.md](playbooks/design-language.md)) | **Real** — the premium bar, the design brief, and the motion system |
 | Reference restaurant schema ([schemas/restaurant.ts](schemas/restaurant.ts)) | **Real** — copied into each spoke at birth |
 | State layer (STATUS / TODOS / DECISIONS / CHANGELOG) | **Real** — maintained every task |

@@ -479,3 +479,58 @@ already validate and review. Rejected:
 **Trade-off:** the purchase leaves the site's design for the processor's page, and
 digital delivery via redirect is only as secret as the URL. Both are acceptable for
 the catalogues this fleet serves; revisit if a client's revenue depends on either.
+
+## 2026-10-01 — Managed Shopify is the second commerce track; payment links stay the default
+
+**Decision:** Clients who need a real store get the option of moving their **whole
+site** onto a Shopify Online Store that the agency builds and maintains. It sits next to
+payment links, not in place of them. Payment links on the static site remain the default
+for selling (2026-10-01, processor-hosted). The Shopify track is offered when the client
+needs **a cart, shipping of physical goods, variants with inventory, or a catalogue they
+edit themselves**, and they opt in. Specifically:
+- **The client pays Shopify directly.** Plan, card processing, any third-party-gateway
+  surcharge, and any paid apps are billed to their account, never the agency's, and
+  never marked up. The fees are put to them in writing before they commit. On this track
+  hosting is Shopify's, so the care plan covers changes and upkeep, not hosting.
+- **The store is the client's from the first real transaction.** We build on a Shopify
+  *client transfer store* (free, password-protected, test orders only) and transfer it
+  at go-live. The client picks the plan and completes payments onboarding themselves.
+  The agency keeps collaborator access, scoped to themes, products, and settings, never
+  orders or customers. That keeps the store handoff-ready (2026-09-29).
+- **Theme is code, catalogue is data.** The theme lives in a spoke repo, forked per
+  client from Shopify's free reference theme (no shared theme, 2026-06-10). It changes
+  only via branch + PR + an unpublished preview theme, then a push of `main` to the live
+  theme after the client's yes and the owner's okay. Products, prices, and stock live in
+  Shopify, the system of record. The client may edit them in their own admin. We edit
+  them on request through a recipe that stages the change, gets the client's yes on the
+  exact values, applies, and reads back.
+- **Validation changes form, not strength:** `shopify theme check` with zero errors
+  stands in for the Zod build, and a catalogue read-back stands in for the schema on
+  data. The static fleet's JS byte tiers don't apply. Performance is held to the stock
+  theme's own measured baseline instead, while accessibility stays absolute (≥ 95,
+  rule 8).
+- **DNS stays on Cloudflare, DNS-only.** Shopify doesn't support proxied records, so the
+  fleet's proxied-record default (attach-custom-domain.md) is waived for Shopify records only.
+
+Steps live in `playbooks/build/shopify-store.md` and
+`playbooks/change/add-or-edit-shopify-product.md`.
+**Why:** Payment links have a hard ceiling: one item per checkout, no shipping, and a
+link per variant. A boutique with fifty products in three sizes, shipping nationwide,
+can't be served by links, and building a cart would break the no-database rule. The
+2026-10-01 entry rejected "a full storefront platform" because running one *beside* the
+static site means two systems to keep in sync. This track removes the static site
+instead, so there's still one site and one system of record. It also extends that
+entry's own logic: the platform, not us, holds orders, payments, PCI scope, tax, and
+shipping. Shopify specifically because it's the default small merchants already know,
+the client can own and pay for it with no agency in the middle, it has a first-party
+"build then transfer" flow for agencies, and its CLI gives the agent the same
+preview-then-publish loop the Pages fleet has.
+**Trade-offs:** (1) The client pays a monthly platform fee where the static site cost
+them nothing to host. That's why it's opt-in and the fees are disclosed up front.
+(2) "The agent is the CMS" is relaxed for the catalogue: the client edits products
+directly, so the catalogue can change without passing our gates. That's acceptable
+because it's their data in their system of record, and the theme, which stays gated,
+is what renders it. (3) The theme editor and apps can drift the live theme away from
+git. Every change syncs live drift first, and production is never a theme swap. (4) A
+hybrid (Buy Button or Storefront API on a Pages site) is still rejected, for the same
+two-systems reason as before.

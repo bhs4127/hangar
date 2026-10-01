@@ -33,8 +33,15 @@ request → normalize → identify client → classify → clarity gate → pull
    [change/replace-an-image.md](change/replace-an-image.md). Selling something, or a
    price/registration change on something already sold →
    [change/add-payment-link.md](change/add-payment-link.md) (processor-hosted links,
-   never a store we build). Anything bigger — a new section, a redesign, a cart or
-   member accounts — escalate to the owner: that's project work, not a change request.
+   never a store we build). A product, price, or stock change for a client on the
+   **Shopify track** →
+   [change/add-or-edit-shopify-product.md](change/add-or-edit-shopify-product.md)
+   (catalogue edits stage in Shopify, not git; layout and text on a Shopify spoke are
+   theme changes and follow this pipeline as mapped in
+   [build/shopify-store.md](build/shopify-store.md)). Anything bigger — a new section, a
+   redesign, a cart or member accounts — escalate to the owner: that's project work, not
+   a change request. A client outgrowing payment links (a cart, shipping, inventory) is
+   a candidate for the Shopify track: the owner's conversation, not an agent decision.
 
 4. **The clarity gate.** Before touching anything: do you have every client-facing value
    the edit needs, verbatim? If anything is ambiguous, underspecified, or inferred, stop
@@ -108,8 +115,8 @@ their step-10 okay is the approval.
 
 ## The change/ playbooks are templates of a pattern
 
-`add-or-edit-menu-item`, `update-hours`, `replace-an-image`, `wire-contact-delivery`, and
-`add-payment-link`
+`add-or-edit-menu-item`, `update-hours`, `replace-an-image`, `wire-contact-delivery`,
+`add-payment-link`, and `add-or-edit-shopify-product`
 are the concrete recipes — and also the template for every future change type (swap a testimonial, change
 the reservation link, update the parking note, …). A new change type = a new file in
 `change/` with the same shape: **Use when / Inputs required / Recipe / Validate / PR &

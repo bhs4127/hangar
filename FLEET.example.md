@@ -46,6 +46,15 @@ why the scoped token exists. Deploys work with OAuth alone; domain hookups don't
 | **Portfolio alias** | `TBD` *(optional)* | playbooks/daily-mail-sweep.md — class *portfolio enquiry* |
 | **Sweep push** | `TBD` (e.g. Telegram; destination id in `~/.config/hangar/`, never here) | playbooks/daily-mail-sweep.md step 7 |
 
+## Shopify (only if you run the Shopify track)
+
+| Key | Value | Used by |
+|---|---|---|
+| **Shopify Partner organization** | `TBD` | creates client transfer stores; sends collaborator requests (playbooks/build/shopify-store.md § Access) |
+| **Partner login email** | `TBD` | `shopify theme …` / `shopify store auth` CLI sign-in |
+
+No Shopify API token is ever stored. The CLI authenticates per store as the collaborator.
+
 ## Google
 
 | Key | Value | Used by |

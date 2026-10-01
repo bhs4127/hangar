@@ -35,7 +35,11 @@ the very first commit: branch + PR + preview, even during the initial build.
 
 5. **Build the site** per `build/<vertical>.md`, on a `build/initial-site` branch:
    schema copied in from hangar `schemas/`, content collections wired, content files from
-   the intake answers.
+   the intake answers. **Shopify-track clients** (a real store, chosen per
+   [build/shopify-store.md](build/shopify-store.md) § Which track?) follow that playbook
+   instead for steps 5–9: theme instead of Astro, client transfer store instead of a Pages
+   project, Shopify's contact form instead of a Pages Function. The vertical's content
+   opinions and intake questions still apply.
 
 6. **Hosting** *(live pattern)*: the agent creates a direct-upload Pages project —
    `wrangler pages project create <slug> --production-branch main` — and performs all

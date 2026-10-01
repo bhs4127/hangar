@@ -12,7 +12,7 @@
 | **Vertical** | restaurant |
 | **Spoke repo** | `https://github.com/<your-org>/marisols-taqueria-site` *(TBD until created — org comes from FLEET.md)* |
 | **Live domain** | marisols-taqueria.com |
-| **Hosting** | Cloudflare Pages — account from FLEET.md, project: `marisols-taqueria` |
+| **Hosting** | Cloudflare Pages — account from FLEET.md, project: `marisols-taqueria` *(Shopify-track clients instead: `Shopify — <handle>.myshopify.com, plan <plan>, client-owned; agency = collaborator` — see playbooks/build/shopify-store.md)* |
 | **Status** | template |
 
 ## Channels

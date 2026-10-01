@@ -118,6 +118,33 @@ Shell setup: `TOK=$(cat ~/.config/hangar/cloudflare-token)`, `DOM=<domain>`,
   membership, zone, Pages project, Search Console owner or user, Resend. If any row is
   still ours, the handoff isn't done.
 
+## Shopify stores
+
+A Shopify-track client ([build/shopify-store.md](build/shopify-store.md)) already owns
+the store, the catalogue, the orders, and the Shopify bill. That was transferred at
+go-live. So their handoff is mostly removing ourselves:
+
+1. **Snapshot + drift.** Pull the live theme into the repo (build/shopify-store.md
+   § The pipeline, mapped, step 5) and merge it via PR, so the repo matches what's
+   live. Tag `handoff-<yyyymmdd>`. Export the DNS zone, as in step 1 above.
+2. **Code.** Transfer the theme repo, or hand over a bundle if they have no GitHub
+   (step 3 above and Edge cases). Tell them a developer can connect it with Shopify's
+   GitHub integration if they want git-driven publishing. With no agent in the loop,
+   that's the right model, same as Git-connected Pages for a static handoff.
+3. **DNS.** Move the zone into their Cloudflare account (step 5 above). The Shopify
+   records stay **DNS-only**. The domain itself is already theirs in Shopify.
+4. **Search Console** handover (step 7 above).
+5. **Remove the agency.** The client removes our collaborator account (Settings → Users
+   and permissions → Collaborators). We confirm it's gone. Retire the intake alias in the
+   client record.
+6. **Handoff note** (draft; the owner sends it): they own everything already; their
+   Shopify plan and apps keep billing them directly; the theme editor is now safe for
+   them to use, since nobody will publish over it from git.
+
+**Validate:** the store loads on their domain, we no longer appear under Collaborators,
+and the access checklist above is empty (there was no Pages project or Resend to begin
+with).
+
 ## Edge cases
 
 - **No GitHub account and no interest in one:** deliver a source bundle

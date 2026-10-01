@@ -44,7 +44,8 @@ Improvements to instructions are shared. If `FLEET.md` is missing or a needed ro
 3. **Validate before opening a PR.** Run the spoke's build so edited content is checked
    against its Zod schema. A malformed edit (a bad price, a missing alt text) must fail
    the build, not ship. Never loosen a schema to make content pass — that's a project
-   decision for DECISIONS.md.
+   decision for DECISIONS.md. (Shopify-track spokes validate with `shopify theme check`
+   plus a catalogue read-back — see `playbooks/build/shopify-store.md`.)
 4. **Never guess on anything client-facing.** If a request is ambiguous, underspecified,
    or you find yourself inferring intent, stop and draft a clarifying question instead.
    A good clarifying question proposes an interpretation: "You said 'raise the carnitas
@@ -102,6 +103,7 @@ than none.
 | `clients/` | Registry index + one record per client (channels, brand tokens, gotchas) |
 | `playbooks/README.md` | The shared "anatomy of a change" pipeline every playbook plugs into |
 | `playbooks/build/` | How to build a new site per vertical (restaurant is the reference) |
+| `playbooks/build/shopify-store.md` | The second commerce track: a managed Shopify store the client owns and pays for |
 | `playbooks/change/` | Recipes for routine edits — also the template for new change types |
 | `playbooks/onboard-client.md` | How a new spoke is born and registered |
 | `playbooks/handoff.md` | How a site leaves: everything moves into accounts the client owns |
