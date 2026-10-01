@@ -434,3 +434,48 @@ owner's okay as the merge trigger keeps the "no auto-merge on an email" law inta
 forged "looks good" can at most publish something the owner already checked, and still
 needs the owner. **Trade-off:** changes now wait on the client. The turnaround promise
 covers our part (request → preview link), not the client's reply time.
+
+## 2026-10-01 — Commerce is processor-hosted; the processor is the system of record
+
+**Decision:** Generalises the 2026-06-10 restaurant `ordering` rule to every vertical.
+When a client sells anything online (a product, a package, an event seat, a recurring
+membership), the sale happens on the **payment processor's hosted page**, reached
+through a payment link (Stripe Payment Links / Checkout, Square payment links, or
+similar). The site only links to it. The processor is the system of record for
+**orders, customers, receipts, refunds, subscriptions and payouts**. We build **no
+database, no cart, and no order store**, and no card data or processor key ever
+touches a spoke. Specifically:
+- **The account is the client's.** Links live in the client's own processor account,
+  normally the one they already use, so payouts and history stay in one place. The
+  agency works in it as an invited team member, never as the owner. This keeps every
+  site handoff-ready (handoff.md).
+- **Links go in content, not code.** Each schema's hand-off field (`ordering`,
+  `checkoutUrl`, `registerUrl`, …) holds the URL, so adding, repricing or retiring a
+  product is a content edit through the normal pipeline. Recipe:
+  `playbooks/change/add-payment-link.md`.
+- **Fulfilment uses the processor's after-payment redirect.** It points to a page on
+  the site: a download page for low-value digital goods, the client's booking tool for
+  services, a thank-you page otherwise.
+- **Gaps get the smallest fix that keeps us database-free.** If a redirect isn't
+  enough (a download worth protecting, say), a single Pages Function on the
+  processor's webhook may email a signed link. That still stores nothing.
+- **Past the line:** member logins, gated course content, waitlists, cross-system
+  reporting. Those are project work, and the default answer is a dedicated platform
+  (course or LMS service), not a database we run.
+
+**Why:** Static sites are the whole fleet's architecture, and the agent is the CMS. A
+database would be the first stateful thing we operate: backups, migrations, PII and
+breach liability, PCI scope if it ever touched payments, and an uptime promise for
+every client. All of that is to rebuild what processors already do better: order
+history, refunds, customer emails, receipts, recurring billing, tax, exports. Hosted
+links keep card data entirely off our pages, so the PCI burden stays with the
+processor. They also turn commerce into content edits the existing pipeline can
+already validate and review. Rejected:
+- **An embedded checkout (Stripe.js / Elements):** needs a server-side session per
+  purchase, which brings back a backend.
+- **A full storefront platform** for small catalogues: a second site to keep in sync.
+- **Building our own cart + database:** everything above.
+
+**Trade-off:** the purchase leaves the site's design for the processor's page, and
+digital delivery via redirect is only as secret as the URL. Both are acceptable for
+the catalogues this fleet serves; revisit if a client's revenue depends on either.
