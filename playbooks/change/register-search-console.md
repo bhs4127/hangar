@@ -28,6 +28,31 @@ doesn't cover that, but the client record tracks both side by side.
 
 ## Recipe
 
+**Automated path (default):** `node automation/search-console.mjs register $DOM`. It
+runs steps 1–4 below unattended through Google's Site Verification and Search Console
+APIs plus the Cloudflare token: it gets the token, adds the TXT record (additive; reports
+"already present" on a re-run), waits for it to resolve publicly, verifies, adds the
+`sc-domain:` property, and submits the sitemap. If the sitemap isn't serving XML, it
+skips that step and says so. It's idempotent, so re-running is safe.
+`node automation/search-console.mjs status [$DOM]` lists properties and sitemap state.
+Afterwards, check that the zone's mail records are unchanged (`dig +short MX $DOM`).
+
+**One-time setup** (owner, in Google Cloud, signed in as the agency account): a project
+with the **Google Search Console API** and **Site Verification API** enabled, a Desktop
+OAuth client saved as `~/.config/hangar/google-oauth-client.json` (chmod 600), and the
+agency account added under **Audience → Test users**. Then `… search-console.mjs auth`
+prints a sign-in link. On a desktop host it may not open a browser by itself, so hand
+the owner the link. Watch the project picker: the OAuth client, the test user and both
+APIs must all sit in the **same** project, and Cloud Console likes to switch to "My
+First Project" silently.
+
+**The consent screen stays in Testing on purpose.** That avoids Google's app
+verification, at the cost of a refresh token that expires after 7 days. Registration is
+occasional and the owner is present, so when the script reports `invalid_grant`, re-run
+`auth` (about 20 seconds). Don't build anything unattended on this token.
+
+**Manual path** (fallback, or a domain whose DNS isn't ours):
+
 Shell setup: `TOK=$(cat ~/.config/hangar/cloudflare-token)`, `DOM=<domain>`,
 `ZID=<zone id>`.
 

@@ -96,6 +96,14 @@ agency domain with the visitor as `Reply-To`. Per-spoke recipe:
 [playbooks/change/wire-contact-delivery.md](../playbooks/change/wire-contact-delivery.md).
 Still unwired on every live spoke until that playbook runs for each.
 
+## Search Console — LIVE since 2026-10-01
+
+`automation/search-console.mjs` registers a live domain with Google Search Console end to
+end (`register <domain>`) and reports property and sitemap state (`status`). It runs as
+the agency Google account (`FLEET.md` § Google) over OAuth, with the refresh token in
+`~/.config/hangar/`. The token expires weekly by design, so it's for owner-present runs
+only. Setup and the manual fallback: `playbooks/change/register-search-console.md`.
+
 ## Also described here, also deferred
 
 - **Approval channel:** a Telegram or Slack bot that posts *"PR ready: <preview link> —
