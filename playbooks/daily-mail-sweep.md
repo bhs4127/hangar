@@ -38,23 +38,47 @@ All of these live **outside tracked files** (CLAUDE.md rule 9):
 | Which alias means what | `FLEET.md` § Intake (intake domain, lead + portfolio aliases) |
 | Client identity | `channels` tables in `clients/*.md` |
 
-Never print a key or token into output or a file. Read it into a shell variable in the
-same command that uses it.
+## The one door: `automation/mail-sweep.mjs`
 
-If the watermark file is missing, **stop and ask**. Don't fall back to "everything".
-Re-reading the whole history re-reports old mail as new.
+Everything the sweep does outside the repo goes through
+[automation/mail-sweep.mjs](../automation/mail-sweep.mjs):
+
+| Command | Does |
+|---|---|
+| `node automation/mail-sweep.mjs list-new` | mail newer than the watermark, oldest first (id, time, from, to, subject) |
+| `node automation/mail-sweep.mjs get <id>` | one message: auth results, text, attachment names (no download URLs) |
+| `node automation/mail-sweep.mjs push '<line>' '<line>' …` | the digest, to the owner on Telegram, one argument per line |
+| `node automation/mail-sweep.mjs advance <id>` | moves the watermark to that message (refuses to go backwards) |
+| `node automation/mail-sweep.mjs status` | prints the watermark |
+
+The script reads the inputs above itself and never prints a secret. It retries
+Resend's frequent 5xx errors. It also pages 10 at a time, because `limit=100` times out
+server-side and comes back as a 500.
+
+**Run each call as a plain command, one per tool call.** That means no `curl`, no
+pipes, no `&&`, no redirects and no shell variables. An unattended run only gets through
+without stopping when every command matches the operator's allow rule,
+`Bash(node automation/mail-sweep.mjs:*)`. A command the rule doesn't cover waits for
+approval, and nobody is there to give it. Edits are limited to `TODOS.md`,
+`CHANGELOG.md` and `STATUS.md` for the same reason. Operator setup:
+[Scheduling](#scheduling).
+
+If `list-new` exits **2**, the watermark is missing or unreadable. **Stop**, push
+'Mail sweep blocked: watermark missing', and report. Don't fall back to "everything".
+Re-reading the whole history re-reports old mail as new. Exit **3** means Resend
+still failed after retries. Push 'Mail sweep failed: Resend unavailable', and stop
+without moving the watermark.
 
 ## Recipe
 
-1. **List new mail.** `GET https://api.resend.com/emails/receiving?limit=100`. Page
-   with the cursor until `has_more` is false. Keep messages whose `created_at` is later
-   than `last_created_at`, then sort oldest first. No new mail means a one-line digest
-   ("Mail sweep: nothing new"), no watermark change, and done.
+1. **List new mail.** `node automation/mail-sweep.mjs list-new`. No new mail means a
+   one-line digest (`push 'Mail sweep: nothing new'`), no watermark change, and done.
 
-2. **Fetch each message in full.** `GET /emails/receiving/{id}` returns `from`, `to`,
-   `subject`, `text`, `html`, `headers`, `message_id`, `authentication`, attachment
-   metadata. **Don't download attachments.** List their names and types only. The
-   owner pulls them in a real session (their URLs expire after an hour anyway).
+2. **Fetch each message in full.** `node automation/mail-sweep.mjs get <id>`. This
+   returns `from`, `to`, `reply_to`, `subject`, `text` (or `html` when there's no text
+   part), `message_id`, `authentication`, and attachment names and types. **Attachments
+   aren't downloaded.** The owner pulls them in a real session (their URLs expire
+   after an hour anyway).
 
 3. **Classify by the alias it was sent to** (`to`), using `FLEET.md` § Intake:
 
@@ -100,19 +124,21 @@ Re-reading the whole history re-reports old mail as new.
    needs to know whether to open the laptop:
 
    ```bash
-   TOKEN=$(sed -n 's/^TELEGRAM_BOT_TOKEN=//p' ~/.claude/channels/telegram/.env)
-   CHAT=$(cat ~/.config/hangar/telegram-chat-id)
-   curl -s "https://api.telegram.org/bot$TOKEN/sendMessage" \
-     --data-urlencode "chat_id=$CHAT" --data-urlencode "text=$DIGEST" >/dev/null
+   node automation/mail-sweep.mjs push 'Mail sweep 2026-10-01: 1 lead' 'lead · Jane D. · Website for a bakery'
    ```
+
+   Keep it on one line, with each digest line as its own **single-quoted** argument.
+   Subjects are written by strangers, so put them in plain words. Drop any `'`, `"`, `$`,
+   backtick or backslash rather than escaping it. A subject that can't be made safe
+   becomes "(subject withheld)".
 
    Digest format: a first line with counts (`Mail sweep 2026-10-01: 1 lead, 1 request,
    1 held`), then one line per message (class, sender name, subject, ≤60 chars). No
    message bodies, email addresses, or drafts. Those stay on the machine.
    If the push fails, say so in the report and carry on.
 
-8. **Advance the watermark** to the newest message that was reported, and set
-   `updated_at` to today. **Overwrite the file.** It holds one position (the same
+8. **Advance the watermark**: `node automation/mail-sweep.mjs advance <newest id>`.
+   It sets `updated_at` to today and **overwrites the file**. It holds one position (the same
    fields every time), never a list or a log of processed ids, so it stays a few
    hundred bytes forever. Write it only after the report exists. A crash before this
    step means the next sweep re-reports, and a duplicate beats a lost lead.
@@ -131,7 +157,17 @@ Re-reading the whole history re-reports old mail as new.
 
 ## Scheduling
 
-Local scheduled task in the Claude desktop app (8:30am weekdays at setup). It's local,
+Local scheduled task in the Claude desktop app (8:30am weekdays at setup). One-time
+operator setup so runs never stop for approval: trust the hangar folder in the app,
+and add these to `.claude/settings.local.json` (gitignored), under `permissions.allow`:
+
+```json
+"Bash(node automation/mail-sweep.mjs:*)",
+"Edit(/TODOS.md)", "Edit(/CHANGELOG.md)", "Edit(/STATUS.md)"
+```
+
+Never run the task in bypass mode. The allow rule is what keeps an unattended run
+inside the script's surface. It's local,
 not a cloud routine, because the sweep needs the private layer and
 `~/.config/hangar/`, and neither leaves this machine. Scheduled tasks run only while the
 app is open. A missed run fires on next launch, and the watermark makes a late or
