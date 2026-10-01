@@ -51,7 +51,9 @@ why the scoped token exists. Deploys work with OAuth alone; domain hookups don't
 | Key | Value | Used by |
 |---|---|---|
 | **Shopify Partner organization** | `TBD` | creates client transfer stores; sends collaborator requests (playbooks/build/shopify-store.md § Access) |
-| **Partner login email** | `TBD` | `shopify theme …` / `shopify store auth` CLI sign-in |
+| **Partner business email** | `TBD` | where Shopify sends partner, review, and transfer notices. A real inbox, not a relay |
+| **Shopify login identity** | `TBD` | the account the CLI signs in as (`shopify store auth` prints it). Can differ from the business email, e.g. Sign in with Apple |
+| **Sandbox dev store** | `TBD` | throwaway `*.myshopify.com` for trying CLI commands. Never a client store |
 
 No Shopify API token is ever stored. The CLI authenticates per store as the collaborator.
 

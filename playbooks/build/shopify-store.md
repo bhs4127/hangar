@@ -113,12 +113,21 @@ upkeep, not hosting.
   (only if an app was agreed). Never request Orders or Customers. We don't handle orders,
   and every permission we don't hold is customer data we can't leak. Never use the
   client's own login.
-- **CLI:** `shopify theme …` authenticates as the collaborator.
-  `shopify store auth --store <handle>.myshopify.com` once per store, then
-  `shopify store execute` handles catalogue reads and writes. Mutations stay off unless
-  the command passes `--allow-mutations`. Use that flag only in the apply step of the
-  product playbook, never on a read. **No Admin API token is ever written into the spoke
-  or hangar.**
+- **CLI:** `shopify theme …` uses the Shopify account login (a device-code sign-in the
+  first time). Catalogue access is a separate, per-store grant:
+  `shopify store auth --store <handle>.myshopify.com --scopes read_products,write_products,read_inventory,write_inventory,read_publications,write_publications`,
+  approved in the browser. Re-run it when the token expires or a scope is missing. After
+  that, `shopify store execute` handles catalogue reads and writes. Mutations are
+  refused unless the command passes `--allow-mutations`. Use that flag only in the apply
+  step of the product playbook, never on a read. The CLI keeps the token in its own
+  store. **No Admin API token is ever written into the spoke or hangar.**
+- **Both sign-ins need an interactive terminal.** The agent's shell can't complete them.
+  Run them in the operator's terminal (the Terminal panel), and the owner approves in
+  the browser. Everything after that runs non-interactively.
+- **Sandbox:** a throwaway dev store for trying commands lives in `FLEET.md`. Create one
+  with `shopify store create dev --name <name> --plan basic --demo-data --country US`
+  (interactive, or add `--organization-id`). Dev stores can't be transferred, so client
+  builds still start from the Dev Dashboard's *client transfer store*.
 
 ## Canonical spoke layout
 
@@ -135,8 +144,8 @@ upkeep, not hosting.
 
 There's no Zod schema on this track. The contract is split:
 
-- **Theme code and templates:** `shopify theme check` must pass with zero errors.
-  Warnings need a reason in the PR.
+- **Theme code and templates:** `shopify theme check --fail-level error` must pass.
+  Warnings the stock theme doesn't have need a reason in the PR.
 - **Catalogue:** Shopify's own validation, plus a read-back after every write (product
   playbook § Validate).
 - **Content the theme renders** (hours, address, About copy) is section settings in
@@ -153,11 +162,15 @@ Every step of [playbooks/README.md](../README.md) applies. These steps change:
   Commit any difference as its own first commit, `sync: live theme drift (<what
   changed>)`. If the drift isn't explained by a known app or a client edit, stop and
   show the owner before building on it.
-- **Step 7, validate:** `shopify theme check` (zero errors) in place of `npm run build`.
+- **Step 7, validate:** `shopify theme check --fail-level error` (exit 0) in place of
+  `npm run build`. Stock Horizon already carries a few warnings (4.2.0: 6), so compare
+  warnings against the stock commit, and any new one needs a reason in the PR.
 - **Step 9, preview deploy:** push the branch to **its own unpublished theme**, named
   after the branch.
-  - First push: `shopify theme push --unpublished --json`. When prompted, use the
-    branch name as the theme name. Record the theme id in the PR.
+  - First push:
+    `shopify theme push --unpublished --theme <branch-name> --store <handle>.myshopify.com --json`.
+    The theme is named after the branch with no prompt. Record the `id` and
+    `preview_url` from the JSON in the PR.
   - Rework: `shopify theme push --theme <id> --json`. Same id, same `preview_url`, so the
     link the client holds keeps working (the same role as the Pages alias).
   - Before launch the store is password-protected, so the preview needs the storefront
@@ -211,10 +224,13 @@ Ask exactly these. Every blank is `TBD` in the client record, never a guess (rul
    as staff now. Or, for an existing store, the collaborator request.
 2. **Spoke repo** per [onboard-client.md](../onboard-client.md) step 4 (`<org>/<slug>-site`,
    bootstrap commit), then on `build/initial-site`:
-   `shopify theme init <slug>-site --clone-url https://github.com/Shopify/horizon.git --latest`.
-   Pass the URL explicitly: with no URL, `theme init` clones the bare Skeleton theme, not
-   the reference theme. Commit it untouched as the first commit, so the diff of our work
-   against stock is always readable. Note the upstream release in the client record.
+   `shopify theme init horizon --clone-url https://github.com/Shopify/horizon.git` in a
+   scratch directory. Pass the URL explicitly: with no URL, `theme init` clones the bare
+   Skeleton theme. **Don't pass `--latest`.** Horizon publishes no GitHub releases, so it
+   fails. The clone carries Horizon's own `.git`, so copy the files without it into the
+   spoke checkout and commit them untouched as the first commit, so the diff of our work
+   against stock is always readable. Record the upstream version (`theme_version` in
+   `config/settings_schema.json`) and commit in the client record.
 3. **Baseline:** push it unpublished, load demo content, and record the Lighthouse
    baseline in the client record (Opinions 6).
 4. **Brand + design:** brand tokens into `config/settings_data.json` (colour schemes,
@@ -262,7 +278,7 @@ Ask exactly these. Every blank is `TBD` in the client record, never a guess (rul
 - [ ] Client is the **store owner** on their chosen plan, with billing and Payments in their name
 - [ ] Agency holds collaborator access with only the permissions listed in Access
 - [ ] `main` == live theme (a drift pull shows no diff); no leftover preview themes
-- [ ] `shopify theme check`: zero errors
+- [ ] `shopify theme check --fail-level error` passes; no unexplained warnings beyond stock
 - [ ] Lighthouse mobile: Accessibility ≥ 95; Performance within 5 of the recorded baseline
 - [ ] Every product image has real alt text (read-back query in the product playbook)
 - [ ] Policies, tax, and shipping match the client's written answers verbatim

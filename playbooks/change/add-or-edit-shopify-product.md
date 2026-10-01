@@ -37,8 +37,11 @@ This playbook is for when they ask us.
 
 ## Recipe
 
-Shell setup: `STORE=<handle>.myshopify.com`. `shopify store auth --store $STORE` once per
-machine. Writes need `--allow-mutations`. Reads never get it.
+Shell setup: `STORE=<handle>.myshopify.com`. The per-store grant
+(`shopify store auth --store $STORE --scopes …`, the scope list in build/shopify-store.md
+§ Access) is approved once in the browser from an interactive terminal. Re-run it if
+`store execute` reports a missing or expired token. Writes need `--allow-mutations`
+(without it the CLI refuses any mutation). Reads never get it.
 
 1. **Read the current state.** Query the product(s) and save the JSON to a scratch file
    (never a repo). It's the "old" side of the summary and the undo record:
