@@ -10,6 +10,7 @@
 //   node automation/search-console.mjs auth                 → one-time browser consent; stores the refresh token
 //   node automation/search-console.mjs register <domain>    → verify + add property + submit sitemap (idempotent)
 //   node automation/search-console.mjs status [<domain>]    → properties, permission level, sitemap status
+//   node automation/search-console.mjs report <domain> [days] → search performance, last N days (default 28) vs the N before
 //
 // What it can't do, because Google has no API for it: give a client access to the
 // reports (Search Console → Settings → Users), or Bing's import from Search Console.
@@ -222,8 +223,50 @@ async function status(domain) {
   }
 }
 
+// Search data lands with a lag of about two days, so every window ends three days ago.
+function windowEnding(daysAgo, days) {
+  const day = (n) => new Date(Date.now() - n * 86_400_000).toISOString().slice(0, 10);
+  return { startDate: day(daysAgo + days - 1), endDate: day(daysAgo) };
+}
+
+async function report(domain, days = "28") {
+  const n = Number(days);
+  if (!DOMAIN.test(domain || "") || !Number.isInteger(n) || n < 1 || n > 180) die(1, "usage: report <domain> [days 1–180]");
+  const g = google(await accessToken());
+  const property = encodeURIComponent(`sc-domain:${domain}`);
+  const query = (range, dimensions = [], rowLimit = 10) =>
+    g(`${GSC}/sites/${property}/searchAnalytics/query`, { method: "POST", body: JSON.stringify({ ...range, dimensions, rowLimit }) }, "search analytics query")
+      .then((r) => r.rows || []);
+
+  const cur = windowEnding(3, n);
+  const prev = windowEnding(3 + n, n);
+  const [[now], [before], queries, pages] = await Promise.all([
+    query(cur), query(prev), query(cur, ["query"]), query(cur, ["page"]),
+  ]);
+  const totals = (r) => r || { clicks: 0, impressions: 0, ctr: 0, position: 0 };
+  const a = totals(now), b = totals(before);
+  const pct = (x) => `${(x * 100).toFixed(1)}%`;
+  const delta = (x, y) => (y ? `${x >= y ? "+" : ""}${Math.round(((x - y) / y) * 100)}%` : x ? "new" : "—");
+  const pos = (x) => (x ? x.toFixed(1) : "—");
+
+  console.log(`# Search report — ${domain}`);
+  console.log(`${cur.startDate} → ${cur.endDate} (${n} days), compared with ${prev.startDate} → ${prev.endDate}\n`);
+  console.log(`| | This period | Before | Change |\n|---|---|---|---|`);
+  console.log(`| Clicks | ${a.clicks} | ${b.clicks} | ${delta(a.clicks, b.clicks)} |`);
+  console.log(`| Impressions | ${a.impressions} | ${b.impressions} | ${delta(a.impressions, b.impressions)} |`);
+  console.log(`| Click-through rate | ${pct(a.ctr)} | ${pct(b.ctr)} | |`);
+  console.log(`| Average position | ${pos(a.position)} | ${pos(b.position)} | |`);
+  for (const [title, rows] of [["Top searches", queries], ["Top pages", pages]]) {
+    console.log(`\n## ${title}`);
+    if (!rows.length) { console.log("No data yet."); continue; }
+    console.log(`| | Clicks | Impressions | Position |\n|---|---|---|---|`);
+    for (const r of rows) console.log(`| ${r.keys[0].replace(/\|/g, "/")} | ${r.clicks} | ${r.impressions} | ${pos(r.position)} |`);
+  }
+}
+
 const [cmd, ...args] = process.argv.slice(2);
 if (cmd === "auth") await auth();
 else if (cmd === "register") await register(args[0]);
 else if (cmd === "status") await status(args[0]);
-else die(1, "usage: auth | register <domain> | status [<domain>]");
+else if (cmd === "report") await report(args[0], args[1]);
+else die(1, "usage: auth | register <domain> | status [<domain>] | report <domain> [days]");

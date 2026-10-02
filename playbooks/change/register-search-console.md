@@ -101,6 +101,17 @@ ritual. The client reply is optional. Only offer access if the client is the kin
 would look: "Your site is registered with Google and Bing. We can give you access to
 the search reports if you'd like."
 
+## Monthly report
+
+`node automation/search-console.mjs report <domain> [days]` prints clicks, impressions,
+click-through rate and average position for the last N days (default 28) against the N
+days before, plus the top searches and pages, as Markdown tables. It uses the same agency
+token, so it needs no new consent. Search data lags about two days, so each window ends
+three days ago. A newly registered property reads all zeros for its first few days.
+
+The report is something to send, but the agent never sends client mail on its own
+(DECISIONS 2026-09-30). It drafts the email around the tables and the owner sends it.
+
 ## Edge cases
 
 - **DNS isn't on our Cloudflare** (a client-held zone we didn't move): the client or
