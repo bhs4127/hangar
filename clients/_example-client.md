@@ -50,7 +50,7 @@ straight to Marisol's email. See DECISIONS.md, 2026-06-10.)*
 
 ## Intake answers (fictional — this is what "complete" looks like)
 
-Captured per `playbooks/build/restaurant.md` § Intake questions. For real clients these
+Captured per `playbooks/build/_base.md` § Universal intake questions plus `playbooks/build/restaurant.md` § Intake questions. For real clients these
 arrive via the intake channel; they're recorded here so the build has one source of truth.
 
 1. **Name & tagline:** Marisol's Taqueria — "Handmade tortillas, East Austin soul."

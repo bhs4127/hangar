@@ -25,7 +25,8 @@ through manually (DECISIONS.md — HQ-first build order).
 - `CLAUDE.md` — guardrails every task runs under
 - `FLEET.example.md` — per-operator identifiers; copy to `FLEET.md` (gitignored)
 - `playbooks/README.md` — the shared anatomy-of-a-change pipeline
-- `playbooks/build/restaurant.md` — opinionated, full build spec
+- `playbooks/build/_base.md` — the build spec every site follows, plus how to derive a new vertical
+- `playbooks/build/restaurant.md` — the restaurant vertical, extending the base
 - `playbooks/design-language.md` — the cross-vertical premium standard + design brief
 - `playbooks/change/` ×4 (menu item, hours, image, attach-custom-domain) — concrete
   recipes, and the template for future change types
@@ -64,7 +65,8 @@ through manually (DECISIONS.md — HQ-first build order).
 | Guardrails (CLAUDE.md) | hangar | built | rules every task runs under |
 | Fleet config (FLEET.md) | hangar | planned | copy FLEET.example.md and fill it in — first step |
 | Client registry | hangar | built | format + worked example; **0 clients** |
-| Restaurant build playbook | hangar | built | opinionated, full |
+| Base build playbook | hangar | built | `_base.md`: universal anatomy, stack, contact form, JSON-LD, DoD, and the recipe for deriving a new vertical |
+| Restaurant build playbook | hangar | built | extends _base.md; menu / hours / ordering specifics |
 | Law-office build playbook | hangar | stubbed | shape + known differences only |
 | Change playbooks ×4 | hangar | built | menu / hours / image / attach-custom-domain — template for new types |
 | Onboarding playbook | hangar | built | manual-first by design |

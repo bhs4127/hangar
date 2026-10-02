@@ -7,7 +7,9 @@ the very first commit: branch + PR + preview, even during the initial build.
 ## Steps
 
 1. **Intake conversation.** Run the intake questions from the vertical's build playbook
-   ([build/restaurant.md](build/restaurant.md) § Intake questions). Capture answers
+   ([build/_base.md](build/_base.md) § Universal intake questions, plus the vertical's
+   own, e.g. [build/restaurant.md](build/restaurant.md) § Intake questions; a client with
+   no vertical playbook follows [_base.md § Deriving a new vertical](build/_base.md)). Capture answers
    verbatim **in the client record itself** (an "Intake answers" section — see
    [clients/_example-client.md](../clients/_example-client.md) for what complete
    looks like), so the build has one source of truth. Chase every `TBD` before the
@@ -62,7 +64,7 @@ the very first commit: branch + PR + preview, even during the initial build.
 
 9. **Contact form test**: one real submission, received end-to-end.
 
-10. **Go-live checklist**: the build playbook's definition of done, plus the client
+10. **Go-live checklist**: the base and vertical definitions of done, plus the client
     confirms hours, prices, and contact info on the live URL. Once the custom domain is
     live, register it with search engines
     ([change/register-search-console.md](change/register-search-console.md)).

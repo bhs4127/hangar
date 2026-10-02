@@ -67,14 +67,6 @@ the work is *applying* it.
 
 ## P4 — widen
 
-- [ ] **Make verticals fully extensible** — write `playbooks/build/_base.md`: the
-  universal one-pager anatomy (hero → about → *offerings* → trust/credibility →
-  practicalities (hours/location as applicable) → contact) plus the recipe for deriving a
-  brand-new vertical during onboarding: name the domain sections (a menu and
-  practice-areas are both "offerings"), derive `schemas/<vertical>.ts` from the base
-  patterns, write the vertical's own opinions, log a DECISIONS entry. The registry's
-  `vertical` field is already free text. Acceptance test: a dog groomer or a yoga studio
-  can be onboarded with no hangar changes beyond the two derived files.
 - [ ] **Write `playbooks/build/law-office.md` for real**, plus `schemas/law-office.ts`,
   after the restaurant loop is proven. The stub lists the known differences to encode
   (practice areas, attorney bios, disclaimers, no ordering slot).

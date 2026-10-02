@@ -562,3 +562,55 @@ Registrar keeps agency-held registration and DNS on one platform, with no second
 registrar to script. The cost is the registry lock: a domain within 60 days of
 registration or of a transfer can't leave, so a very early handoff finishes that one
 step late.
+
+## 2026-10-02 — Paid media is in scope: the agency runs it, the client is invoiced for spend
+
+**Decision:** The agency offers paid search and display, starting with Google Ads, at no
+tooling cost. Each client gets **their own ad account**, linked under the agency's Google
+Ads manager account. The ad account is billed to the **agency's payments profile**, and the
+agency **invoices the client for spend** (whether at cost or marked up, and whether in
+advance or in arrears, is private pricing). The rules that come with it:
+- **Every campaign launch and every budget change is approved** by the client, as a
+  preview approval is today. The agent drafts and launches; it never raises spend on its
+  own. Each account carries a hard monthly budget equal to what the client approved.
+- **Ad copy comes only from validated site content** (rule 5): no invented offers,
+  prices or claims.
+- **No targeting on health or other sensitive conditions,** and no remarketing on
+  medical sites. Display for those clients is geographic or contextual.
+- **Conversions are tracked without personal data:** the contact form's Pages Function
+  keeps the ad click ID only and reports the conversion server-side. No ad tag on
+  medical sites.
+- **"Connected TV" means YouTube ads in Google Ads** (they serve on TV screens) until a
+  client needs more. The tooling is free; video production is a quoted pass-through.
+- **Handoff:** the ad account is already the client's. Leaving means unlinking it from
+  the manager account and moving billing to the client's own payments profile.
+
+**Why:** A competitor's invoice for a local practice bundled search, display, connected
+TV, content and listings around the website. The Google Ads API, its manager account and
+YouTube placements cost nothing to use, so this widens the offer without new spend.
+Agency billing is the owner's choice: the client gets one invoice and no new account to
+manage, the same reasoning as agency-held domains (2026-10-01). The cost is credit risk.
+We front the spend until the client pays, so budget caps and prepayment matter more than
+they would on the client's own card. Approval on every spend change keeps the rule that
+the agent never takes an irreversible step unattended (2026-09-30). The health-targeting
+line follows Google's own personalized-ads policy and the HHS position on tracking
+technology on medical sites.
+
+## 2026-10-02 — The build playbook splits into a base and per-vertical extensions
+
+**Decision:** `playbooks/build/_base.md` holds everything a build needs regardless of
+vertical: stack, the universal anatomy (hero → about → offerings → trust → practicalities
+→ contact), the opinions, schema primitives, the contact form, structured data, build
+steps, the base definition of done, and the recipe for deriving a new vertical. A vertical
+playbook (`restaurant.md`, `law-office.md`, …) **extends** it and holds only that
+vertical's opinions, content files, sections, intake questions and DoD additions. New
+verticals derive from `_base.md`, not from the restaurant reference; this supersedes
+that wording in the 2026-08-05 entry, whose rule (schema stays in the spoke until a
+second client) is unchanged. A derived vertical's deviations are recorded in the client
+record, not here.
+**Why:** Restaurant was written first, so universal rules were written as restaurant
+rules. Five non-restaurant verticals were then built by reading a restaurant file and
+mentally filtering out the menu. That worked while one operator remembered which half was
+which, but a rule placed in the restaurant file (structured data, the first case) is
+invisible to an agent building a law office or a medical practice. The split is a move,
+not a rewrite: the content is the same, now in the file its scope says it belongs in.

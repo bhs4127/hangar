@@ -62,6 +62,7 @@ No Shopify API token is ever stored. The CLI authenticates per store as the coll
 | Key | Value | Used by |
 |---|---|---|
 | **Agency Google account** | `TBD` | owns every Search Console property; Bing Webmaster Tools sign-in (playbooks/change/register-search-console.md) |
+| **Google Ads manager account (MCC)** | `TBD` | links every client ad account; holds the developer token. Billing is the agency payments profile (DECISIONS 2026-10-02) |
 
 ## First-run checklist
 

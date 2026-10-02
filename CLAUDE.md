@@ -102,7 +102,7 @@ than none.
 | `*.example.md` | Tracked seeds for every gitignored private file |
 | `clients/` | Registry index + one record per client (channels, brand tokens, gotchas) |
 | `playbooks/README.md` | The shared "anatomy of a change" pipeline every playbook plugs into |
-| `playbooks/build/` | How to build a new site per vertical (restaurant is the reference) |
+| `playbooks/build/` | How to build a new site: `_base.md` for every site (incl. deriving a new vertical), one file per vertical that extends it (restaurant is the reference) |
 | `playbooks/build/shopify-store.md` | The second commerce track: a managed Shopify store the client owns and pays for |
 | `playbooks/change/` | Recipes for routine edits — also the template for new change types |
 | `playbooks/onboard-client.md` | How a new spoke is born and registered |

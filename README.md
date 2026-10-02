@@ -82,7 +82,8 @@ the edit physically lands in the spoke. The full pipeline is written out once in
 | Fleet config ([FLEET.example.md](FLEET.example.md)) | **Real** — copy to `FLEET.md`, fill in, never commit |
 | Private layer (`*.example.md` seeds → gitignored live files) | **Real** — your clients + state stay local |
 | Anatomy of a change ([playbooks/README.md](playbooks/README.md)) | **Real** |
-| Restaurant build playbook ([playbooks/build/restaurant.md](playbooks/build/restaurant.md)) | **Real** — opinionated, argue with it |
+| Base build playbook ([playbooks/build/_base.md](playbooks/build/_base.md)) | **Real** — every site; opinionated, argue with it. Also how to derive a new vertical |
+| Restaurant build playbook ([playbooks/build/restaurant.md](playbooks/build/restaurant.md)) | **Real** — extends the base with menu / hours / ordering |
 | Change playbooks ×5 ([playbooks/change/](playbooks/change/)) | **Real** — menu / hours / image / custom domain / contact-form delivery; also the template for future change types |
 | Onboarding playbook ([playbooks/onboard-client.md](playbooks/onboard-client.md)) | **Real** — manual-first by design |
 | Managed Shopify track ([playbooks/build/shopify-store.md](playbooks/build/shopify-store.md) + [product changes](playbooks/change/add-or-edit-shopify-product.md)) | **Written, not yet run** — the first Shopify client corrects it |
@@ -114,7 +115,8 @@ summaries instead of re-reading the repo.
    until hangar knows which GitHub org and Cloudflare account it's driving.
 2. **Kick off the first client site.** Run [playbooks/onboard-client.md](playbooks/onboard-client.md):
    intake questions → client record + registry row → new `<slug>-site` repo → build per
-   [playbooks/build/restaurant.md](playbooks/build/restaurant.md) → PR. Do it by hand;
+   [playbooks/build/_base.md](playbooks/build/_base.md) plus the vertical's playbook
+   (e.g. [restaurant.md](playbooks/build/restaurant.md)) → PR. Do it by hand;
    correct the playbooks with whatever they got wrong.
 3. **Attach hosting** to that spoke: `wrangler pages project create <slug>
    --production-branch main`, then branch previews and production from `main` (real

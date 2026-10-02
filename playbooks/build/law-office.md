@@ -1,9 +1,9 @@
 # Build playbook — law office
 
-> **STUB — not yet written.** Tracked in TODOS.md (P3); gets written for real after the
-> first restaurant build proves the loop. It will follow the exact shape of
-> [restaurant.md](restaurant.md): opinions → canonical layout → sections (content model +
-> rendering) → intake questions → build steps → definition of done.
+> **STUB — not yet written.** Tracked in TODOS.md (P4). It will **extend
+> [_base.md](_base.md)** the way [restaurant.md](restaurant.md) does: the vertical's own
+> opinions, content files, sections, intake questions and definition-of-done additions,
+> nothing the base already covers.
 
 ## Known differences to encode when this is written
 
@@ -19,9 +19,11 @@
   verbatim.
 - **Design defaults:** conservative typography and palette; credibility over vibrancy.
 - **Accessibility is non-negotiable** — law firms are a common ADA-complaint target;
-  the restaurant playbook's accessibility floor is the minimum, audited harder.
+  the base playbook's accessibility floor is the minimum, audited harder.
 - **Contact form** is the same Pages Function pattern — customer→client mail forwarded
   to the firm's email, never into the intake pipeline (DECISIONS.md, 2026-06-10) — plus
   the disclaimer above.
+- **Structured data:** `LegalService` JSON-LD, built the same way as the restaurant's
+  (_base.md § Structured data): only from validated content, never ratings.
 - **Schema:** `schemas/law-office.ts` (TODO, alongside this playbook) — `site`, `hero`,
   `about`, `practiceAreas[]`, `attorneys[]`, `disclaimers`, `location`, `contact`.
