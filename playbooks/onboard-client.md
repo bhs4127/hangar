@@ -69,7 +69,11 @@ the very first commit: branch + PR + preview, even during the initial build.
     live, register it with search engines
     ([change/register-search-console.md](change/register-search-console.md)).
 
-11. **State layer** (CLAUDE.md): registry row status → `live`; update STATUS.md and
+11. **Welcome email**: tell the client about their change-request alias, per
+    [setup-email-intake.md](setup-email-intake.md) § The welcome email. The owner
+    sends it, or okays the agent sending it.
+
+12. **State layer** (CLAUDE.md): registry row status → `live`; update STATUS.md and
     TODOS.md; CHANGELOG line; DECISIONS entry only if a real decision was made.
     Client-specific deviations also go in the client record's "gotchas" section.
 

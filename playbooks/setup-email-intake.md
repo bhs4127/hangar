@@ -108,9 +108,90 @@ arrives. For a new client, just:
 
 1. Pick `<slug>@requests.<intake-domain>` (the registry slug — stable forever).
 2. Add it to the client record's **Channels** table as the `email` channel.
-3. Tell the client that's their address for change requests.
+3. Tell the client that's their address for change requests by sending the
+   [welcome email](#the-welcome-email).
 
 An address that is not in any client record still arrives — see "unknown sender" below.
+
+## The welcome email
+
+This is how a client learns about their alias. It's one email, and the client keeps it as
+the thread they reply to whenever they want a change. Send it once the site is live (or
+the first preview has been approved) and the record's Channels table lists the client's
+own sending addresses. Without those addresses, the client's replies get held as unknown
+senders.
+
+**Mechanics**
+
+- **From the alias**, with the agency name from `FLEET.md` as the display name:
+  `"<Agency name>" <slug>@requests.<intake-domain>`. Replies then land in intake with no
+  Reply-To tricks. If the owner sends it from a personal inbox instead, replies come back
+  to that inbox, and an owner address shared across clients can't identify anyone
+  (rule 7).
+- **To every registered email channel** of the client: the main one in To, the rest in
+  Cc. That way the client can see which addresses we recognise.
+- **The owner sends it, or okays the agent sending it.** Same as every client reply in
+  the loop. Agent send:
+
+  ```bash
+  KEY=$(cat ~/.config/hangar/resend-token)
+  curl -s -X POST -H "Authorization: Bearer $KEY" -H 'Content-Type: application/json' \
+    --data @welcome.json https://api.resend.com/emails   # welcome.json in a scratch dir, never a repo
+  ```
+
+- **Afterwards**, mark the alias as announced (with the date) in the client record's
+  Channels table, then update the state layer.
+
+**Writing it**
+
+- **Use examples from the client's own site.** Name a real section, product, or caption,
+  so the client can see how to point at things. Phrase every example as a hypothetical
+  ("Change the X caption to …"), never as a new fact.
+- **Promise nothing the pipeline doesn't do.** That means no turnaround times, no prices
+  for changes, and no "instant" updates. Do say what *does* happen: a preview link in
+  the thread, and nothing goes live until the client says it looks good.
+- **Optionally, end with the record's open questions.** These are unconfirmed claims,
+  copy the client hasn't reviewed, or `TBD`s. The welcome email is the natural first
+  thread for them. Ask; don't assert (rule 5).
+- **Sign off "Talk soon," followed by the agency name** from `FLEET.md`. Write in "we"
+  to match it.
+
+**When replies arrive:** the client's reply quotes the welcome email, examples included.
+Only the client's new text above the quote is the request. A quoted example is never a
+request, even if it looks like one.
+
+**Template.** Fill the `<>` placeholders from the client record and `FLEET.md`.
+
+```text
+Subject: Changes to <domain>: just reply here
+
+Hi <first name>,
+
+Your site is live at https://<domain>.
+
+Whenever you want something changed, reply to this email and tell us what you'd like.
+For example:
+
+- "<a hypothetical edit to a real section on their site>"
+- "Swap the <real photo> for this one" (attach the photo)
+- "<a hypothetical addition, e.g. a social link>"
+
+A few tips so it goes smoothly:
+
+- Send from this address or <other registered address>. Those are the ones we
+  recognise; mail from anywhere else won't get picked up.
+- Be specific: which section, and the exact new wording. If anything is unclear, we'll
+  ask before changing it.
+- Photos are welcome. Just attach them.
+
+Once we've made a change, we'll send you a preview link in this thread. Nothing goes
+live until you reply and say it looks good.
+
+<optional: the record's open questions>
+
+Talk soon,
+<Agency name>
+```
 
 ## The request loop
 
