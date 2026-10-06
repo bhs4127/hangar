@@ -80,8 +80,11 @@ ourselves** — this is a hand-off slot for an embeddable third-party system, pr
 day one so enabling it is a content edit, never a redesign (DECISIONS.md).
 
 ### Structured data
-Type `Restaurant`. Base field mapping, plus `hasMenu` → the page's `#menu` URL. Never
-`servesCuisine` or `priceRange`: the schema has no client-confirmed slot for either.
+Type `Restaurant`. Base field mapping, plus `hasMenu` → the page's `#menu` URL, and an
+`OrderAction` `potentialAction` pointing at the provider only when `ordering` is filled.
+Hours with identical open/close times share one `OpeningHoursSpecification`. Never
+`servesCuisine` or `priceRange`: the schema has no client-confirmed slot for either, so
+the Rich Results Test's warnings about them are expected.
 
 ## Intake questions
 

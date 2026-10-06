@@ -150,13 +150,25 @@ budget. In Astro: `<script type="application/ld+json" set:html={JSON.stringify(l
   names its type and field mapping. With no physical business (portfolio, creator), use
   `Person` or `Organization` with `url` and `sameAs` only.
 - **Every value comes from a validated content file**, never typed into the template:
-  `name` and `url` from `site.json` (`https://` + `domain`), `image` from the hero,
-  `address` (`PostalAddress`) and `geo` (only if coordinates are set) from the location,
+  `name` from `site.json`; `url` from the Astro `site` config, the same canonical URL
+  the sitemap uses (not `site.json`'s `domain`, which may not be attached yet); `logo`
+  from the site logo; `image` from the hero **only if it's a real photo of the place**
+  (a placeholder is left out); `address` (`PostalAddress`, with `addressCountry` when
+  the schema's formats fix the country) and `geo` (only if coordinates are set) from
+  the location,
   `telephone` from contact (already E.164), `openingHoursSpecification` from hours
   (closed days are left out), `sameAs` from the socials that are actually filled in.
 - **Never add a field the content doesn't hold** (rule 5): no `priceRange`, no ratings
   or review counts. Self-served review markup is against Google's guidelines anyway. A
   field becomes eligible only once the schema has a client-confirmed slot for it.
+- **Render it from the layout via an optional prop** that the page fills, so pages
+  without a business entity (`/thanks`) carry none. Escape `<` in the serialized JSON
+  (`.replace(/</g, "\\u003c")`) so no content string can close the script tag.
+- **Validate on the preview** with Google's Rich Results Test. It reports "crawl failed"
+  there because previews send `noindex`, but it still parses and grades the markup.
+  "Missing field (optional)" warnings for fields left out under rule 5 are expected,
+  not something to fill. `Person` isn't a rich-result type, so check it with
+  validator.schema.org instead.
 - Because it's derived, it can't drift: an hours change edits the hours file and the
   JSON-LD follows on the next build.
 
