@@ -15,7 +15,7 @@ doesn't cover that, but the client record tracks both side by side.
 
 ## Inputs required
 
-1. **The agency Google account** from `FLEET.md` § Google. It owns every property
+1. **The agency Google account** from `private/FLEET.md` § Google. It owns every property
    (DECISIONS 2026-09-29). `TBD` there blocks this playbook. Never verify a client site
    under a personal account or the client's account without an explicit owner decision.
 2. The live domain and the zone ID (client record → Hosting line, or

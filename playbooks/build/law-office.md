@@ -1,6 +1,6 @@
 # Build playbook — law office
 
-> **STUB — not yet written.** Tracked in TODOS.md (P4). It will **extend
+> **STUB — not yet written.** Tracked in private/TODOS.md (P4). It will **extend
 > [_base.md](_base.md)** the way [restaurant.md](restaurant.md) does: the vertical's own
 > opinions, content files, sections, intake questions and definition-of-done additions,
 > nothing the base already covers.

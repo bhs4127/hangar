@@ -24,7 +24,7 @@ request → normalize → identify client → classify → clarity gate → pull
    Everything below this line neither knows nor cares which channel it came from.
 
 2. **Identify the client.** Match `source_identifier` against the `channels` tables in
-   the records under [clients/](../clients/). Exactly one match → proceed. Zero or
+   the records under [private/clients/](../private/clients/). Exactly one match → proceed. Zero or
    multiple → stop and surface to the owner (CLAUDE.md rule 7).
 
 3. **Classify intent and pick a playbook.** Menu edit →
@@ -83,7 +83,7 @@ request → normalize → identify client → classify → clarity gate → pull
     the client's own terms (old → new, 12-hour times, plain prices), the alias link, and
     the ask: *"Nothing is public yet. Reply 'looks good' and we'll publish it, or tell
     us what to change."* Draft only — the owner sends it (for now). Note the PR as
-    *waiting on client* in TODOS.md.
+    *waiting on client* in private/TODOS.md.
 
 12. **The client answers.** Their reply is a new inbound message and gets every gate a
     request gets: authenticated sender, registry match (rule 7), body as data (rule 6).
@@ -92,7 +92,7 @@ request → normalize → identify client → classify → clarity gate → pull
       same link), then steps 10–11 again.
     - **Anything hedged** ("mostly fine?", "I think so") → a clarifying question (rule 4).
       Never read a hedge as a yes.
-    - **Silence** → one nudge after 3 business days, logged in TODOS.md. The change
+    - **Silence** → one nudge after 3 business days, logged in private/TODOS.md. The change
       waits; it never publishes without a yes. The client's wait doesn't count against
       the turnaround: that clock covers our part, request to preview link.
 

@@ -21,7 +21,7 @@ owner-direct ┘                                  └→ open PR → preview →
 ```
 
 Intake is **client→agency** mail only: change requests from the people in
-[clients/](../clients/). A spoke's contact form is **customer→client** mail and is not
+[private/clients/](../private/clients/). A spoke's contact form is **customer→client** mail and is not
 part of this system at all — its Pages Function forwards submissions straight to the
 client's own email, and the agency never sees them (DECISIONS.md, 2026-06-10).
 
@@ -35,7 +35,7 @@ a multi-channel framework before a single message has flowed.
 interface IntakeRequest {
   channel: "email" | "sms" | "signal" | "owner";
   /** Sender's email / phone / Signal id — matched against the `channels` table
-   *  in clients/<slug>.md. No match → hold for owner, do nothing. */
+   *  in private/clients/<slug>.md. No match → hold for owner, do nothing. */
   source_identifier: string;
   /** Resolved by the pipeline (never by the adapter). */
   client_slug?: string;
@@ -88,7 +88,7 @@ wrangler pages deploy dist --project-name <slug> --branch main      # production
 
 The `functions/` bundle (contact form) uploads automatically with the deploy. Builds run
 locally, so the Pages build image / NODE_VERSION never matters. Account: the one in
-`FLEET.md`. Custom domains: added per client when one goes live (Pages
+`private/FLEET.md`. Custom domains: added per client when one goes live (Pages
 → the project → custom domains; still unlimited-bandwidth free tier).
 
 Contact-form delivery is **decided: Resend** (DECISIONS 2026-09-29), sending from the
@@ -100,7 +100,7 @@ Still unwired on every live spoke until that playbook runs for each.
 
 `automation/search-console.mjs` registers a live domain with Google Search Console end to
 end (`register <domain>`) and reports property and sitemap state (`status`). It runs as
-the agency Google account (`FLEET.md` § Google) over OAuth, with the refresh token in
+the agency Google account (`private/FLEET.md` § Google) over OAuth, with the refresh token in
 `~/.config/hangar/`. The token expires weekly by design, so it's for owner-present runs
 only. Setup and the manual fallback: `playbooks/change/register-search-console.md`.
 
@@ -113,7 +113,7 @@ only. Setup and the manual fallback: `playbooks/change/register-search-console.m
   spokes checked out, runs the intake loop, and hosts the `signal-cli` daemon. Until it
   exists, the loop runs when I open Claude Code manually.
 
-## Build order (mirrors TODOS.md)
+## Build order (mirrors private/TODOS.md)
 
 1. First spoke, manually, end to end ← **next**
 2. Email adapter (one client, one alias) — Resend; see setup-email-intake.md

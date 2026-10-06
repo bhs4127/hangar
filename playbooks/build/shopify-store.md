@@ -102,7 +102,7 @@ upkeep, not hosting.
 
 ## Access (how the agency works inside the store)
 
-- **During the build:** the agency's Shopify Partner organisation (from `FLEET.md`) owns
+- **During the build:** the agency's Shopify Partner organisation (from `private/FLEET.md`) owns
   the client transfer store. The client is added as staff before transfer, so their
   login already works when ownership moves.
 - **After transfer, or on an existing store:** a **collaborator account**. Collaborator
@@ -124,7 +124,7 @@ upkeep, not hosting.
 - **Both sign-ins need an interactive terminal.** The agent's shell can't complete them.
   Run them in the operator's terminal (the Terminal panel), and the owner approves in
   the browser. Everything after that runs non-interactively.
-- **Sandbox:** a throwaway dev store for trying commands lives in `FLEET.md`. Create one
+- **Sandbox:** a throwaway dev store for trying commands lives in `private/FLEET.md`. Create one
   with `shopify store create dev --name <name> --plan basic --demo-data --country US`
   (interactive, or add `--organization-id`). Dev stores can't be transferred, so client
   builds still start from the Dev Dashboard's *client transfer store*.

@@ -6,7 +6,7 @@
 
 ## P0 — make this hangar yours (once, before anything else)
 
-- [ ] **Fill in `FLEET.md`.** Copy `FLEET.example.md` → `FLEET.md` (gitignored), fill
+- [ ] **Fill in `private/FLEET.md`.** (Seeded by `cp -R private.example private`.) Fill
   every row or mark it `TBD` deliberately. This is the only place hangar names your GitHub
   org and Cloudflare account.
 - [ ] **`gh auth login`** as the org that will own the spoke repos.
@@ -15,14 +15,14 @@
   Zone:Read, DNS:Edit, Email Routing:Edit — and drop it at
   `~/.config/hangar/cloudflare-token` (chmod 600). The `wrangler login` OAuth token is
   zone:read only, so without this every domain hookup falls back to dashboard clicking.
-  See [playbooks/change/attach-custom-domain.md](playbooks/change/attach-custom-domain.md) § Inputs.
+  See [playbooks/change/attach-custom-domain.md](../playbooks/change/attach-custom-domain.md) § Inputs.
 
 ## P1 — prove the loop (one client, end to end, by hand)
 
 Do this manually and correct the playbooks with whatever they get wrong. The manual run
 is the spec for every automation that follows (DECISIONS.md — HQ-first build order).
 
-- [ ] **Onboard client #1** per [playbooks/onboard-client.md](playbooks/onboard-client.md):
+- [ ] **Onboard client #1** per [playbooks/onboard-client.md](../playbooks/onboard-client.md):
   intake conversation → client record from `_example-client.md` → registry row → spoke
   repo `<slug>-site`.
 - [ ] **Build the first spoke end-to-end** per the vertical's build playbook, on a
@@ -52,14 +52,14 @@ the work is *applying* it.
 ## P3 — close the loop on automation
 
 - [ ] **Wire contact-form delivery** per
-  [playbooks/change/wire-contact-delivery.md](playbooks/change/wire-contact-delivery.md)
+  [playbooks/change/wire-contact-delivery.md](../playbooks/change/wire-contact-delivery.md)
   — provider is decided (Resend, DECISIONS 2026-09-29). Each spoke's function
   validates and spam-checks but only logs until its secrets are set and a real
   submission is tested; do it as part of that client's go-live.
 - [ ] **Pick + register the intake domain** and record it in `FLEET.md` — per-client
   aliases are `<slug>@requests.<domain>`. Blocks email intake.
 - [ ] **Set up email intake** per
-  [playbooks/setup-email-intake.md](playbooks/setup-email-intake.md): Resend account +
+  [playbooks/setup-email-intake.md](../playbooks/setup-email-intake.md): Resend account +
   two API keys, `requests.<domain>` verified for sending *and* receiving, DNS written
   with the scoped Cloudflare token, a DMARC record, then the two smoke tests. Aliases
   are catch-all, so every client gets one for free — no per-client DNS. Classification

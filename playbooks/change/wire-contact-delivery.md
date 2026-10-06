@@ -16,7 +16,7 @@ enters the agent's intake pipeline and the agency never sees the submissions
 | Input | Where from | Never |
 |---|---|---|
 | Client's destination address | The client record (ask the client if absent — rule 5) | Never guess or reuse the owner's address |
-| Intake/agency domain | `FLEET.md` § Intake | — |
+| Intake/agency domain | `private/FLEET.md` § Intake | — |
 | Resend API key | `~/.config/hangar/resend-token` | Never in the repo, the PR, or a content file |
 
 The form sends **from your agency domain** (e.g. `forms@<intake-domain>`) with the
@@ -36,7 +36,7 @@ client sees the visitor's name in the subject and hits Reply to answer them dire
    ```
 
    `CONTACT_FORWARD_TO` is the client's address; `CONTACT_FROM_DOMAIN` is the agency
-   domain from `FLEET.md` (kept a secret rather than hardcoded so no real domain lands
+   domain from `private/FLEET.md` (kept a secret rather than hardcoded so no real domain lands
    in a tracked file — rule 9). Secrets are set on the project, not in the repo —
    nothing here is committed.
 3. **Replace the `TODO(delivery)` block** in `functions/api/contact.ts`. Keep the

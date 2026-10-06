@@ -22,7 +22,7 @@ choose (DECISIONS 2026-10-01; the choice goes in the client record):
   name to buy and nothing else. Then this playbook runs as usual. A fresh domain carries
   no mail, so the pre-flight audit is quick and the nameserver flip is risk-free.
 - **Agency-held:** the agency registers it on Cloudflare Registrar in the agency account
-  (`FLEET.md`), so the zone already exists and steps 2 and 5 vanish. **Set the registrant
+  (`private/FLEET.md`), so the zone already exists and steps 2 and 5 vanish. **Set the registrant
   contact to the client**, not the agency. Turn auto-renew on, and record the renewal
   date and yearly fee in the client record so the owner can invoice it. The domain fee
   is never part of the care plan.
@@ -42,7 +42,7 @@ choose (DECISIONS 2026-10-01; the choice goes in the client record):
 ## Recipe
 
 Shell setup used below: `TOK=$(cat ~/.config/hangar/cloudflare-token)`,
-`ACC=<cloudflare account id>` (from `FLEET.md`), `DOM=<domain>`, `SLUG=<slug>`.
+`ACC=<cloudflare account id>` (from `private/FLEET.md`), `DOM=<domain>`, `SLUG=<slug>`.
 
 1. **Pre-flight DNS audit — before touching anything** (the step that saves inboxes):
 

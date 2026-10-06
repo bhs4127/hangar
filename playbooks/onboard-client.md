@@ -11,14 +11,14 @@ the very first commit: branch + PR + preview, even during the initial build.
    own, e.g. [build/restaurant.md](build/restaurant.md) § Intake questions; a client with
    no vertical playbook follows [_base.md § Deriving a new vertical](build/_base.md)). Capture answers
    verbatim **in the client record itself** (an "Intake answers" section — see
-   [clients/_example-client.md](../clients/_example-client.md) for what complete
+   [private.example/clients/_example-client.md](../private.example/clients/_example-client.md) for what complete
    looks like), so the build has one source of truth. Chase every `TBD` before the
    build, not after launch — unanswered slots block go-live (CLAUDE.md rule 5).
 
 2. **Create the client record.** Copy
-   [clients/_example-client.md](../clients/_example-client.md) →
-   `clients/<slug>.md`; fill every field; add the row to
-   [clients/REGISTRY.md](../clients/REGISTRY.md) with status `onboarding`.
+   [private.example/clients/_example-client.md](../private.example/clients/_example-client.md) →
+   `private/clients/<slug>.md`; fill every field; add the row to
+   [private/clients/REGISTRY.md](../private/clients/REGISTRY.md) with status `onboarding`.
    The slug is kebab-case and stable forever — it names the repo, the Pages project,
    and branches.
 
@@ -28,7 +28,7 @@ the very first commit: branch + PR + preview, even during the initial build.
    unreachable. Add phone/Signal/form identifiers as they become real.
 
 4. **Create the spoke repo** *(manual for now)*: private GitHub repo
-   `<your-org>/<slug>-site` (org and visibility from `FLEET.md`),
+   `<your-org>/<slug>-site` (org and visibility from `private/FLEET.md`),
    created with a bootstrap commit on `main` (README only) so the first build PR has a
    base — everything after lands via PR.
    There is deliberately no template repo — the build playbook *is* the template
@@ -73,8 +73,8 @@ the very first commit: branch + PR + preview, even during the initial build.
     [setup-email-intake.md](setup-email-intake.md) § The welcome email. The owner
     sends it, or okays the agent sending it.
 
-12. **State layer** (CLAUDE.md): registry row status → `live`; update STATUS.md and
-    TODOS.md; CHANGELOG line; DECISIONS entry only if a real decision was made.
+12. **State layer** (CLAUDE.md): registry row status → `live`; update private/STATUS.md and
+    private/TODOS.md; CHANGELOG line; DECISIONS entry only if a real decision was made.
     Client-specific deviations also go in the client record's "gotchas" section.
 
 ## What this playbook deliberately doesn't do
