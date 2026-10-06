@@ -118,6 +118,7 @@ than none.
 | `playbooks/handoff.md` | How a site leaves: everything moves into accounts the client owns |
 | `playbooks/setup-email-intake.md` | One-time email setup (Resend) + the per-request loop |
 | `playbooks/daily-mail-sweep.md` | The scheduled, report-only read of all inbound mail + phone digest |
+| `playbooks/telegram-approvals.md` | Run a reported change from the phone: owner commands on Telegram → operator session *(draft, not yet run)* |
 | `schemas/` | Reference Zod schemas — copied into each spoke at birth |
 | `automation/` | Intake-layer design (adapters → one pipeline). Email has a working playbook; SMS/Signal **described, not built**. |
 | `private/STATUS.md` / `private/TODOS.md` / `DECISIONS.md` / `private/CHANGELOG.md` | The state layer (see above) |

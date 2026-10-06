@@ -106,9 +106,11 @@ only. Setup and the manual fallback: `playbooks/change/register-search-console.m
 
 ## Also described here, also deferred
 
-- **Approval channel:** a Telegram or Slack bot that posts *"PR ready: <preview link> —
-  👍 to ship?"* and treats the reaction as approval-to-merge, so approvals work from a
-  phone. It moves the human gate closer to the human; it never removes it.
+- **Approval channel:** now drafted as
+  [playbooks/telegram-approvals.md](../playbooks/telegram-approvals.md) — fixed owner
+  commands with change labels rather than a 👍 reaction, so a reaction on the wrong
+  message can't approve anything. It moves the human gate closer to the human; it never
+  removes it.
 - **Persistent host:** the always-on machine (mini PC or small VPS) that keeps hangar + all
   spokes checked out, runs the intake loop, and hosts the `signal-cli` daemon. Until it
   exists, the loop runs when I open Claude Code manually.

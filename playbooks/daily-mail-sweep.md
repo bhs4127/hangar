@@ -140,6 +140,13 @@ without moving the watermark.
    Digest format: a first line with counts (`Mail sweep 2026-10-01: 1 lead, 1 request,
    1 held`), then one line per message (class, sender name, subject, ≤60 chars). No
    message bodies, email addresses, or drafts. Those stay on the machine.
+
+   A **client request** or **client answer** line ends with its change label, the
+   first 8 characters of the original request's Resend id, so the owner can act on it
+   from the phone ([telegram-approvals.md](telegram-approvals.md)):
+   `request · Marisol · carnitas price · 25372461`. An answer carries the label of
+   the request it answers, plus `yes`, `changes` or `hedged`. Held items and leads get
+   no label: there is nothing to run from the phone.
    If the push fails, say so in the report and carry on.
 
 8. **Advance the watermark**: `node automation/mail-sweep.mjs advance <newest id>`.
@@ -151,7 +158,10 @@ without moving the watermark.
 9. **State layer** (only when there was new mail):
    - `private/TODOS.md`: one unchecked item per message that needs the owner, under
      "Inbox — from the mail sweep". Name the Resend id and the date, but don't quote
-     client text beyond a subject line.
+     client text beyond a subject line. A client request's item also records its
+     **label** and **stage** (`new`), which the Telegram operator session updates. A
+     client answer goes onto the existing item for its label (its Resend id and
+     `yes`/`changes`/`hedged`), not into a new item.
    - `private/CHANGELOG.md`: one line (`— Mail sweep: N new (…)`).
    - `private/STATUS.md`: update the "last sweep" line.
    - Skip `node dev/build-architecture.mjs` and DECISIONS. A sweep changes no
