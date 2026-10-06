@@ -258,7 +258,11 @@ async function report(domain, days = "28") {
   console.log(`| Average position | ${pos(a.position)} | ${pos(b.position)} | |`);
   for (const [title, rows] of [["Top searches", queries], ["Top pages", pages]]) {
     console.log(`\n## ${title}`);
-    if (!rows.length) { console.log("No data yet."); continue; }
+    if (!rows.length) {
+      // Google withholds rare searches for privacy, so impressions can exist with no rows.
+      console.log(a.impressions ? "None listed. Google withholds rare searches for privacy." : "No data yet.");
+      continue;
+    }
     console.log(`| | Clicks | Impressions | Position |\n|---|---|---|---|`);
     for (const r of rows) console.log(`| ${r.keys[0].replace(/\|/g, "/")} | ${r.clicks} | ${r.impressions} | ${pos(r.position)} |`);
   }
