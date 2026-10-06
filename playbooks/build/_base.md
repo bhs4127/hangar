@@ -254,6 +254,14 @@ The vertical playbook adds its own items to this list.
       Domain property on the agency Google account, sitemap submitted
 - [ ] PR + preview reviewed by the owner; merged; registry row + hangar state layer updated
 
+**Test and rehearsal spokes are never indexed.** A spoke whose business is fictional
+(a dress-rehearsal client) carries `X-Robots-Tag: noindex` on every response
+(`public/_headers`) plus `<meta name="robots" content="noindex">` in the layout, from
+its first deploy. robots.txt keeps crawling allowed, because a `Disallow` hides the
+noindex, and has no `Sitemap:` line. Its Lighthouse SEO score drops as a result, which is
+correct. Otherwise its structured data hands search engines a made-up business at a
+real-looking address, in listing-ready form.
+
 ## Deriving a new vertical
 
 When a client fits no vertical playbook, derive one during onboarding instead of forcing

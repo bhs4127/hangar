@@ -614,3 +614,16 @@ mentally filtering out the menu. That worked while one operator remembered which
 which, but a rule placed in the restaurant file (structured data, the first case) is
 invisible to an agent building a law office or a medical practice. The split is a move,
 not a rewrite: the content is the same, now in the file its scope says it belongs in.
+
+## 2026-10-06 — Fictional test spokes are noindexed
+
+**Decision:** A spoke built for a fictional client (a dress rehearsal, a worked example)
+sends `X-Robots-Tag: noindex` on every response and a robots `noindex` meta on every
+page, from its first deploy. Crawling stays allowed so search engines see the noindex.
+Recorded in `_base.md`. Structured data still ships on these spokes, since they're the
+reference implementations.
+**Why:** The test spoke was fully indexable, and the structured-data rollout was about to
+make it publish a made-up restaurant, with a street address that could belong to a real
+building, in the exact format Google uses for local business listings. A test site's
+job is to prove the pipeline, not to be found. Without noindex, fictional business facts
+leak into search and maps, the same harm rule 5 guards against on real sites.
