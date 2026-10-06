@@ -26,11 +26,11 @@ that already receives mail at it — use the `requests.` subdomain.)
 
 ## One-time setup
 
-Values come from `FLEET.md` at the moment they're needed — never write a real domain,
+Values come from `private/FLEET.md` at the moment they're needed — never write a real domain,
 account, or key into this file (rule 9).
 
 1. **Register the intake domain** *(owner, once)* — Cloudflare Registrar, per DECISIONS.
-   Record it in `FLEET.md` § Intake. Everything below is blocked until this exists.
+   Record it in `private/FLEET.md` § Intake. Everything below is blocked until this exists.
 2. **Create the Resend account + two API keys** *(owner, once)*. Two, because they have
    different blast radii:
 
@@ -123,7 +123,7 @@ senders.
 
 **Mechanics**
 
-- **From the alias**, with the agency name from `FLEET.md` as the display name:
+- **From the alias**, with the agency name from `private/FLEET.md` as the display name:
   `"<Agency name>" <slug>@requests.<intake-domain>`. Replies then land in intake with no
   Reply-To tricks. If the owner sends it from a personal inbox instead, replies come back
   to that inbox, and an owner address shared across clients can't identify anyone
@@ -153,14 +153,14 @@ senders.
 - **Optionally, end with the record's open questions.** These are unconfirmed claims,
   copy the client hasn't reviewed, or `TBD`s. The welcome email is the natural first
   thread for them. Ask; don't assert (rule 5).
-- **Sign off "Talk soon," followed by the agency name** from `FLEET.md`. Write in "we"
+- **Sign off "Talk soon," followed by the agency name** from `private/FLEET.md`. Write in "we"
   to match it.
 
 **When replies arrive:** the client's reply quotes the welcome email, examples included.
 Only the client's new text above the quote is the request. A quoted example is never a
 request, even if it looks like one.
 
-**Template.** Fill the `<>` placeholders from the client record and `FLEET.md`.
+**Template.** Fill the `<>` placeholders from the client record and `private/FLEET.md`.
 
 ```text
 Subject: Changes to <domain>: just reply here
@@ -210,7 +210,7 @@ Steps 2–9 are the standard pipeline ([README.md](README.md)); only step 1 is n
    identity. Require the `authentication` object to show **SPF or DKIM pass and DMARC
    not failing**; anything less is a suspected spoof — hold it for the owner and do
    nothing else. Then match `source_identifier` against the `channels` tables under
-   `clients/` (rule 7): exactly one match → proceed; zero or several → hold for the
+   `private/clients/` (rule 7): exactly one match → proceed; zero or several → hold for the
    owner. Cross-check that the alias it was sent to (`to` / `received_for`) belongs to
    the same client; a mismatch is a red flag, not a tiebreaker.
 4. **Clarity gate** (rules 4–5), then the change playbook, build validation, PR +

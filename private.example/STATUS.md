@@ -11,7 +11,7 @@ full loop was proven end to end: request → playbook → branch → validated e
 preview → approval → merge → deploy, hosting included (agent-performed Cloudflare Pages
 direct uploads). None of that fleet's clients, accounts, or domains came with it.
 
-**Before your first task:** copy `FLEET.example.md` → `FLEET.md` and fill it in. That
+**Before your first task:** fill in `private/FLEET.md` (seeded from `private.example/`). That
 file is the only place hangar names your GitHub org and Cloudflare account; nothing else in
 the repo hardcodes them. Then run its first-run checklist (`gh auth login`,
 `wrangler login`, mint the scoped API token).
@@ -23,7 +23,7 @@ through manually (DECISIONS.md — HQ-first build order).
 ## Built (real, usable now)
 
 - `CLAUDE.md` — guardrails every task runs under
-- `FLEET.example.md` — per-operator identifiers; copy to `FLEET.md` (gitignored)
+- `private.example/` — seed for the private layer (`private/`, ignored by hangar; back it up as its own private repo)
 - `playbooks/README.md` — the shared anatomy-of-a-change pipeline
 - `playbooks/build/_base.md` — the build spec every site follows, plus how to derive a new vertical
 - `playbooks/build/restaurant.md` — the restaurant vertical, extending the base
@@ -32,9 +32,9 @@ through manually (DECISIONS.md — HQ-first build order).
   recipes, and the template for future change types
 - `playbooks/onboard-client.md` — how a spoke is born, step by step (manual-first)
 - `schemas/restaurant.ts` — reference Zod contract, copied into each spoke at birth
-- `clients/_example-client.md` + `clients/REGISTRY.md` — record format + empty index
-- State layer: this file, `TODOS.md`, `DECISIONS.md`, `CHANGELOG.md`
-- `dev/build-architecture.mjs` → generated `dev/architecture.html`
+- `private.example/clients/_example-client.md` + `private/clients/REGISTRY.md` — record format + empty index
+- State layer: this file, `TODOS.md`, `CHANGELOG.md` (all in `private/`) + `DECISIONS.md` (shared)
+- `dev/build-architecture.mjs` → generated `private/architecture.html`
 
 ## Stubbed
 
@@ -63,7 +63,7 @@ through manually (DECISIONS.md — HQ-first build order).
 | Node | Group | Status | Notes |
 |---|---|---|---|
 | Guardrails (CLAUDE.md) | hangar | built | rules every task runs under |
-| Fleet config (FLEET.md) | hangar | planned | copy FLEET.example.md and fill it in — first step |
+| Fleet config (FLEET.md) | hangar | planned | fill in private/FLEET.md — first step |
 | Client registry | hangar | built | format + worked example; **0 clients** |
 | Base build playbook | hangar | built | `_base.md`: universal anatomy, stack, contact form, JSON-LD, DoD, and the recipe for deriving a new vertical |
 | Restaurant build playbook | hangar | built | extends _base.md; menu / hours / ordering specifics |

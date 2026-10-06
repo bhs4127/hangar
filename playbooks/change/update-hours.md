@@ -26,7 +26,7 @@ The posted weekly hours change: open/close times, a day becoming closed or open.
    `"21:30"`.
 4. Untouched days stay byte-identical.
 5. **Future-dated changes** ("starting next month"): there's no scheduling. Ask whether
-   to ship now or hold the PR until the date; if held, note it in hangar's TODOS.md with the
+   to ship now or hold the PR until the date; if held, note it in hangar's private/TODOS.md with the
    date.
 
 ## Validate
@@ -45,7 +45,7 @@ of last resort, and their "looks good" is what publishes it.
 
 - **One-off exceptions** ("closed July 4") — the weekly schema can't represent dates,
   by decision (DECISIONS.md, 2026-06-10). Put it in `hours.notes` ("Closed July 4") and
-  add a TODOS.md reminder to remove the note afterward. A dated-exceptions schema stays
+  add a private/TODOS.md reminder to remove the note afterward. A dated-exceptions schema stays
   in the parking lot unless notes-juggling becomes a recurring chore.
 - **Split hours** ("11–2, then 5–9") — not representable; one open/close per day.
   Escalate; known limitation, candidate v2 schema change.

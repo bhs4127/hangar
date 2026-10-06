@@ -72,7 +72,7 @@ attach it to the link. If that changes the link URL, update the content too. Old
 receipts keep the old price; that's correct.
 
 **Retiring:** deactivate the link (never delete it, so its history stays), remove the
-item or its button from content, and for dated events add a TODOS.md reminder to
+item or its button from content, and for dated events add a private/TODOS.md reminder to
 deactivate it the day after.
 
 ## Validate

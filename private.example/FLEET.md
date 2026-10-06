@@ -1,8 +1,9 @@
 # FLEET — this operator's identifiers
 
-> **Copy this file to `FLEET.md` and fill it in. `FLEET.md` is gitignored and never
-> committed.** It is the single place hangar names your accounts; playbooks and client
-> records reference *this file* instead of hardcoding an org, an account, or a domain.
+> **This is the seed for `private/FLEET.md` (`cp -R private.example private` puts it
+> there). Fill in that copy; `private/` is never committed to hangar.** It is the
+> single place hangar names your accounts; playbooks and client records reference
+> *this file* instead of hardcoding an org, an account, or a domain.
 > That is what makes hangar forkable — the instructions are shared, the identifiers are not.
 >
 > If a value isn't real yet, write `TBD`. A `TBD` here blocks the step that needs it,
@@ -66,7 +67,7 @@ No Shopify API token is ever stored. The CLI authenticates per store as the coll
 
 ## First-run checklist
 
-- [ ] Copy this file to `FLEET.md`, fill every row (or `TBD` deliberately)
+- [ ] Fill every row of `private/FLEET.md` (or `TBD` deliberately)
 - [ ] `gh auth login` as the org above
 - [ ] `wrangler login` on the Cloudflare account above
 - [ ] Mint + store the scoped API token (command above)

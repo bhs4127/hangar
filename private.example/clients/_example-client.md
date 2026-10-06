@@ -1,7 +1,7 @@
 # Marisol's Taqueria
 
-> **EXAMPLE / TEMPLATE — not a real client.** Copy this file to `clients/<slug>.md` for
-> each new client and add a row to [REGISTRY.md](REGISTRY.md). Every field is required
+> **EXAMPLE / TEMPLATE — not a real client.** Copy this file to `private/clients/<slug>.md`
+> for each new client and add a row to `private/clients/REGISTRY.md`. Every field is required
 > unless marked optional. If a value isn't known at onboarding, write `TBD` — never
 > invent one (CLAUDE.md rule 5).
 
@@ -76,7 +76,7 @@ arrive via the intake channel; they're recorded here so the build has one source
 
 ## Design brief
 
-Collected at intake per [playbooks/design-language.md](../playbooks/design-language.md)
+Collected at intake per [playbooks/design-language.md](../../playbooks/design-language.md)
 § The design brief. The build must visibly reflect it (DECISIONS.md, 2026-06-10).
 
 | Question | Answer |

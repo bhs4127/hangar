@@ -35,8 +35,8 @@ All of these live **outside tracked files** (CLAUDE.md rule 9):
 | Watermark (where the last sweep stopped) | `~/.config/hangar/mail-sweep-state.json` → `{ last_created_at, last_id, updated_at }` |
 | Push destination (Telegram chat id) | `~/.config/hangar/telegram-chat-id` |
 | Telegram bot token | `~/.claude/channels/telegram/.env` (`TELEGRAM_BOT_TOKEN=`), owned by the Telegram plugin |
-| Which alias means what | `FLEET.md` § Intake (intake domain, lead + portfolio aliases) |
-| Client identity | `channels` tables in `clients/*.md` |
+| Which alias means what | `private/FLEET.md` § Intake (intake domain, lead + portfolio aliases) |
+| Client identity | `channels` tables in `private/clients/*.md` |
 
 ## The one door: `automation/mail-sweep.mjs`
 
@@ -59,8 +59,8 @@ server-side and comes back as a 500.
 pipes, no `&&`, no redirects and no shell variables. An unattended run only gets through
 without stopping when every command matches the operator's allow rule,
 `Bash(node automation/mail-sweep.mjs:*)`. A command the rule doesn't cover waits for
-approval, and nobody is there to give it. Edits are limited to `TODOS.md`,
-`CHANGELOG.md` and `STATUS.md` for the same reason. Operator setup:
+approval, and nobody is there to give it. Edits are limited to `private/TODOS.md`,
+`private/CHANGELOG.md` and `private/STATUS.md` for the same reason. Operator setup:
 [Scheduling](#scheduling).
 
 If `list-new` exits **2**, the watermark is missing or unreadable. **Stop**, push
@@ -80,7 +80,7 @@ without moving the watermark.
    aren't downloaded.** The owner pulls them in a real session (their URLs expire
    after an hour anyway).
 
-3. **Classify by the alias it was sent to** (`to`), using `FLEET.md` § Intake:
+3. **Classify by the alias it was sent to** (`to`), using `private/FLEET.md` § Intake:
 
    | Alias | Class |
    |---|---|
@@ -149,13 +149,16 @@ without moving the watermark.
    step means the next sweep re-reports, and a duplicate beats a lost lead.
 
 9. **State layer** (only when there was new mail):
-   - `TODOS.md`: one unchecked item per message that needs the owner, under
+   - `private/TODOS.md`: one unchecked item per message that needs the owner, under
      "Inbox — from the mail sweep". Name the Resend id and the date, but don't quote
      client text beyond a subject line.
-   - `CHANGELOG.md`: one line (`— Mail sweep: N new (…)`).
-   - `STATUS.md`: update the "last sweep" line.
+   - `private/CHANGELOG.md`: one line (`— Mail sweep: N new (…)`).
+   - `private/STATUS.md`: update the "last sweep" line.
    - Skip `node dev/build-architecture.mjs` and DECISIONS. A sweep changes no
      architecture.
+   - Skip the private-layer backup (CLAUDE.md state layer, step 6). It's a git push,
+     which an unattended run may not do; the next attended task commits the sweep's
+     edits along with its own.
 
    A no-mail run touches nothing but the Telegram line. Sixty "nothing new" changelog
    entries a quarter would bury the real ones.
@@ -168,7 +171,7 @@ and add these to `.claude/settings.local.json` (gitignored), under `permissions.
 
 ```json
 "Bash(node automation/mail-sweep.mjs:*)",
-"Edit(/TODOS.md)", "Edit(/CHANGELOG.md)", "Edit(/STATUS.md)"
+"Edit(/private/TODOS.md)", "Edit(/private/CHANGELOG.md)", "Edit(/private/STATUS.md)"
 ```
 
 Never run the task in bypass mode. The allow rule is what keeps an unattended run

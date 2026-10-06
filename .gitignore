@@ -4,19 +4,10 @@ node_modules/
 .idea/
 
 # ── Private layer: your fleet, never shipped ────────────────────────────────
-# Each of these has a tracked .example seed. Copy the seeds on first run:
-#   for f in FLEET STATUS TODOS CHANGELOG; do cp $f.example.md $f.md; done
-#   cp clients/REGISTRY.example.md clients/REGISTRY.md
-FLEET.md
-STATUS.md
-TODOS.md
-CHANGELOG.md
-dev/architecture.html
-
-# Client records — the example record stays public, real clients never do
-clients/*.md
-!clients/_example-client.md
-!clients/REGISTRY.example.md
+# Everything that names a real client, domain, or account lives under private/,
+# which is its own (private) git repo. Seed it on first run:
+#   cp -R private.example private
+private/
 
 # playwright MCP scratch output
 .playwright-mcp/

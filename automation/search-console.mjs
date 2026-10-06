@@ -5,7 +5,7 @@
 // Google for the DNS verification token, adds that TXT record to the domain's
 // Cloudflare zone (additive only, never replacing a record), waits for it to resolve
 // publicly, verifies ownership, adds the property, and submits the sitemap. It runs as
-// the agency Google account in FLEET.md § Google.
+// the agency Google account in private/FLEET.md § Google.
 //
 //   node automation/search-console.mjs auth                 → one-time browser consent; stores the refresh token
 //   node automation/search-console.mjs register <domain>    → verify + add property + submit sitemap (idempotent)
@@ -103,7 +103,7 @@ async function auth() {
         code_challenge_method: "S256",
         state,
       });
-      process.stderr.write(`Opening the browser. Sign in as the agency Google account (FLEET.md).\nIf it doesn't open: ${url}\n`);
+      process.stderr.write(`Opening the browser. Sign in as the agency Google account (private/FLEET.md).\nIf it doesn't open: ${url}\n`);
       spawn("open", [url.toString()], { stdio: "ignore", detached: true }).on("error", () => {});
     });
     setTimeout(() => { server.close(); reject(new Error("timed out after 15 minutes")); }, 900_000).unref();

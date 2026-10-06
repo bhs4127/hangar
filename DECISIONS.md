@@ -627,3 +627,25 @@ make it publish a made-up restaurant, with a street address that could belong to
 building, in the exact format Google uses for local business listings. A test site's
 job is to prove the pipeline, not to be found. Without noindex, fictional business facts
 leak into search and maps, the same harm rule 5 guards against on real sites.
+
+## 2026-10-06 — The private layer is one directory, versioned as its own private repo
+
+**Decision:** Everything that names a real client, domain, or account lives under
+`private/` (`FLEET.md`, `STATUS.md`, `TODOS.md`, `CHANGELOG.md`, `clients/*.md`, the
+generated `architecture.html`). Hangar ignores the whole directory with one
+`.gitignore` line. `private/` is its own git repo with a private remote, and the
+state-layer ritual ends by committing and pushing it. The tracked seeds move from
+`*.example.md` files beside their live copies into `private.example/`, which mirrors
+`private/`'s layout, so first run is `cp -R private.example private`. `DECISIONS.md`
+stays in hangar because it's shared (rule 10). The record template moves to
+`private.example/clients/_example-client.md`.
+**Why:** The private layer was unversioned and existed only on the operator's laptop,
+so a lost machine would lose every client record and the fleet config. A private fork
+of hangar would fix that but invite a leak: it needs a branch where the private files
+aren't ignored, one wrong push away from the public remote, and shared changes would
+have to be cherry-picked out of a history that also holds client data. A separate repo
+for the data alone keeps hangar's history clean and makes the boundary one directory
+instead of a per-file ignore list with exceptions, which is easier to check before a
+commit (rule 9). It also suits other operators: they clone hangar, seed `private/`, and
+optionally give it their own remote, with no shared history to untangle. Unattended runs
+(the mail sweep) skip the push; the next attended task commits their edits.

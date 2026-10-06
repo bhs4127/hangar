@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 /**
- * Generates dev/architecture.html — a self-contained, status-color-coded overview of
+ * Generates private/architecture.html — a self-contained, status-color-coded overview of
  * the hub-and-spoke system. Derives entirely from the state files so it can't drift:
  *
- *   - Nodes + statuses: the "## Architecture nodes" table in STATUS.md
+ *   - Nodes + statuses: the "## Architecture nodes" table in private/STATUS.md
  *     (columns: Node | Group | Status | Notes; group: intake|hangar|spokes|delivery|infra;
  *      status: built|in-progress|stubbed|planned)
- *   - Open queue: unchecked items in TODOS.md
+ *   - Open queue: unchecked items in private/TODOS.md
  *   - File tree: the repo itself
  *
  * Run from anywhere: `node dev/build-architecture.mjs`. Zero dependencies.
@@ -18,7 +18,8 @@ import { join, dirname, basename } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-const OUT = join(ROOT, "dev", "architecture.html");
+const PRIVATE = join(ROOT, "private");
+const OUT = join(PRIVATE, "architecture.html");
 
 // ---------- parse STATUS.md architecture-nodes table ----------
 
@@ -115,8 +116,8 @@ function card(n) {
     <div class="card-notes">${esc(n.notes)}</div></div>`;
 }
 
-const status = readFileSync(join(ROOT, "STATUS.md"), "utf8");
-const todosMd = readFileSync(join(ROOT, "TODOS.md"), "utf8");
+const status = readFileSync(join(PRIVATE, "STATUS.md"), "utf8");
+const todosMd = readFileSync(join(PRIVATE, "TODOS.md"), "utf8");
 const nodes = parseNodes(status);
 const todos = parseTodos(todosMd);
 const tree = buildTree(ROOT);
@@ -225,7 +226,7 @@ ${esc(tree)}</pre>
 
 writeFileSync(OUT, html);
 console.log(
-  `wrote dev/architecture.html — ${nodes.length} nodes (${Object.entries(counts)
+  `wrote private/architecture.html — ${nodes.length} nodes (${Object.entries(counts)
     .map(([k, v]) => `${v} ${k}`)
     .join(", ")}), ${todos.length} open todos`,
 );

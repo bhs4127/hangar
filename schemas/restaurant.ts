@@ -17,7 +17,7 @@ import { z } from "zod";
 
 /** Display price, verbatim from the client: "$14", "$9.50". One price per item — sizes,
  *  "market price", etc. are deliberately unrepresentable (decided 2026-06-10,
- *  DECISIONS.md); candidates parked in TODOS.md until a real menu demands them. */
+ *  DECISIONS.md); candidates parked in private/TODOS.md until a real menu demands them. */
 export const priceSchema = z
   .string()
   .regex(/^\$\d{1,3}(\.\d{2})?$/, 'Prices are display strings like "$14" or "$9.50"');

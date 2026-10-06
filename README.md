@@ -24,21 +24,21 @@ The architecture is hub-and-spoke:
 
 ## First run (fork this, then do these five things)
 
-Hangar ships with no accounts wired in. Everything operator-specific lives in gitignored
-files (`FLEET.md` and the rest of the private layer), and secrets live outside every repo
-in `~/.config/hangar/`.
+Hangar ships with no accounts wired in. Everything operator-specific lives under
+`private/` (ignored by hangar), and secrets live outside every repo in `~/.config/hangar/`.
 
 ```bash
-for f in FLEET STATUS TODOS CHANGELOG; do cp $f.example.md $f.md; done
-cp clients/REGISTRY.example.md clients/REGISTRY.md
+cp -R private.example private   # the private layer (ignored by hangar)
 gh auth login                  # as the org that will own the spoke repos
 wrangler login                 # the Cloudflare account that will own the Pages projects
 ```
 
-Then fill in `FLEET.md` — your org, Cloudflare account + ID, intake domain. Those copied
-files are all **gitignored**: this repo is public and forkable, but you also operate from
-it, so anything naming a real client, domain, or account stays local. Improvements to
-playbooks and guardrails are what you commit and share. See CLAUDE.md § Two layers.
+Then fill in `private/FLEET.md` — your org, Cloudflare account + ID, intake domain.
+`private/` is ignored by hangar: this repo is public and forkable, but you also operate
+from it, so anything naming a real client, domain, or account stays out of it.
+Improvements to playbooks and guardrails are what you commit and share. To back the
+private layer up, make `private/` its own git repo with a private remote
+(`cd private && git init`, add the remote, push). See CLAUDE.md § Two layers.
 
 Then mint a scoped Cloudflare API token (Pages:Edit, Zone:Edit, Zone:Read, DNS:Edit,
 Email Routing:Edit) and store it outside every repo:
@@ -79,8 +79,8 @@ the edit physically lands in the spoke. The full pipeline is written out once in
 | Thing | State |
 |---|---|
 | Guardrails ([CLAUDE.md](CLAUDE.md)) | **Real** |
-| Fleet config ([FLEET.example.md](FLEET.example.md)) | **Real** — copy to `FLEET.md`, fill in, never commit |
-| Private layer (`*.example.md` seeds → gitignored live files) | **Real** — your clients + state stay local |
+| Fleet config ([private.example/FLEET.md](private.example/FLEET.md)) | **Real** — seeded into `private/FLEET.md`; fill in, never commit to hangar |
+| Private layer ([private.example/](private.example/) seed → `private/`) | **Real** — your clients + state; back it up as its own private repo |
 | Anatomy of a change ([playbooks/README.md](playbooks/README.md)) | **Real** |
 | Base build playbook ([playbooks/build/_base.md](playbooks/build/_base.md)) | **Real** — every site; opinionated, argue with it. Also how to derive a new vertical |
 | Restaurant build playbook ([playbooks/build/restaurant.md](playbooks/build/restaurant.md)) | **Real** — extends the base with menu / hours / ordering |
@@ -92,7 +92,7 @@ the edit physically lands in the spoke. The full pipeline is written out once in
 | State layer (STATUS / TODOS / DECISIONS / CHANGELOG) | **Real** — maintained every task |
 | Architecture view ([dev/build-architecture.mjs](dev/build-architecture.mjs) → generated HTML) | **Real** |
 | Law-office build playbook ([playbooks/build/law-office.md](playbooks/build/law-office.md)) | **Stub** — shape + known differences only |
-| Client registry ([clients/](clients/)) | **Real format** — worked fictional example; real records are gitignored |
+| Client registry ([private.example/clients/](private.example/clients/)) | **Real format** — worked fictional example; real records live in `private/clients/` |
 | Email intake ([playbooks/setup-email-intake.md](playbooks/setup-email-intake.md)) | **Playbook ready** (Resend) — set it up once a spoke exists |
 | Other intake adapters + pipeline ([automation/README.md](automation/README.md)) | **Described only** — SMS, Signal, unattended runs |
 | Spoke template / scaffolding automation | **Described only** — the build playbook *is* the template for now |
@@ -103,15 +103,15 @@ the edit physically lands in the spoke. The full pipeline is written out once in
 ## Using hangar day to day
 
 Open Claude Code in this repo and state the task ("Marisol says the carnitas taco is $14
-now"). The agent follows CLAUDE.md: `FLEET.md` → registry → playbook → spoke → branch →
+now"). The agent follows CLAUDE.md: `private/FLEET.md` → registry → playbook → spoke → branch →
 validate → PR.
-Every task ends with the state-layer ritual, so `STATUS.md` + `dev/architecture.html`
+Every task ends with the state-layer ritual, so `private/STATUS.md` + `private/architecture.html`
 are always the current answer to "what exists, what's next, why" — steer from those
 summaries instead of re-reading the repo.
 
-## Next steps (the short version — TODOS.md is the full queue)
+## Next steps (the short version — private/TODOS.md is the full queue)
 
-1. **Copy the seeds and fill in `FLEET.md`** (see First run above) — nothing else works
+1. **Copy the seeds and fill in `private/FLEET.md`** (see First run above) — nothing else works
    until hangar knows which GitHub org and Cloudflare account it's driving.
 2. **Kick off the first client site.** Run [playbooks/onboard-client.md](playbooks/onboard-client.md):
    intake questions → client record + registry row → new `<slug>-site` repo → build per
