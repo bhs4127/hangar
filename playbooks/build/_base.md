@@ -213,7 +213,10 @@ step 1.
    empty optional collection logs a harmless build warning.
 3. Map brand tokens → the Tailwind v4 `@theme` block in `src/styles/global.css` (colors
    + font families — the only raw hex in the repo; there is no tailwind.config in v4);
-   fonts via the Fontsource imports in the layout.
+   fonts via the Fontsource imports in the layout. From here on `global.css` is the only
+   home for the values: in the same build, replace the record's **proposed** palette table
+   with the pointer, keeping approval, origin and usage rules (see the record template's
+   Brand section).
 4. Create `src/content/data/*.json` from the intake answers. Anything unanswered stays
    `TBD` and blocks go-live — never invent (rule 5).
 5. Build the section components in the vertical's canonical order, following the
