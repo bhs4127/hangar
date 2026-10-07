@@ -666,6 +666,8 @@ minutes merges and deploys). Phase 2 comes after at least three clean Phase 1 ch
 The phase is enforced by the session's permission allowlist (Phase 1 has no rule that
 can merge or deploy production), not only by the playbook. The mail sweep's scope is
 unchanged. Procedure: `playbooks/telegram-approvals.md`.
+**Status:** parked until a persistent host exists. Nothing is built yet; the playbook
+is a draft (2026-10-07).
 **Why:** The 2026-06-10 approval decision anticipated this as the same gate relocated
 to the phone. The owner reviews previews on a phone anyway, and between sweep and laptop
 a reported request sat idle. Keeping the sweep report-only (2026-09-30) and putting the
@@ -677,3 +679,90 @@ on Telegram, which `setup-email-intake.md` already allows ("the owner sends it, 
 the agent sending it"). Without it, Phase 1 would stall at the laptop. **Trade-off:** an
 unattended session now holds build and preview-deploy permissions, and in Phase 2
 production ones. It runs only while the operator's machine is awake.
+## 2026-10-07 — Big photo batches go through an upload drop we control, not email links
+
+**Decision:** Each client gets one personal upload link to a page served by a Worker on
+the intake domain (`upload.<intake-domain>`). The page accepts photos only, checked by
+their first bytes, at 50MB per file. Files go to one private R2 bucket under
+`uploads/<slug>/`, and a lifecycle rule deletes them after **30 days**. An upload is never
+a request: what the photos are for still arrives by email from a verified sender, and
+the page has no message box. The link is a bearer secret, so anyone holding it can
+upload, and it can be revoked and re-minted. The unattended mail sweep can only *list*
+uploads. Minting, revoking, and downloading are attended commands. A cloud-share link
+in an email body (Drive, iCloud, Dropbox, WeTransfer) is never fetched. The reply points
+the client to their upload link. Setup: `playbooks/setup-upload-drop.md`.
+**Why:** Mail clients cap attachments at 20–25MB and silently turn bigger batches into
+share links. Following whatever link an email contains would make an inbound message
+able to point the agent at any host. One place we control has a single API, no
+expiring links, and a known file filter. R2 sits in the account that already hosts the
+fleet: no new vendor, no new login for the sweep, and no egress fees. Dropbox File
+Requests or a shared Drive folder needed no build, but they would add a third party
+holding client files and another integration to authorize. Thirty days is long enough
+for the owner to act on a batch and short enough that the bucket never becomes an
+archive. What ships lives in the spoke repo, and a departing client has nothing to
+transfer.
+
+## 2026-10-07 — Brand values live only in the spoke; the client record keeps the why
+
+**Decision:** A site's palette and fonts are stored in one place: the `@theme` block of
+the spoke's `src/styles/global.css` (Shopify track: `config/settings_data.json`). The
+client record's Brand section no longer repeats hex values or font names. It keeps what
+the code can't hold: whether the palette is approved (by whom, when), where it came
+from (logo, brand board, owner steer), and the usage rules ("gold only on navy",
+"decorative only on light"). Before a spoke exists, the proposed palette sits in the
+record as a table marked *proposed*; the build PR moves it into `global.css` and
+replaces the table with a pointer.
+**Why:** An audit of every record against its live site found the copies already
+drifting. One record still named a heading font the site had replaced twice on build
+day. Records also listed fewer tokens than the sites use, so they weren't a complete
+reference anyway. The CSS is what ships, so it wins; a second copy only goes stale. The
+approval state and usage rules are the reverse: relationship knowledge the stylesheet
+can't express, which a future change needs before it touches color.
+
+## 2026-10-07 — Prospecting reads and drafts; the owner sends
+
+**Decision:** The agency finds clients with `automation/prospect.mjs` and
+`playbooks/prospect.md`. The tool seeds businesses from OpenStreetMap or by hand,
+audits each one's own website (homepage plus up to two contact or about pages, robots.txt
+honoured, an honest user agent), and ranks those whose site looks dated and who publish a
+way to reach them. Contact uses only an address the business published on its own site,
+or its contact form filled in **by the owner, by hand**. The agent drafts; the owner
+reviews and sends, at most 10 a week during warm-up. Every claim in a draft traces to a
+saved, re-checked signal. Outreach goes out through its own mailbox, never the intake
+domain and never Resend, whose acceptable-use policy bans cold outreach. The suppression list is permanent and is checked before any
+fetch or listing. Never: automated form submission, guessed or pattern-generated
+addresses, bought lists, scraping Google Maps or social networks. A concept mockup of a
+prospect's site is noindexed, labelled as a concept on every page, uses only facts copied
+from their current site, and is deleted 30 days after the last contact. Automated sending
+is a separate, later decision.
+**Why:** The owner has a day job, so the hours have to go to judgment, not research. The
+audit does the research. The volume limit and the hand-sent mail keep it from becoming
+spam: a bot filling in contact forms is exactly what owners hate and CAPTCHAs block, and
+a local service business can't afford to be remembered that way. A specific, true
+observation plus a concept of their own site gets answered, while a generic "your site
+looks dated" blast gets deleted. Guessed addresses bounce and bought lists carry spam
+traps, and both damage a new domain's reputation. Keeping outreach off the intake domain
+means a complaint can never cost a client's change request. Evidence-only drafting is
+rule 5 applied to our own claims: a made-up "you're losing customers" is a business fact
+we don't have.
+
+## 2026-10-07 — Agency social posts publish through Meta's API, owner-approved, own accounts only
+
+**Decision:** The agency's own Instagram and Facebook Page publish through
+`automation/meta.mjs`, using the Instagram API *with Facebook Login*: one Page access
+token covers the Page and the Instagram professional account linked to it. The Meta app
+stays at Standard Access and serves only accounts the operator owns, so it needs no App
+Review. The token lives in `~/.config/hangar/`, never in a file in any repo. Every post
+is approved by the owner before it runs: the script dry-runs by default and publishes
+only with `--publish`. Media are generated from real builds (frame-rendered video, a
+synthesised soundtrack we own), never from AI imagery of things that don't exist, and
+copy promises only intake channels that are live. Client social accounts, X, and Google
+Business Profile posts are out of scope.
+**Why:** The Facebook Login path is the only one that takes a Reel uploaded straight from
+a local file, so nothing has to be hosted publicly first, and one token serves both
+networks the owner wants. Serving our own accounts only keeps it inside Standard Access:
+connecting clients' accounts would need App Review and Business Verification, a
+separate decision when a client asks. Human approval matters because a post is public
+and permanent in practice, and the content shows real sites; a wrong price or an
+unconsented client feature can't be recalled from a feed. X's API costs money and GBP
+posts get little attention, so both are overhead without return for now.

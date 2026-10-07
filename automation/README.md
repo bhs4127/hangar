@@ -96,6 +96,17 @@ agency domain with the visitor as `Reply-To`. Per-spoke recipe:
 [playbooks/change/wire-contact-delivery.md](../playbooks/change/wire-contact-delivery.md).
 Still unwired on every live spoke until that playbook runs for each.
 
+## Upload drop — for photo batches too big for email (DECISIONS 2026-10-07)
+
+`automation/upload-drop/worker.js` is a Worker on `upload.<intake-domain>` that serves
+each client a personal link to an images-only upload page, backed by one private R2
+bucket with a 30-day expiry. It sits *beside* the email adapter, not in front of it:
+an upload is never a request, and it only supplies the `attachments` for a request that
+arrives by email. The sweep lists uploads through `mail-sweep.mjs uploads-new`. Minting,
+revoking, and downloading go through `automation/upload-drop.mjs`, attended only. Deploy
+config is private (`private/upload-drop/wrangler.jsonc`). Setup and per-client steps:
+[playbooks/setup-upload-drop.md](../playbooks/setup-upload-drop.md).
+
 ## Search Console — LIVE since 2026-10-01
 
 `automation/search-console.mjs` registers a live domain with Google Search Console end to
@@ -104,9 +115,29 @@ the agency Google account (`private/FLEET.md` § Google) over OAuth, with the re
 `~/.config/hangar/`. The token expires weekly by design, so it's for owner-present runs
 only. Setup and the manual fallback: `playbooks/change/register-search-console.md`.
 
+## Prospecting — built 2026-10-07
+
+`automation/prospect.mjs` finds local businesses (OpenStreetMap, or added by hand), audits
+each one's own website for signs it's dated, records only the email addresses the business
+published, and ranks the contactable ones. It reads public pages only. It never submits a
+form or sends anything, and every scored signal keeps its evidence for the draft. The
+list and suppression file live in `private/marketing/`. Attended only, and sending is the
+owner's, by hand, until a send helper exists (DECISIONS 2026-10-07). The weekly loop:
+[playbooks/prospect.md](../playbooks/prospect.md).
+
+## Social publishing (Meta): written 2026-10-07, not yet authorised
+
+`automation/meta.mjs` publishes to the agency's own Instagram (and, next, Facebook Page)
+through the Instagram API with Facebook Login. `auth` turns a short-lived Graph API
+Explorer token into a long-lived Page token, `status` shows token health and the
+publishing quota, and `reel <mp4> <caption>` dry-runs by default and uploads only with
+`--publish` (resumable upload from the local file, so nothing needs hosting). Own accounts
+only, Standard Access, and every post owner-approved (DECISIONS 2026-10-07). Which Page:
+`private/FLEET.md` § Meta.
+
 ## Also described here, also deferred
 
-- **Approval channel:** now drafted as
+- **Approval channel:** drafted and parked until the persistent host below exists, as
   [playbooks/telegram-approvals.md](../playbooks/telegram-approvals.md) — fixed owner
   commands with change labels rather than a 👍 reaction, so a reaction on the wrong
   message can't approve anything. It moves the human gate closer to the human; it never

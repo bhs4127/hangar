@@ -1,8 +1,9 @@
 # Telegram approvals — run a change from the phone
 
-> **DRAFT — not yet run.** Phase 1 has prerequisites that aren't built yet (see
-> [Before the first run](#before-the-first-run)). The first dry run on a test spoke
-> corrects this file.
+> **PARKED — not built, not yet run.** This waits for a persistent host: the operator
+> session has to stay up to hear a command. Nothing here is in effect, including the
+> mail-sweep changes it needs (see [Before the first run](#before-the-first-run)). The
+> first dry run on a test spoke corrects this file.
 
 ## Use when
 
@@ -212,9 +213,16 @@ clean Phase 1 changes, recorded in `private/STATUS.md`.
 
 Prerequisites:
 
-- [x] **Digest labels.** The sweep's digest lines end in the 8-char label, and each
-      inbox item in `private/TODOS.md` records label, full Resend id, and stage
-      ([daily-mail-sweep.md](daily-mail-sweep.md) steps 7 and 9).
+- [ ] **Digest labels** in [daily-mail-sweep.md](daily-mail-sweep.md), not applied while
+      this is parked:
+      - Step 7: a **client request** or **client answer** digest line ends with its
+        change label, e.g. `request · Marisol · carnitas price · 25372461`. An answer
+        carries the label of the request it answers, plus `yes`, `changes` or `hedged`.
+        Held items, leads and upload batches get no label.
+      - Step 9: a client request's inbox item also records its **label** and **stage**
+        (`new`), which the operator session updates. A client answer goes onto the
+        existing item for its label (its Resend id and `yes`/`changes`/`hedged`), not
+        into a new item.
 - [ ] **A send script** (`automation/` — e.g. a `send` subcommand) that sends a draft
       file from a client alias, in-thread, only to that client's registered channels,
       without the agent ever reading the key.

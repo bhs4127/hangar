@@ -1,0 +1,17 @@
+// Private deploy config for the upload drop (playbooks/setup-upload-drop.md).
+// Lives in private/ because it names the account and the intake domain (CLAUDE.md rule 9).
+// The code it deploys is shared: automation/upload-drop/worker.js.
+//
+//   npx wrangler deploy -c private/upload-drop/wrangler.jsonc
+{
+  "name": "hangar-upload-drop",
+  "main": "../../automation/upload-drop/worker.js",
+  "compatibility_date": "2026-10-01",
+  "account_id": "<Cloudflare account ID from FLEET.md>",
+  "workers_dev": false,
+  "preview_urls": false,
+  "routes": [{ "pattern": "upload.<intake-domain>", "custom_domain": true }],
+  "r2_buckets": [{ "binding": "UPLOADS", "bucket_name": "hangar-uploads" }],
+  "vars": { "AGENCY_NAME": "<Agency name from FLEET.md>" }
+  // ADMIN_TOKEN is a secret: `npx wrangler secret put ADMIN_TOKEN -c private/upload-drop/wrangler.jsonc`
+}

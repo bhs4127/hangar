@@ -94,7 +94,7 @@ the edit physically lands in the spoke. The full pipeline is written out once in
 | Law-office build playbook ([playbooks/build/law-office.md](playbooks/build/law-office.md)) | **Stub** — shape + known differences only |
 | Client registry ([private.example/clients/](private.example/clients/)) | **Real format** — worked fictional example; real records live in `private/clients/` |
 | Email intake ([playbooks/setup-email-intake.md](playbooks/setup-email-intake.md)) | **Playbook ready** (Resend) — set it up once a spoke exists |
-| Telegram approvals ([playbooks/telegram-approvals.md](playbooks/telegram-approvals.md)) | **Drafted, not yet run** — owner commands from the phone; send script + allowlist still to build |
+| Telegram approvals ([playbooks/telegram-approvals.md](playbooks/telegram-approvals.md)) | **Parked** — drafted, waits for a persistent host; send script + allowlist still to build |
 | Other intake adapters + pipeline ([automation/README.md](automation/README.md)) | **Described only** — SMS, Signal, unattended runs |
 | Spoke template / scaffolding automation | **Described only** — the build playbook *is* the template for now |
 | Cloudflare Pages config + per-branch previews | **Real** — direct-upload, agent-deployed; commands in [automation/README.md](automation/README.md) |

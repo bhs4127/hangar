@@ -46,6 +46,7 @@ why the scoped token exists. Deploys work with OAuth alone; domain hookups don't
 | **Lead alias** | `TBD` | playbooks/daily-mail-sweep.md — class *lead* |
 | **Portfolio alias** | `TBD` *(optional)* | playbooks/daily-mail-sweep.md — class *portfolio enquiry* |
 | **Sweep push** | `TBD` (e.g. Telegram; destination id in `~/.config/hangar/`, never here) | playbooks/daily-mail-sweep.md step 7 |
+| **Upload drop** | `TBD` (`https://upload.<intake-domain>`; Worker `hangar-upload-drop`, R2 bucket `hangar-uploads`, 30-day expiry; admin token in `~/.config/hangar/`, never here) | playbooks/setup-upload-drop.md |
 
 ## Shopify (only if you run the Shopify track)
 
@@ -57,6 +58,31 @@ why the scoped token exists. Deploys work with OAuth alone; domain hookups don't
 | **Sandbox dev store** | `TBD` | throwaway `*.myshopify.com` for trying CLI commands. Never a client store |
 
 No Shopify API token is ever stored. The CLI authenticates per store as the collaborator.
+
+## Outreach (only if you prospect)
+
+Cold outreach never uses the intake domain, and never Resend: its acceptable-use policy
+bans cold outreach, and the fleet's form delivery and intake run on that account
+(playbooks/prospect.md).
+
+| Key | Value | Used by |
+|---|---|---|
+| **Sending domain** | `TBD` (its own domain, not the intake domain; SPF, DKIM, and DMARC set before the first send) | playbooks/prospect.md step 6 |
+| **From address** | `TBD` (a real, monitored mailbox; replies come here) | prospect.md steps 6–7 |
+| **Mailbox provider** | `TBD` | where the owner sends from and reads replies |
+| **Postal address (CAN-SPAM)** | `TBD` (a street address, PO box, or registered private mailbox; required in every outreach email) | prospect.md step 5 footer |
+| **PageSpeed API key** | optional; `~/.config/hangar/pagespeed-key`, never here | `prospect.mjs psi` |
+
+## Meta (only if you post to Instagram / Facebook)
+
+The agency's own accounts only (DECISIONS 2026-10-07). `automation/meta.mjs` reads the
+Page name below; tokens and the app secret live in `~/.config/hangar/meta-*.json`, never here.
+
+| Key | Value | Used by |
+|---|---|---|
+| **Instagram account** | `TBD` (professional account, linked to the Page below) | `meta.mjs status` / `reel` |
+| **Facebook Page** | `TBD` (exact Page name; `auth` picks it from the token's Pages) | `meta.mjs auth` |
+| **Meta app** | `TBD` (App Dashboard name + app ID; Standard Access, no App Review) | `meta.mjs auth` |
 
 ## Google
 

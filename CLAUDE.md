@@ -108,7 +108,7 @@ than none.
 |---|---|
 | `private/` | The private layer — its own git repo, ignored by hangar |
 | `private/FLEET.md` | Your org, Cloudflare account, intake domain |
-| `private/clients/` | Registry index + one record per client (channels, brand tokens, gotchas) |
+| `private/clients/` | Registry index + one record per client (channels, brand approval + usage rules, gotchas) |
 | `private.example/` | Tracked seed for `private/`, incl. the fictional record template `clients/_example-client.md` |
 | `playbooks/README.md` | The shared "anatomy of a change" pipeline every playbook plugs into |
 | `playbooks/build/` | How to build a new site: `_base.md` for every site (incl. deriving a new vertical), one file per vertical that extends it (restaurant is the reference) |
@@ -117,8 +117,10 @@ than none.
 | `playbooks/onboard-client.md` | How a new spoke is born and registered |
 | `playbooks/handoff.md` | How a site leaves: everything moves into accounts the client owns |
 | `playbooks/setup-email-intake.md` | One-time email setup (Resend) + the per-request loop |
+| `playbooks/setup-upload-drop.md` | Per-client photo upload links (Worker + R2, 30-day expiry) for batches too big for email |
 | `playbooks/daily-mail-sweep.md` | The scheduled, report-only read of all inbound mail + phone digest |
-| `playbooks/telegram-approvals.md` | Run a reported change from the phone: owner commands on Telegram → operator session *(draft, not yet run)* |
+| `playbooks/telegram-approvals.md` | Run a reported change from the phone: owner commands on Telegram → operator session *(parked until a persistent host exists)* |
+| `playbooks/prospect.md` | The weekly prospecting loop: find dated local sites, draft evidence-based emails, the owner sends |
 | `schemas/` | Reference Zod schemas — copied into each spoke at birth |
 | `automation/` | Intake-layer design (adapters → one pipeline). Email has a working playbook; SMS/Signal **described, not built**. |
 | `private/STATUS.md` / `private/TODOS.md` / `DECISIONS.md` / `private/CHANGELOG.md` | The state layer (see above) |

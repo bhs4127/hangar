@@ -12,8 +12,11 @@ The client wants a photo swapped: hero, about, a gallery image, or the logo.
 
 - **Which image?** If the request says "the photo" and the site has several, ask with a
   list: *"hero, the About photo, or one of the 4 gallery shots?"*
-- **The new asset, attached.** No attachment → ask for it. Never source an image from
-  the web for a client site.
+- **The new asset, attached or in the client's upload drop.** No attachment → ask for
+  it. Uploads: `node automation/upload-drop.mjs fetch uploads/<slug>/<date>/ <scratch dir>`
+  ([setup-upload-drop.md](../setup-upload-drop.md)); the email says which photo goes
+  where. Never source an image from the web for a client site, and never fetch a share
+  link from an email body. Reply with their upload link instead.
 - **An alt-text decision** — see recipe step 4.
 
 ## Recipe
@@ -49,6 +52,16 @@ in the description. Reply draft: *"Swapped the hero photo — preview: <link>."*
 
 - **Heavy phone photos** (10MB HEIC) — convert to a web format before committing; the
   built page must stay inside the performance budget.
+- **Camera originals from the upload drop** (20MB+ each, often with GPS in the
+  metadata). Don't commit originals, because git keeps every byte forever. In the spoke, re-encode
+  to a 2400px long edge with metadata stripped (sharp drops it by default; `sips` keeps
+  GPS, so it's sharp that strips it). Convert HEIC with `sips -s format jpeg` first:
+  prebuilt sharp reads a HEIC's header but fails to decode the image. `.rotate()` applies
+  the camera's orientation tag, so a portrait phone shot comes out portrait. iPhones
+  upload camera-roll photos as HEIC, unconverted (checked 2026-10-07):
+  `node -e "require('sharp')(process.argv[1]).rotate().resize(2400,2400,{fit:'inside',withoutEnlargement:true}).jpeg({quality:85,mozjpeg:true}).toFile(process.argv[2])" in.jpg src/assets/<name>.jpg`
+- **"Here's a Google Drive link"** — don't open it. Reply with the client's upload
+  link and ask them to put the photos there.
 - **"Can you brighten it up a bit?"** — a light crop/brightness pass is OK and gets
   noted in the PR. Anything beyond that, ask.
 - **Identifiable customers in the shot** — confirm the client has consent to use it.

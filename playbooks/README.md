@@ -113,8 +113,9 @@ request → normalize → identify client → classify → clarity gate → pull
 (the `owner-direct` channel, e.g. the agency's own site), the owner is the client and
 their step-10 okay is the approval.
 
-**From the phone:** steps 2–14 can also be driven by owner commands on Telegram, with
-the same gates — see [telegram-approvals.md](telegram-approvals.md).
+**From the phone (parked):** steps 2–14 are designed to be driven by owner commands on
+Telegram, with the same gates. It waits for a persistent host; see
+[telegram-approvals.md](telegram-approvals.md).
 
 ## The change/ playbooks are templates of a pattern
 
