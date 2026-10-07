@@ -26,6 +26,7 @@ whose source identifier matches nothing here is held for the owner — never gue
 |---|---|---|
 | email | `marisols-taqueria@requests.example.com` | per-client alias on the intake domain (Resend, catch-all — no DNS per client) |
 | sms | `+15125550143` | Marisol's cell — same as primary contact |
+| upload link | `https://upload.example.com/u/<token>` | **not an identity channel**: a photo drop for big batches (playbooks/setup-upload-drop.md). Minted `<yyyy-mm-dd>`; announced in the welcome email |
 | signal | `+15125550143` | future channel, same number |
 
 *(The site's contact form is not a channel — it's customer→client mail, forwarded

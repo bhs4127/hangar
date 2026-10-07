@@ -11,3 +11,6 @@ private/
 
 # playwright MCP scratch output
 .playwright-mcp/
+
+# wrangler local state (upload drop dev/deploy)
+.wrangler/

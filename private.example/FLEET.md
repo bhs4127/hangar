@@ -46,6 +46,7 @@ why the scoped token exists. Deploys work with OAuth alone; domain hookups don't
 | **Lead alias** | `TBD` | playbooks/daily-mail-sweep.md — class *lead* |
 | **Portfolio alias** | `TBD` *(optional)* | playbooks/daily-mail-sweep.md — class *portfolio enquiry* |
 | **Sweep push** | `TBD` (e.g. Telegram; destination id in `~/.config/hangar/`, never here) | playbooks/daily-mail-sweep.md step 7 |
+| **Upload drop** | `TBD` (`https://upload.<intake-domain>`; Worker `hangar-upload-drop`, R2 bucket `hangar-uploads`, 30-day expiry; admin token in `~/.config/hangar/`, never here) | playbooks/setup-upload-drop.md |
 
 ## Shopify (only if you run the Shopify track)
 

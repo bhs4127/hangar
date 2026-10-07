@@ -96,6 +96,17 @@ agency domain with the visitor as `Reply-To`. Per-spoke recipe:
 [playbooks/change/wire-contact-delivery.md](../playbooks/change/wire-contact-delivery.md).
 Still unwired on every live spoke until that playbook runs for each.
 
+## Upload drop — for photo batches too big for email (DECISIONS 2026-10-07)
+
+`automation/upload-drop/worker.js` is a Worker on `upload.<intake-domain>` that serves
+each client a personal link to an images-only upload page, backed by one private R2
+bucket with a 30-day expiry. It sits *beside* the email adapter, not in front of it:
+an upload is never a request, and it only supplies the `attachments` for a request that
+arrives by email. The sweep lists uploads through `mail-sweep.mjs uploads-new`. Minting,
+revoking, and downloading go through `automation/upload-drop.mjs`, attended only. Deploy
+config is private (`private/upload-drop/wrangler.jsonc`). Setup and per-client steps:
+[playbooks/setup-upload-drop.md](../playbooks/setup-upload-drop.md).
+
 ## Search Console — LIVE since 2026-10-01
 
 `automation/search-console.mjs` registers a live domain with Google Search Console end to

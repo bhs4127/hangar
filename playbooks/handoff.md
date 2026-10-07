@@ -110,7 +110,9 @@ Shell setup: `TOK=$(cat ~/.config/hangar/cloudflare-token)`, `DOM=<domain>`,
 8. **Remove the agency, completely.** Delete the agency Pages project, but only after
    their project is serving the domain. Delete the agency's copy of the zone. Leave
    their Cloudflare account (remove the membership). Mark the intake alias retired in
-   the client record's channels, so any later mail from them stops at rule 7.
+   the client record's channels, so any later mail from them stops at rule 7. Revoke
+   their upload link (`node automation/upload-drop.mjs revoke <slug>`); anything still
+   in the drop expires on its own within 30 days.
 9. **Handoff note to the client** (draft; the owner sends it): what they now own and
    where (domain at their registrar, hosting and DNS in their Cloudflare, code in their
    GitHub), that **domain renewal is theirs now** with the renewal date (for an
@@ -130,7 +132,7 @@ Shell setup: `TOK=$(cat ~/.config/hangar/cloudflare-token)`, `DOM=<domain>`,
   existed, a test message arrives.
 - Contact form (a): a real submission arrives. (b): the email link is on the page.
 - **The agency access checklist is all empty:** GitHub collaborator, Cloudflare
-  membership, zone, Pages project, Search Console owner or user, Resend. If any row is
+  membership, zone, Pages project, Search Console owner or user, Resend, upload link. If any row is
   still ours, the handoff isn't done.
 
 ## Shopify stores
@@ -151,7 +153,7 @@ go-live. So their handoff is mostly removing ourselves:
 4. **Search Console** handover (step 7 above).
 5. **Remove the agency.** The client removes our collaborator account (Settings → Users
    and permissions → Collaborators). We confirm it's gone. Retire the intake alias in the
-   client record.
+   client record and revoke their upload link.
 6. **Handoff note** (draft; the owner sends it): they own everything already; their
    Shopify plan and apps keep billing them directly; the theme editor is now safe for
    them to use, since nobody will publish over it from git.

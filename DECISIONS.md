@@ -649,3 +649,26 @@ instead of a per-file ignore list with exceptions, which is easier to check befo
 commit (rule 9). It also suits other operators: they clone hangar, seed `private/`, and
 optionally give it their own remote, with no shared history to untangle. Unattended runs
 (the mail sweep) skip the push; the next attended task commits their edits.
+
+## 2026-10-07 — Big photo batches go through an upload drop we control, not email links
+
+**Decision:** Each client gets one personal upload link to a page served by a Worker on
+the intake domain (`upload.<intake-domain>`). The page accepts photos only, checked by
+their first bytes, at 50MB per file. Files go to one private R2 bucket under
+`uploads/<slug>/`, and a lifecycle rule deletes them after **30 days**. An upload is never
+a request: what the photos are for still arrives by email from a verified sender, and
+the page has no message box. The link is a bearer secret, so anyone holding it can
+upload, and it can be revoked and re-minted. The unattended mail sweep can only *list*
+uploads. Minting, revoking, and downloading are attended commands. A cloud-share link
+in an email body (Drive, iCloud, Dropbox, WeTransfer) is never fetched. The reply points
+the client to their upload link. Setup: `playbooks/setup-upload-drop.md`.
+**Why:** Mail clients cap attachments at 20–25MB and silently turn bigger batches into
+share links. Following whatever link an email contains would make an inbound message
+able to point the agent at any host. One place we control has a single API, no
+expiring links, and a known file filter. R2 sits in the account that already hosts the
+fleet: no new vendor, no new login for the sweep, and no egress fees. Dropbox File
+Requests or a shared Drive folder needed no build, but they would add a third party
+holding client files and another integration to authorize. Thirty days is long enough
+for the owner to act on a batch and short enough that the bucket never becomes an
+archive. What ships lives in the spoke repo, and a departing client has nothing to
+transfer.

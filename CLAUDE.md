@@ -117,6 +117,7 @@ than none.
 | `playbooks/onboard-client.md` | How a new spoke is born and registered |
 | `playbooks/handoff.md` | How a site leaves: everything moves into accounts the client owns |
 | `playbooks/setup-email-intake.md` | One-time email setup (Resend) + the per-request loop |
+| `playbooks/setup-upload-drop.md` | Per-client photo upload links (Worker + R2, 30-day expiry) for batches too big for email |
 | `playbooks/daily-mail-sweep.md` | The scheduled, report-only read of all inbound mail + phone digest |
 | `schemas/` | Reference Zod schemas — copied into each spoke at birth |
 | `automation/` | Intake-layer design (adapters → one pipeline). Email has a working playbook; SMS/Signal **described, not built**. |
