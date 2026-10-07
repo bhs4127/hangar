@@ -248,6 +248,15 @@ The vertical playbook adds its own items to this list.
       `/robots.txt` gets the homepage and Lighthouse SEO drops (caught at 92 on a live
       site, 2026-09-29). Use `@astrojs/sitemap`, which needs `site` set in the Astro
       config, and point robots.txt at `sitemap-index.xml`
+- [ ] **A real 404 page (`src/pages/404.astro`).** Pages has the same fallback for *every*
+      unknown path, so without a root `404.html` a typo'd link, an old URL, or a probe for
+      `/sitemap.xml` returns the whole homepage with a `200` — duplicate pages for every
+      crawler (found on every live spoke, 2026-10-07). Check after deploy:
+      `curl -o /dev/null -w '%{http_code}' <url>/definitely-not-a-page` must print `404`.
+      `@astrojs/sitemap` leaves the 404 page out on its own
+- [ ] **Utility pages stay out of search.** A form's `/thanks` page gets
+      `<meta name="robots" content="noindex">` and a sitemap `filter`; it's a dead end for
+      a searcher
 - [ ] **JSON-LD present and valid:** exactly one block, every value traceable to a
       content file, and the preview URL passes Google's Rich Results Test with no errors
       (see Structured data above)
