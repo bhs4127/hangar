@@ -125,6 +125,16 @@ list and suppression file live in `private/marketing/`. Attended only, and sendi
 owner's, by hand, until a send helper exists (DECISIONS 2026-10-07). The weekly loop:
 [playbooks/prospect.md](../playbooks/prospect.md).
 
+## Social publishing (Meta): written 2026-10-07, not yet authorised
+
+`automation/meta.mjs` publishes to the agency's own Instagram (and, next, Facebook Page)
+through the Instagram API with Facebook Login. `auth` turns a short-lived Graph API
+Explorer token into a long-lived Page token, `status` shows token health and the
+publishing quota, and `reel <mp4> <caption>` dry-runs by default and uploads only with
+`--publish` (resumable upload from the local file, so nothing needs hosting). Own accounts
+only, Standard Access, and every post owner-approved (DECISIONS 2026-10-07). Which Page:
+`private/FLEET.md` § Meta.
+
 ## Also described here, also deferred
 
 - **Approval channel:** a Telegram or Slack bot that posts *"PR ready: <preview link> —

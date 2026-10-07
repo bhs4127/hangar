@@ -716,3 +716,24 @@ traps, and both damage a new domain's reputation. Keeping outreach off the intak
 means a complaint can never cost a client's change request. Evidence-only drafting is
 rule 5 applied to our own claims: a made-up "you're losing customers" is a business fact
 we don't have.
+
+## 2026-10-07 — Agency social posts publish through Meta's API, owner-approved, own accounts only
+
+**Decision:** The agency's own Instagram and Facebook Page publish through
+`automation/meta.mjs`, using the Instagram API *with Facebook Login*: one Page access
+token covers the Page and the Instagram professional account linked to it. The Meta app
+stays at Standard Access and serves only accounts the operator owns, so it needs no App
+Review. The token lives in `~/.config/hangar/`, never in a file in any repo. Every post
+is approved by the owner before it runs: the script dry-runs by default and publishes
+only with `--publish`. Media are generated from real builds (frame-rendered video, a
+synthesised soundtrack we own), never from AI imagery of things that don't exist, and
+copy promises only intake channels that are live. Client social accounts, X, and Google
+Business Profile posts are out of scope.
+**Why:** The Facebook Login path is the only one that takes a Reel uploaded straight from
+a local file, so nothing has to be hosted publicly first, and one token serves both
+networks the owner wants. Serving our own accounts only keeps it inside Standard Access:
+connecting clients' accounts would need App Review and Business Verification, a
+separate decision when a client asks. Human approval matters because a post is public
+and permanent in practice, and the content shows real sites; a wrong price or an
+unconsented client feature can't be recalled from a feed. X's API costs money and GBP
+posts get little attention, so both are overhead without return for now.

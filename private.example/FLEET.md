@@ -73,6 +73,17 @@ bans cold outreach, and the fleet's form delivery and intake run on that account
 | **Postal address (CAN-SPAM)** | `TBD` (a street address, PO box, or registered private mailbox; required in every outreach email) | prospect.md step 5 footer |
 | **PageSpeed API key** | optional; `~/.config/hangar/pagespeed-key`, never here | `prospect.mjs psi` |
 
+## Meta (only if you post to Instagram / Facebook)
+
+The agency's own accounts only (DECISIONS 2026-10-07). `automation/meta.mjs` reads the
+Page name below; tokens and the app secret live in `~/.config/hangar/meta-*.json`, never here.
+
+| Key | Value | Used by |
+|---|---|---|
+| **Instagram account** | `TBD` (professional account, linked to the Page below) | `meta.mjs status` / `reel` |
+| **Facebook Page** | `TBD` (exact Page name; `auth` picks it from the token's Pages) | `meta.mjs auth` |
+| **Meta app** | `TBD` (App Dashboard name + app ID; Standard Access, no App Review) | `meta.mjs auth` |
+
 ## Google
 
 | Key | Value | Used by |
