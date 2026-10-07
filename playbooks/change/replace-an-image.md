@@ -54,8 +54,11 @@ in the description. Reply draft: *"Swapped the hero photo — preview: <link>."*
   built page must stay inside the performance budget.
 - **Camera originals from the upload drop** (20MB+ each, often with GPS in the
   metadata). Don't commit originals, because git keeps every byte forever. In the spoke, re-encode
-  to a 2400px long edge with metadata stripped (sharp drops it by default; convert HEIC
-  with `sips -s format jpeg` first, since prebuilt sharp can't read it):
+  to a 2400px long edge with metadata stripped (sharp drops it by default; `sips` keeps
+  GPS, so it's sharp that strips it). Convert HEIC with `sips -s format jpeg` first:
+  prebuilt sharp reads a HEIC's header but fails to decode the image. `.rotate()` applies
+  the camera's orientation tag, so a portrait phone shot comes out portrait. iPhones
+  upload camera-roll photos as HEIC, unconverted (checked 2026-10-07):
   `node -e "require('sharp')(process.argv[1]).rotate().resize(2400,2400,{fit:'inside',withoutEnlargement:true}).jpeg({quality:85,mozjpeg:true}).toFile(process.argv[2])" in.jpg src/assets/<name>.jpg`
 - **"Here's a Google Drive link"** — don't open it. Reply with the client's upload
   link and ask them to put the photos there.
