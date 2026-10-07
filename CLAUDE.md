@@ -108,7 +108,7 @@ than none.
 |---|---|
 | `private/` | The private layer — its own git repo, ignored by hangar |
 | `private/FLEET.md` | Your org, Cloudflare account, intake domain |
-| `private/clients/` | Registry index + one record per client (channels, brand tokens, gotchas) |
+| `private/clients/` | Registry index + one record per client (channels, brand approval + usage rules, gotchas) |
 | `private.example/` | Tracked seed for `private/`, incl. the fictional record template `clients/_example-client.md` |
 | `playbooks/README.md` | The shared "anatomy of a change" pipeline every playbook plugs into |
 | `playbooks/build/` | How to build a new site: `_base.md` for every site (incl. deriving a new vertical), one file per vertical that extends it (restaurant is the reference) |

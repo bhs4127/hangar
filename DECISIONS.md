@@ -672,3 +672,20 @@ holding client files and another integration to authorize. Thirty days is long e
 for the owner to act on a batch and short enough that the bucket never becomes an
 archive. What ships lives in the spoke repo, and a departing client has nothing to
 transfer.
+
+## 2026-10-07 — Brand values live only in the spoke; the client record keeps the why
+
+**Decision:** A site's palette and fonts are stored in one place: the `@theme` block of
+the spoke's `src/styles/global.css` (Shopify track: `config/settings_data.json`). The
+client record's Brand section no longer repeats hex values or font names. It keeps what
+the code can't hold: whether the palette is approved (by whom, when), where it came
+from (logo, brand board, owner steer), and the usage rules ("gold only on navy",
+"decorative only on light"). Before a spoke exists, the proposed palette sits in the
+record as a table marked *proposed*; the build PR moves it into `global.css` and
+replaces the table with a pointer.
+**Why:** An audit of every record against its live site found the copies already
+drifting. One record still named a heading font the site had replaced twice on build
+day. Records also listed fewer tokens than the sites use, so they weren't a complete
+reference anyway. The CSS is what ships, so it wins; a second copy only goes stale. The
+approval state and usage rules are the reverse: relationship knowledge the stylesheet
+can't express, which a future change needs before it touches color.

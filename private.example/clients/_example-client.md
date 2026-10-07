@@ -39,15 +39,27 @@ straight to Marisol's email. See DECISIONS.md, 2026-06-10.)*
 - **Email:** marisol@marisols-taqueria.com
 - Prefers text over email; usually replies evenings after close.
 
-## Brand tokens
+## Brand
 
-| Token | Value |
+The palette and fonts live in the spoke, not here: **values are in the `@theme` block of
+`src/styles/global.css`** (Shopify track: `config/settings_data.json`). This section keeps
+only what the code can't: whether the palette is approved, where it came from, and the
+rules for using it. Never copy hex values back into this record; two copies drift.
+
+*Before the spoke exists* (onboarding), the proposed palette sits here as a table marked
+**proposed**. The build PR moves it into `global.css` and replaces the table with the
+pointer above.
+
+| | |
 |---|---|
-| primary | `#C8401A` (brick red) |
-| secondary | `#1F3A2E` (deep green) |
-| accent | `#F2B441` (marigold) |
-| fontHeading | Fraunces |
-| fontBody | Inter |
+| **Approval** | approved by Marisol, 2026-06-12, on the build PR preview |
+| **Origin** | client's own colors (brick red, deep green, marigold); Fraunces + Inter chosen at intake |
+
+**Usage rules** — what CSS can't say:
+
+- Marigold (accent) is for eyebrows, tags and the one primary CTA. Never text on cream: it
+  fails contrast.
+- The deep-green band is the hours section, and only that.
 
 ## Intake answers (fictional — this is what "complete" looks like)
 
@@ -58,7 +70,7 @@ arrive via the intake channel; they're recorded here so the build has one source
 2. **Cuisine & vibe:** Family-run taqueria; masa pressed fresh every morning; counter
    service, picnic tables, no fuss.
 3. **Logo & colors:** No logo file — wordmark from the heading font is fine. Colors as
-   brand tokens above (approved).
+   recorded under Brand (approved).
 4. **Menu:** four sections — Tacos, Especiales, Sides, Drinks. Items and exact prices in
    the spoke's `menu.json` (e.g. Carnitas Plate $13.00, Pollo Asado taco $4.50).
 5. **Hours:** Mon closed; Tue–Thu 11:00–21:00; Fri–Sat 11:00–22:00; Sun 11:00–15:00.
@@ -85,7 +97,7 @@ Collected at intake per [playbooks/design-language.md](../../playbooks/design-la
 | Three adjectives | warm, handmade, lively |
 | Fun ↔ professional | leans fun (≈65/35) |
 | Minimal ↔ rich | middle, slightly rich |
-| Palette | brand tokens above — approved |
+| Palette | see Brand — approved |
 | Typography vibe | expressive serif display + clean sans body |
 | Motion comfort | subtle, a little playful |
 | Loves / hates | loves neighborhood-institution feels; hates corporate chain sites |
