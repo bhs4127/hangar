@@ -59,6 +59,20 @@ why the scoped token exists. Deploys work with OAuth alone; domain hookups don't
 
 No Shopify API token is ever stored. The CLI authenticates per store as the collaborator.
 
+## Outreach (only if you prospect)
+
+Cold outreach never uses the intake domain, and never Resend: its acceptable-use policy
+bans cold outreach, and the fleet's form delivery and intake run on that account
+(playbooks/prospect.md).
+
+| Key | Value | Used by |
+|---|---|---|
+| **Sending domain** | `TBD` (its own domain, not the intake domain; SPF, DKIM, and DMARC set before the first send) | playbooks/prospect.md step 6 |
+| **From address** | `TBD` (a real, monitored mailbox; replies come here) | prospect.md steps 6–7 |
+| **Mailbox provider** | `TBD` | where the owner sends from and reads replies |
+| **Postal address (CAN-SPAM)** | `TBD` (a street address, PO box, or registered private mailbox; required in every outreach email) | prospect.md step 5 footer |
+| **PageSpeed API key** | optional; `~/.config/hangar/pagespeed-key`, never here | `prospect.mjs psi` |
+
 ## Google
 
 | Key | Value | Used by |

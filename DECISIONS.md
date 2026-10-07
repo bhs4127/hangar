@@ -689,3 +689,30 @@ day. Records also listed fewer tokens than the sites use, so they weren't a comp
 reference anyway. The CSS is what ships, so it wins; a second copy only goes stale. The
 approval state and usage rules are the reverse: relationship knowledge the stylesheet
 can't express, which a future change needs before it touches color.
+
+## 2026-10-07 — Prospecting reads and drafts; the owner sends
+
+**Decision:** The agency finds clients with `automation/prospect.mjs` and
+`playbooks/prospect.md`. The tool seeds businesses from OpenStreetMap or by hand,
+audits each one's own website (homepage plus up to two contact or about pages, robots.txt
+honoured, an honest user agent), and ranks those whose site looks dated and who publish a
+way to reach them. Contact uses only an address the business published on its own site,
+or its contact form filled in **by the owner, by hand**. The agent drafts; the owner
+reviews and sends, at most 10 a week during warm-up. Every claim in a draft traces to a
+saved, re-checked signal. Outreach goes out through its own mailbox, never the intake
+domain and never Resend, whose acceptable-use policy bans cold outreach. The suppression list is permanent and is checked before any
+fetch or listing. Never: automated form submission, guessed or pattern-generated
+addresses, bought lists, scraping Google Maps or social networks. A concept mockup of a
+prospect's site is noindexed, labelled as a concept on every page, uses only facts copied
+from their current site, and is deleted 30 days after the last contact. Automated sending
+is a separate, later decision.
+**Why:** The owner has a day job, so the hours have to go to judgment, not research. The
+audit does the research. The volume limit and the hand-sent mail keep it from becoming
+spam: a bot filling in contact forms is exactly what owners hate and CAPTCHAs block, and
+a local service business can't afford to be remembered that way. A specific, true
+observation plus a concept of their own site gets answered, while a generic "your site
+looks dated" blast gets deleted. Guessed addresses bounce and bought lists carry spam
+traps, and both damage a new domain's reputation. Keeping outreach off the intake domain
+means a complaint can never cost a client's change request. Evidence-only drafting is
+rule 5 applied to our own claims: a made-up "you're losing customers" is a business fact
+we don't have.

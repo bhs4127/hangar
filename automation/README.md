@@ -115,6 +115,16 @@ the agency Google account (`private/FLEET.md` § Google) over OAuth, with the re
 `~/.config/hangar/`. The token expires weekly by design, so it's for owner-present runs
 only. Setup and the manual fallback: `playbooks/change/register-search-console.md`.
 
+## Prospecting — built 2026-10-07
+
+`automation/prospect.mjs` finds local businesses (OpenStreetMap, or added by hand), audits
+each one's own website for signs it's dated, records only the email addresses the business
+published, and ranks the contactable ones. It reads public pages only. It never submits a
+form or sends anything, and every scored signal keeps its evidence for the draft. The
+list and suppression file live in `private/marketing/`. Attended only, and sending is the
+owner's, by hand, until a send helper exists (DECISIONS 2026-10-07). The weekly loop:
+[playbooks/prospect.md](../playbooks/prospect.md).
+
 ## Also described here, also deferred
 
 - **Approval channel:** a Telegram or Slack bot that posts *"PR ready: <preview link> —
