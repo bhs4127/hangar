@@ -119,6 +119,7 @@ than none.
 | `playbooks/setup-email-intake.md` | One-time email setup (Resend) + the per-request loop |
 | `playbooks/setup-upload-drop.md` | Per-client photo upload links (Worker + R2, 30-day expiry) for batches too big for email |
 | `playbooks/daily-mail-sweep.md` | The scheduled, report-only read of all inbound mail + phone digest |
+| `playbooks/telegram-approvals.md` | Run a reported change from the phone: owner commands on Telegram → operator session *(parked until a persistent host exists)* |
 | `playbooks/prospect.md` | The weekly prospecting loop: find dated local sites, draft evidence-based emails, the owner sends |
 | `schemas/` | Reference Zod schemas — copied into each spoke at birth |
 | `automation/` | Intake-layer design (adapters → one pipeline). Email has a working playbook; SMS/Signal **described, not built**. |

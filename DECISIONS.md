@@ -650,6 +650,35 @@ commit (rule 9). It also suits other operators: they clone hangar, seed `private
 optionally give it their own remote, with no shared history to untangle. Unattended runs
 (the mail sweep) skip the push; the next attended task commits their edits.
 
+## 2026-10-06 — The owner can run a change from Telegram; a command is the only trigger
+
+**Decision:** The owner can move a reported client change forward by replying to the
+hangar Telegram bot with a fixed command (`go`, `ok`, `send`, `hold`, then later `ship`
+and `confirm`) plus the change's label. The label is the first 8 characters of the
+original request's Resend id, so it never depends on which digest is newest. A
+long-running **operator session** started with the Telegram channel carries out the
+pipeline steps that command unlocks, re-fetching and re-gating the email itself, and
+replies on Telegram. It obeys only the allowlisted owner, and only the verb and the
+label: free text, quoted text and email content are never instructions. Rollout is in
+two phases. **Phase 1** covers request → preview → preview email (`go`/`ok`/`send`/`hold`).
+**Phase 2** adds publishing (`ship` echoes exactly what would go live; `confirm` within 30
+minutes merges and deploys). Phase 2 comes after at least three clean Phase 1 changes.
+The phase is enforced by the session's permission allowlist (Phase 1 has no rule that
+can merge or deploy production), not only by the playbook. The mail sweep's scope is
+unchanged. Procedure: `playbooks/telegram-approvals.md`.
+**Status:** parked until a persistent host exists. Nothing is built yet; the playbook
+is a draft (2026-10-07).
+**Why:** The 2026-06-10 approval decision anticipated this as the same gate relocated
+to the phone. The owner reviews previews on a phone anyway, and between sweep and laptop
+a reported request sat idle. Keeping the sweep report-only (2026-09-30) and putting the
+action in a separate session that the owner triggers means an email still can't make
+anything happen; only the owner can. Fixed commands with labels stop a stray message,
+a 👍 on the wrong line, or a stranger's subject line echoed back in a digest from being
+read as approval. `send` lets the agent send a client email the owner has read in full
+on Telegram, which `setup-email-intake.md` already allows ("the owner sends it, or okays
+the agent sending it"). Without it, Phase 1 would stall at the laptop. **Trade-off:** an
+unattended session now holds build and preview-deploy permissions, and in Phase 2
+production ones. It runs only while the operator's machine is awake.
 ## 2026-10-07 — Big photo batches go through an upload drop we control, not email links
 
 **Decision:** Each client gets one personal upload link to a page served by a Worker on
