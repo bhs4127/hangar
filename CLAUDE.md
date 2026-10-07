@@ -94,7 +94,9 @@ system. DECISIONS is shared (rule 10).
 4. Append to `DECISIONS.md` **only if a real decision was made**. Never rewrite or delete
    existing entries.
 5. Regenerate the architecture view: `node dev/build-architecture.mjs`. Never hand-edit
-   `private/architecture.html`.
+   `private/architecture.html`. If the task added, retired, or changed the status of a
+   component, update its row in `private/STATUS.md` § Architecture nodes (and § edges)
+   first. If the generator reports drift, fix those tables before finishing.
 6. Back up the private layer: if `private/` is a git repo with a remote, commit there
    and push (`git -C private add -A && git -C private commit -m "…" && git -C private push`).
    This is the one push that needs no PR — it's your own backup, not a client repo.

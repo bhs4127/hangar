@@ -66,19 +66,60 @@ through manually (DECISIONS.md — HQ-first build order).
 | Fleet config (FLEET.md) | hangar | planned | fill in private/FLEET.md — first step |
 | Client registry | hangar | built | format + worked example; **0 clients** |
 | Base build playbook | hangar | built | `_base.md`: universal anatomy, stack, contact form, JSON-LD, DoD, and the recipe for deriving a new vertical |
+| Design language | hangar | built | `design-language.md`: cross-vertical premium standard, design brief, motion recipes |
 | Restaurant build playbook | hangar | built | extends _base.md; menu / hours / ordering specifics |
 | Law-office build playbook | hangar | stubbed | shape + known differences only |
-| Change playbooks ×4 | hangar | built | menu / hours / image / attach-custom-domain — template for new types |
-| Onboarding playbook | hangar | built | manual-first by design |
+| Derived verticals | hangar | planned | derive inline, schema in-spoke, promote on a 2nd client |
+| Change playbooks ×7 | hangar | built | menu / hours / image / custom domain / contact delivery / payment link / Search Console; template for new types |
+| Shopify track (build + product playbooks) | hangar | built | second commerce track beside payment links; the client pays Shopify |
+| Onboarding + handoff playbooks | hangar | built | onboarding manual-first by design; handoff moves everything into accounts the client owns |
 | Restaurant schema (reference) | hangar | built | copied into each spoke at birth |
 | State layer + architecture view | hangar | built | maintained at the end of every task |
 | Email adapter | intake | planned | Resend; playbook ready — needs an intake domain in FLEET.md |
+| Daily mail sweep | intake | planned | scheduled, report-only read of inbound mail via automation/mail-sweep.mjs + phone digest |
+| Upload drop (Worker + R2) | intake | planned | per-client photo upload links for batches too big for email |
+| Intake pipeline | intake | planned | normalize → classify → playbook → spoke → PR |
 | SMS adapter (Twilio) | intake | planned | easy second channel |
 | Signal adapter (signal-cli) | intake | planned | fiddliest; needs persistent host; last |
-| Intake pipeline | intake | planned | normalize → classify → playbook → spoke → PR |
 | Client spokes | spokes | planned | none yet — TODOS P1 creates the first |
-| Derived verticals | hangar | planned | derive inline, schema in-spoke, promote on a 2nd client |
 | Spoke scaffolding/template | spokes | planned | build playbook is the template for now |
 | Cloudflare Pages + previews | delivery | built | direct upload, agent-deployed; commands proven — needs `wrangler login` |
-| Approval channel (Telegram/Slack) | infra | planned | "👍 to ship" from the phone |
+| Contact-form delivery | delivery | planned | Pages Function → Resend, visitor as Reply-To |
+| Shopify stores (client-owned) | delivery | planned | theme pushed by CLI, previews as unpublished themes |
+| Search Console automation | infra | planned | automation/search-console.mjs: verify domains, submit sitemaps, report |
+| Prospect finder | infra | planned | automation/prospect.mjs + prospect.md weekly loop; the owner sends |
+| Meta social publishing | infra | planned | automation/meta.mjs: the agency's own IG + FB Page, owner-approved posts |
+| Telegram approvals | infra | planned | telegram-approvals.md: owner commands from the phone; waits for a persistent host |
 | Persistent host | infra | planned | checked-out repos + intake loop + signal-cli |
+
+## Architecture edges
+
+<!-- Machine-read by dev/build-architecture.mjs. Columns: From | To | Label.
+     From/To must match a Node name above exactly; the generator warns on any that don't. -->
+
+| From | To | Label |
+|---|---|---|
+| Email adapter | Daily mail sweep | read each weekday |
+| Upload drop (Worker + R2) | Daily mail sweep | new batches listed |
+| Daily mail sweep | Intake pipeline | reports requests |
+| SMS adapter (Twilio) | Intake pipeline | request |
+| Signal adapter (signal-cli) | Intake pipeline | request |
+| Telegram approvals | Intake pipeline | owner commands |
+| Guardrails (CLAUDE.md) | Intake pipeline | governs every step |
+| Intake pipeline | Client registry | identify client (rule 7) |
+| Intake pipeline | Change playbooks ×7 | classify + pick recipe |
+| Change playbooks ×7 | Client spokes | branch → PR |
+| Base build playbook | Client spokes | builds every site |
+| Restaurant build playbook | Base build playbook | extends |
+| Law-office build playbook | Base build playbook | extends |
+| Derived verticals | Base build playbook | extends |
+| Design language | Client spokes | premium pass |
+| Restaurant schema (reference) | Client spokes | copied at birth |
+| Onboarding + handoff playbooks | Client spokes | birth + exit |
+| Shopify track (build + product playbooks) | Shopify stores (client-owned) | theme + catalogue |
+| Client spokes | Cloudflare Pages + previews | deploy |
+| Client spokes | Contact-form delivery | form submits |
+| Search Console automation | Client spokes | verifies + reports |
+| Prospect finder | Onboarding + handoff playbooks | new clients |
+| Persistent host | Telegram approvals | runs operator session |
+| Persistent host | Signal adapter (signal-cli) | signal-cli daemon |
