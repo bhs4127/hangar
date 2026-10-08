@@ -20,8 +20,8 @@ things from git, so the tree is split in two:
 
 | Layer | What's in it | Git |
 |---|---|---|
-| **Shared** | `CLAUDE.md`, `playbooks/`, `schemas/`, `automation/`, `DECISIONS.md`, `dev/build-architecture.mjs`, `private.example/` | tracked, pushed public |
-| **Private** | everything under `private/`: `FLEET.md`, `STATUS.md`, `TODOS.md`, `CHANGELOG.md`, `clients/*.md`, `architecture.html` | ignored by hangar; **its own private git repo** |
+| **Shared** | `CLAUDE.md`, `playbooks/`, `schemas/`, `automation/`, `DECISIONS.md`, `dev/`, `private.example/` | tracked, pushed public |
+| **Private** | everything under `private/`: `FLEET.md`, `STATUS.md`, `TODOS.md`, `CHANGELOG.md`, `clients/*.md`, `architecture.html`, `business.html` | ignored by hangar; **its own private git repo** |
 
 `private.example/` is the tracked seed for `private/`, same layout. On a fresh clone:
 
@@ -93,10 +93,12 @@ system. DECISIONS is shared (rule 10).
 3. Append a line to `private/CHANGELOG.md`.
 4. Append to `DECISIONS.md` **only if a real decision was made**. Never rewrite or delete
    existing entries.
-5. Regenerate the architecture view: `node dev/build-architecture.mjs`. Never hand-edit
-   `private/architecture.html`. If the task added, retired, or changed the status of a
-   component, update its row in `private/STATUS.md` § Architecture nodes (and § edges)
-   first. If the generator reports drift, fix those tables before finishing.
+5. Regenerate the two maps: `node dev/build-architecture.mjs` and
+   `node dev/build-business.mjs`. Never hand-edit `private/architecture.html` or
+   `private/business.html`. First bring `private/STATUS.md` up to date: § Architecture
+   nodes (and § edges) when a component was added, retired, or changed status; § Business
+   (re-date any row you confirmed) and § Price list when the business state changed. If a
+   generator reports drift, fix those tables before finishing.
 6. Back up the private layer: if `private/` is a git repo with a remote, commit there
    and push (`git -C private add -A && git -C private commit -m "…" && git -C private push`).
    This is the one push that needs no PR — it's your own backup, not a client repo.
@@ -126,4 +128,4 @@ than none.
 | `schemas/` | Reference Zod schemas — copied into each spoke at birth |
 | `automation/` | Intake-layer design (adapters → one pipeline). Email has a working playbook; SMS/Signal **described, not built**. |
 | `private/STATUS.md` / `private/TODOS.md` / `DECISIONS.md` / `private/CHANGELOG.md` | The state layer (see above) |
-| `dev/` | `build-architecture.mjs` → generated `private/architecture.html` overview |
+| `dev/` | `build-architecture.mjs` → `private/architecture.html` (the system); `build-business.mjs` → `private/business.html` (the business by role); shared readers in `lib/state.mjs` |

@@ -53,6 +53,36 @@ through manually (DECISIONS.md — HQ-first build order).
 - Approval channel (Telegram/Slack "👍 to ship")
 - Persistent host (keeps repos checked out, runs the intake loop)
 
+## Business
+
+<!-- Machine-read by dev/build-business.mjs — keep the table shape. One row per piece of
+     current business state; overwrite rows as things change (this is a snapshot).
+     Role:   sales | marketing | finance | delivery | clients | operations | legal | it
+     Status: live | in-progress | waiting-owner | waiting-client | on-hold | planned | decided | blocked
+     As of:  the date the row was last confirmed true (rows older than 14 days are flagged) -->
+
+| Role | Item | Status | Detail | As of |
+|---|---|---|---|---|
+| sales | Offer | planned | what you sell and for how much: fill § Price list first | 2026-01-01 |
+| marketing | Agency website | planned | your own site, built through the same pipeline as a client's | 2026-01-01 |
+| finance | Price list | planned | owner-set prices only (rule 5); see § Price list | 2026-01-01 |
+| delivery | Fleet | planned | no client spokes yet; TODOS P1 creates the first | 2026-01-01 |
+| clients | First client | planned | onboard via playbooks/onboard-client.md | 2026-01-01 |
+| operations | Intake | planned | email intake per playbooks/setup-email-intake.md | 2026-01-01 |
+| legal | Accessibility baseline | live | semantic HTML, alt text, 4.5:1 body contrast on every site (CLAUDE.md rule 8) | 2026-01-01 |
+| it | Hosting | planned | Cloudflare Pages, direct upload; fill private/FLEET.md | 2026-01-01 |
+
+## Price list
+
+<!-- Machine-read by dev/build-business.mjs. Stage: start | build | ongoing | exit | pass-through.
+     Prices are owner-set business facts (rule 5): change them only on the owner's word. -->
+
+| Offer | Price | Stage | Status | Notes |
+|---|---|---|---|---|
+| Website build | TBD | build | planned | one-time |
+| Care plan | TBD | ongoing | planned | monthly, optional |
+| Handoff | TBD | exit | planned | everything moves into the client's own accounts |
+
 ## Architecture nodes
 
 <!-- Machine-read by dev/build-architecture.mjs — keep the table shape.
@@ -74,7 +104,7 @@ through manually (DECISIONS.md — HQ-first build order).
 | Shopify track (build + product playbooks) | hangar | built | second commerce track beside payment links; the client pays Shopify |
 | Onboarding + handoff playbooks | hangar | built | onboarding manual-first by design; handoff moves everything into accounts the client owns |
 | Restaurant schema (reference) | hangar | built | copied into each spoke at birth |
-| State layer + architecture view | hangar | built | maintained at the end of every task |
+| State layer + architecture view | hangar | built | maintained at the end of every task; two generated maps (system + business by role) |
 | Email adapter | intake | planned | Resend; playbook ready — needs an intake domain in FLEET.md |
 | Daily mail sweep | intake | planned | scheduled, report-only read of inbound mail via automation/mail-sweep.mjs + phone digest |
 | Upload drop (Worker + R2) | intake | planned | per-client photo upload links for batches too big for email |
