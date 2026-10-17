@@ -766,3 +766,24 @@ separate decision when a client asks. Human approval matters because a post is p
 and permanent in practice, and the content shows real sites; a wrong price or an
 unconsented client feature can't be recalled from a feed. X's API costs money and GBP
 posts get little attention, so both are overhead without return for now.
+
+## 2026-10-17 — The agent sends client email from the alias, on the owner's okay
+
+**Decision:** Client email in the change loop (the preview link, "it's live", clarifying
+questions, nudges, welcome, handoff, and go-live notes, search reports) is sent **by the
+agent** from the client's intake alias with `automation/client-mail.mjs`, not by the
+owner. Still in an attended session, still on the owner's okay. The step-10 preview okay
+covers the step-11 email because the review summary shows it word for word. The step-13
+merge okay covers the step-14 "it's live" note. Anything else gets its own okay. The script
+is a dry run by default. It refuses any To/Cc that isn't an `email` channel in the client
+record, always sends as `"<agency>" <slug>@requests.<intake domain>` from `private/FLEET.md`,
+threads replies under the inbound message, and refuses a thread sent to another client's
+alias. It reports Resend's delivery event. Unchanged: the unattended mail sweep never sends
+(2026-09-30), and its allow rule covers `mail-sweep.mjs` only, so it can't reach this
+script. Lead and portfolio replies and cold outreach (2026-10-07) stay owner-sent.
+**Why:** The owner was hand-copying every draft into a mail client, which added a step
+between "okay" and the client and sent mail from an address that broke threading. The
+approval was never the send: it's the owner seeing the exact words. Moving the send to
+the agent keeps that gate and removes the copying. The guards cover what a hand-send got
+for free from a human: the right recipient, the right alias, the right thread.
+**Amends:** 2026-06-10 approval protocol (as amended 2026-10-01), pipeline steps 11 and 14.

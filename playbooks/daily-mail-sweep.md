@@ -123,6 +123,9 @@ without moving the watermark.
      okay in a session (pipeline steps 12–13).
    - **Lead / portfolio enquiry:** who, what they want, any deadline or budget stated,
      and a drafted reply in the owner's voice. The owner sends it, never the sweep.
+   - Client drafts (clarifying questions, preview answers) wait for a session: there the
+     owner okays them and the agent sends them with `automation/client-mail.mjs`
+     (DECISIONS 2026-10-17). The sweep never calls that script.
    - **Held:** why it's held, and what the owner needs to decide.
    - **Uploads** (per client from `uploads-new`): file count, total size, and the
      upload dates. Pair them with that client's email in this sweep or a recent one,

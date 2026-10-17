@@ -130,13 +130,13 @@ senders.
   (rule 7).
 - **To every registered email channel** of the client: the main one in To, the rest in
   Cc. That way the client can see which addresses we recognise.
-- **The owner sends it, or okays the agent sending it.** Same as every client reply in
-  the loop. Agent send:
+- **The owner okays it, the agent sends it.** Same as every client email in the loop
+  (DECISIONS 2026-10-17). Write the body in a scratch dir, never a repo, then:
 
   ```bash
-  KEY=$(cat ~/.config/hangar/resend-token)
-  curl -s -X POST -H "Authorization: Bearer $KEY" -H 'Content-Type: application/json' \
-    --data @welcome.json https://api.resend.com/emails   # welcome.json in a scratch dir, never a repo
+  node automation/client-mail.mjs send --slug <slug> --to <main address> --cc <other addresses> \
+    --subject "Changes to <domain>: just reply here" --text-file <scratch>/welcome.txt          # dry run: check it
+  node automation/client-mail.mjs send … --send                                                 # sends, waits for delivered
   ```
 
 - **Afterwards**, mark the alias as announced (with the date) in the client record's
@@ -221,22 +221,21 @@ Steps 2–9 are the standard pipeline ([README.md](README.md)); only step 1 is n
 5. **Reply in-thread.** From the alias the client wrote to, so replies land back in the
    same place:
 
-   ```ts
-   await resend.emails.send({
-     from: "<slug>@requests.<intake-domain>",
-     to: [request.source_identifier],
-     subject: `Re: ${received.subject}`,
-     text: reply,
-     headers: { "In-Reply-To": received.message_id, References: received.message_id },
-   });
+   ```bash
+   node automation/client-mail.mjs send --slug <slug> --to <sender> \
+     --reply-to-received <inbound resend id> --text-file <scratch>/reply.txt [--send]
    ```
 
-   For later replies in one thread, append earlier `message_id`s to `References`,
+   `--reply-to-received` sets `In-Reply-To`/`References` and `Re: <subject>` from the
+   inbound message, and refuses if it was sent to another client's alias. Every To/Cc
+   must be an `email` channel in the client record. Without `--send` it's a dry run.
+   For later replies in one thread, pass earlier `message_id`s with `--references`,
    space-separated. A change usually has two replies on its thread: the **preview link**
    (pipeline step 11) and **"it's live"** (step 14). Between them, the client's answer
    arrives on the same thread and goes through steps 1–3 here like any request. **The
-   owner sends every reply** — the agent drafts them; nothing is sent to a client
-   without the owner saying so.
+   agent sends every reply, and only on the owner's okay** in an attended session
+   (pipeline steps 10–11 and 13–14 say which okay covers which email). Nothing reaches a
+   client without the owner having seen it, and the unattended sweep never sends.
 6. **State layer**, as with every task.
 
 ## Security — the part that matters

@@ -109,8 +109,10 @@ days before, plus the top searches and pages, as Markdown tables. It uses the sa
 token, so it needs no new consent. Search data lags about two days, so each window ends
 three days ago. A newly registered property reads all zeros for its first few days.
 
-The report is something to send, but the agent never sends client mail on its own
-(DECISIONS 2026-09-30). It drafts the email around the tables and the owner sends it.
+The report is something to send, but never on the agent's own initiative and never from
+an unattended run (DECISIONS 2026-09-30). In a session, the agent drafts the email around
+the tables, and once the owner okays it the agent sends it from the client's alias with
+`automation/client-mail.mjs` (DECISIONS 2026-10-17).
 
 ## Edge cases
 

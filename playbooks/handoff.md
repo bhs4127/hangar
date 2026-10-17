@@ -113,7 +113,7 @@ Shell setup: `TOK=$(cat ~/.config/hangar/cloudflare-token)`, `DOM=<domain>`,
    the client record's channels, so any later mail from them stops at rule 7. Revoke
    their upload link (`node automation/upload-drop.mjs revoke <slug>`); anything still
    in the drop expires on its own within 30 days.
-9. **Handoff note to the client** (draft; the owner sends it): what they now own and
+9. **Handoff note to the client** (owner okays, agent sends from the alias): what they now own and
    where (domain at their registrar, hosting and DNS in their Cloudflare, code in their
    GitHub), that **domain renewal is theirs now** with the renewal date (for an
    agency-held domain, the transfer usually adds a year), how a change
@@ -154,7 +154,7 @@ go-live. So their handoff is mostly removing ourselves:
 5. **Remove the agency.** The client removes our collaborator account (Settings → Users
    and permissions → Collaborators). We confirm it's gone. Retire the intake alias in the
    client record and revoke their upload link.
-6. **Handoff note** (draft; the owner sends it): they own everything already; their
+6. **Handoff note** (owner okays, agent sends from the alias): they own everything already; their
    Shopify plan and apps keep billing them directly; the theme editor is now safe for
    them to use, since nobody will publish over it from git.
 

@@ -270,7 +270,7 @@ Ask exactly these. Every blank is `TBD` in the client record, never a guess (rul
     5. **Remove the storefront password**, and only then.
     6. Search Console ([change/register-search-console.md](../change/register-search-console.md)).
        Shopify serves `sitemap.xml` and `robots.txt` itself.
-    7. Go-live note to the client (draft; the owner sends it): the store is theirs; orders
+    7. Go-live note to the client (owner okays, agent sends from the alias): the store is theirs; orders
        arrive in Shopify admin and the Shopify app; they may edit products, stock, and
        discounts themselves; please don't use the theme editor, send layout and text
        changes to the intake alias; their Shopify bill is between them and Shopify.

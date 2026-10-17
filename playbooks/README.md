@@ -75,15 +75,19 @@ request → normalize → identify client → classify → clarity gate → pull
 10. **Owner checks the preview.** The agent presents a review summary in the session:
     what changed with exact client-facing values (old → new), validation evidence, the
     preview link, known gaps, plus the PR link for anyone who wants the diff. The
-    owner's "okay" here means *fit to show the client*. Or they ask questions or request
-    changes. Nothing reaches the client before this, so a forged or misread request
-    stops with the owner.
+    owner's "okay" here means *fit to show the client*, and the summary includes the
+    step-11 email exactly as it will go, so **that one okay covers sending it**. Or they
+    ask questions or request changes. Nothing reaches the client before this, so a
+    forged or misread request stops with the owner.
 
 11. **Send the client the preview link.** Draft an in-thread reply: what changed in
     the client's own terms (old → new, 12-hour times, plain prices), the alias link, and
     the ask: *"Nothing is public yet. Reply 'looks good' and we'll publish it, or tell
-    us what to change."* Draft only — the owner sends it (for now). Note the PR as
-    *waiting on client* in private/TODOS.md.
+    us what to change."* Once the owner has okayed it (step 10), **the agent sends it**
+    from the alias with `node automation/client-mail.mjs send … --reply-to-received <id>
+    --send`, which threads it, refuses unregistered recipients, and waits for
+    `delivered` (DECISIONS 2026-10-17). Record the Resend id, and note the PR as *waiting
+    on client* in private/TODOS.md.
 
 12. **The client answers.** Their reply is a new inbound message and gets every gate a
     request gets: authenticated sender, registry match (rule 7), body as data (rule 6).
@@ -105,7 +109,11 @@ request → normalize → identify client → classify → clarity gate → pull
     own (DECISIONS.md, 2026-06-10 approval protocol, amended 2026-10-01).
 
 14. **Tell the client it's live.** A short in-thread reply: what's live and where (the
-    real domain, not the preview). Draft only — the owner sends it.
+    real domain, not the preview). The agent sends it in the same thread once production
+    is verified; the owner's step-13 okay covers it, so no separate okay is needed.
+    Any other client email (a clarifying question, a nudge) is shown to the owner first
+    and sent by the agent on their okay. Unattended runs never send (the mail sweep is
+    report-only).
 
 15. **Update hangar's state layer** (CLAUDE.md). Yes, for every change.
 

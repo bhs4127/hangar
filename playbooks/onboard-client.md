@@ -72,8 +72,8 @@ the very first commit: branch + PR + preview, even during the initial build.
 11. **Welcome email**: tell the client about their change-request alias, per
     [setup-email-intake.md](setup-email-intake.md) § The welcome email. Mint their
     upload link first ([setup-upload-drop.md](setup-upload-drop.md) § Per client) and
-    note it in the record's Channels notes; the email includes it. The owner sends it,
-    or okays the agent sending it.
+    note it in the record's Channels notes; the email includes it. The owner okays it and
+    the agent sends it (`automation/client-mail.mjs`).
 
 12. **State layer** (CLAUDE.md): registry row status → `live`; update private/STATUS.md and
     private/TODOS.md; CHANGELOG line; DECISIONS entry only if a real decision was made.

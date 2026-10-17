@@ -126,6 +126,6 @@ than none.
 | `playbooks/telegram-approvals.md` | Run a reported change from the phone: owner commands on Telegram → operator session *(parked until a persistent host exists)* |
 | `playbooks/prospect.md` | The weekly prospecting loop: find dated local sites, draft evidence-based emails, the owner sends |
 | `schemas/` | Reference Zod schemas — copied into each spoke at birth |
-| `automation/` | Intake-layer design (adapters → one pipeline). Email has a working playbook; SMS/Signal **described, not built**. |
+| `automation/` | Intake-layer design (adapters → one pipeline). Email has a working playbook; SMS/Signal **described, not built**. `client-mail.mjs` sends owner-okayed client email from the alias (attended sessions only). |
 | `private/STATUS.md` / `private/TODOS.md` / `DECISIONS.md` / `private/CHANGELOG.md` | The state layer (see above) |
 | `dev/` | `build-architecture.mjs` → `private/architecture.html` (the system); `build-business.mjs` → `private/business.html` (the business by role); shared readers in `lib/state.mjs` |

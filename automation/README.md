@@ -55,10 +55,11 @@ interface IntakeRequest {
 5. **Execute the playbook** in the spoke: branch, edit, build-validate (rules 1–3).
 6. **PR + preview link.**
 7. **Owner check** — fit to show the client? Later, a 👍 from the chat approval channel.
-8. **Preview link to the client** (drafted; the owner sends it), then wait for a clear
+8. **Preview link to the client** (the owner okays it, the agent sends it with
+   `client-mail.mjs`), then wait for a clear
    yes. Changes loop back to stage 5. Owner-direct requests skip this stage.
 9. **Merge → production deploy** on the owner's okay, once the client has said yes;
-   draft the "it's live" reply.
+   the agent sends the "it's live" reply.
 10. **Update hangar's state layer.**
 
 Full detail, including what counts as a yes: [playbooks/README.md](../playbooks/README.md)
