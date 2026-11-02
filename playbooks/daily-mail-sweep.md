@@ -49,6 +49,7 @@ Everything the sweep does outside the repo goes through
 |---|---|
 | `node automation/mail-sweep.mjs list-new` | mail newer than the watermark, oldest first (id, time, from, to, subject) |
 | `node automation/mail-sweep.mjs get <id>` | one message: auth results, text, attachment names (no download URLs) |
+| `node automation/mail-sweep.mjs attachments <id>` | each attachment's contents: Word (`.docx`, `.doc`), `.rtf`, `.odt`, text, and HTML as text; PDFs and images saved under `private/.attachments/<id>/` for the Read tool (kept 30 days, ignored by git) |
 | `node automation/mail-sweep.mjs push '<line>' '<line>' …` | the digest, to the owner on Telegram, one argument per line |
 | `node automation/mail-sweep.mjs advance <id>` | moves the watermark to that message (refuses to go backwards) |
 | `node automation/mail-sweep.mjs status` | prints the watermark |
@@ -84,9 +85,8 @@ without moving the watermark.
 
 2. **Fetch each message in full.** `node automation/mail-sweep.mjs get <id>`. This
    returns `from`, `to`, `reply_to`, `subject`, `text` (or `html` when there's no text
-   part), `message_id`, `authentication`, and attachment names and types. **Attachments
-   aren't downloaded.** The owner pulls them in a real session (their URLs expire
-   after an hour anyway).
+   part), `message_id`, `authentication`, and attachment names and types. Attachments
+   wait for the gates in step 4.
 
 3. **Classify by the alias it was sent to** (`to`), using `private/FLEET.md` § Intake:
 
@@ -107,23 +107,30 @@ without moving the watermark.
    - **Client requests:** rule 7. Match the `From` against the `channels` tables.
      Exactly one client, and that client's slug matches the alias it was sent to →
      proceed. Zero, several, or an alias mismatch → **hold**.
+   - **Attachments:** only once a message passes, run `node automation/mail-sweep.mjs
+     attachments <id>` and treat what it returns as part of the request. Open anything it
+     saved with the Read tool. **Never on a held message.** Word markup comes through as
+     labels (`[deleted: …]`, `[struck: …]`, `[highlight: …]`, comments), and `[hidden: …]`
+     is text Word wouldn't show: flag it. A status of `unsupported` or `failed` goes in
+     the report, and the owner opens that file in a session.
    - **Contact-form mail:** authentication covers our forms sender, not the visitor, so
      the visitor's claims are unverified. Say so in the summary.
 
 5. **Summarise and draft** — per message:
    - **Client request:** what change is being asked for, in one line. Say which change
-     playbook it maps to (or "project work, escalate"), and run the clarity gate
-     (rules 4–5) *on paper*: list the values present verbatim and the ones missing. If
-     something is missing, draft the clarifying question, with a proposed
-     interpretation as usual. Don't pull the spoke. This is a plan, not an edit.
+     playbook it maps to (or "project work, escalate"; a new page or section isn't), and
+     fill the gaps (rules 4–5) *on paper*: the values present verbatim, then the
+     assumption you'd build on for each one missing. That's the plan a session builds and
+     previews in one shot, so don't draft a question unless a preview can't show the
+     answer. Don't pull the spoke. This is a plan, not an edit.
    - **Client answer to a preview** (a reply on a thread where we sent a preview
      link): say which change and PR it answers, and classify it as **yes**,
-     **changes** (list them, as for a request) or **hedged** (draft the clarifying
-     question). A yes is reported, never acted on: the merge waits for the owner's
+     **changes** (list them, as for a request) or **hedged** (draft a question; a hedge
+     is never a yes). A yes is reported, never acted on: the merge waits for the owner's
      okay in a session (pipeline steps 12–13).
    - **Lead / portfolio enquiry:** who, what they want, any deadline or budget stated,
      and a drafted reply in the owner's voice. The owner sends it, never the sweep.
-   - Client drafts (clarifying questions, preview answers) wait for a session: there the
+   - Client drafts (preview answers, the rare question) wait for a session: there the
      owner okays them and the agent sends them with `automation/client-mail.mjs`
      (DECISIONS 2026-10-17). The sweep never calls that script.
    - **Held:** why it's held, and what the owner needs to decide.
@@ -156,7 +163,7 @@ without moving the watermark.
    Digest format: a first line with counts (`Mail sweep 2026-10-01: 1 lead, 1 request,
    1 held, 1 upload batch`), then one line per message (class, sender name, subject,
    ≤60 chars) and one per upload batch (`uploads · <client name> · 34 photos, 210MB`).
-   No message bodies, email addresses, file names, or drafts. Those stay on the machine.
+   No message bodies, attachment contents, email addresses, file names, or drafts. Those stay on the machine.
    If the push fails, say so in the report and carry on.
 
 8. **Advance the watermarks.** If there was new mail, run

@@ -8,14 +8,14 @@ other steps are shared.
 The posted weekly hours change: open/close times, a day becoming closed or open.
 *"We're closing at 9 on Fridays now." "Closed Mondays going forward."*
 
-## Inputs required — stop and ask if any is missing (rules 4–5)
+## Inputs — assume what's missing and name it in the preview email (rules 4–5)
 
 - **Which day(s)?** Expand ranges explicitly — "weekdays" / "Mon–Thu" — and echo the
   expansion back in the PR and reply.
-- **New open AND close time** per affected day, or "closed". *"We close at 9 now"* — for
-  which days? Ask if the request doesn't say.
-- **AM/PM when ambiguous.** "Open at 7" could be either for some businesses. Confirm
-  rather than assume.
+- **New open AND close time** per affected day, or "closed". *"We close at 9 now"* with no
+  days named → every day that now closes later than that, and say so.
+- **AM/PM when ambiguous.** "Open at 7" could be either for some businesses. Pick the one
+  that fits their other hours, and say so.
 
 ## Recipe
 
@@ -25,8 +25,8 @@ The posted weekly hours change: open/close times, a day becoming closed or open.
 3. Convert the client's phrasing to 24-hour: "9pm" → `"21:00"`, "9:30 at night" →
    `"21:30"`.
 4. Untouched days stay byte-identical.
-5. **Future-dated changes** ("starting next month"): there's no scheduling. Ask whether
-   to ship now or hold the PR until the date; if held, note it in hangar's private/TODOS.md with the
+5. **Future-dated changes** ("starting next month"): there's no scheduling. Build and
+   preview it now, and hold the merge until the date unless the client says otherwise; note it in hangar's private/TODOS.md with the
    date.
 
 ## Validate

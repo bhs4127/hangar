@@ -8,10 +8,10 @@ other steps are shared.
 The client wants a photo swapped: hero, about, a gallery image, or the logo.
 *"New hero pic attached." "Use this instead of the old patio photo."*
 
-## Inputs required — stop and ask if any is missing (rules 4–5)
+## Inputs — assume what's missing and name it in the preview email (rules 4–5)
 
-- **Which image?** If the request says "the photo" and the site has several, ask with a
-  list: *"hero, the About photo, or one of the 4 gallery shots?"*
+- **Which image?** If the request says "the photo" and the site has several, pick the one
+  it fits best and say which.
 - **The new asset, attached or in the client's upload drop.** No attachment → ask for
   it. Uploads: `node automation/upload-drop.mjs fetch uploads/<slug>/<date>/ <scratch dir>`
   ([setup-upload-drop.md](../setup-upload-drop.md)); the email says which photo goes
