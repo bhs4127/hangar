@@ -51,7 +51,7 @@ interface IntakeRequest {
 1. **Normalize** (the adapter).
 2. **Identify client** — match `source_identifier` against registry channels (rule 7).
 3. **Classify intent → pick playbook** — or escalate if it isn't a known change type.
-4. **Clarity gate** — anything ambiguous → draft a clarifying question, stop (rules 4–5).
+4. **Fill the gaps** — anything ambiguous → decide it, list it for the preview email (rules 4–5).
 5. **Execute the playbook** in the spoke: branch, edit, build-validate (rules 1–3).
 6. **PR + preview link.**
 7. **Owner check** — fit to show the client? Later, a 👍 from the chat approval channel.

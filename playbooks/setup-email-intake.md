@@ -14,7 +14,7 @@ two (DECISIONS, 2026-06-10).
 client emails <slug>@requests.<intake-domain>
    → Resend receives (MX), parses, stores
    → agent lists/reads it (MCP or CLI)
-   → normalize → identify client → clarity gate → playbook → PR + preview
+   → normalize → identify client → fill the gaps → playbook → PR + preview
    → owner checks → preview link in-thread → client says go
    → owner okays → merge + deploy → "it's live" in-thread → state layer
 ```
@@ -205,6 +205,8 @@ Steps 2–9 are the standard pipeline ([README.md](README.md)); only step 1 is n
    `resend emails receiving get <id>` — which returns `from`, `to`, `subject`, `text`,
    `html`, `headers`, `message_id`, `authentication`, and attachment metadata.
    Attachments come from the Attachments API; their `download_url` expires after 1 hour.
+   `node automation/mail-sweep.mjs attachments <id>` reads them: Word, text, and HTML
+   come back as text, and PDFs and images are saved for the Read tool.
 2. **Normalize** into the `IntakeRequest` object
    ([automation/README.md](../automation/README.md)): `channel: "email"`,
    `source_identifier` = the `From` address, `raw_message` = the plain-text body
@@ -216,7 +218,7 @@ Steps 2–9 are the standard pipeline ([README.md](README.md)); only step 1 is n
    `private/clients/` (rule 7): exactly one match → proceed; zero or several → hold for the
    owner. Cross-check that the alias it was sent to (`to` / `received_for`) belongs to
    the same client; a mismatch is a red flag, not a tiebreaker.
-4. **Clarity gate** (rules 4–5), then the change playbook, build validation, PR +
+4. **Fill the gaps** (rules 4–5), then the change playbook, build validation, PR +
    preview, and the owner's check — unchanged.
 5. **Reply in-thread.** From the alias the client wrote to, so replies land back in the
    same place:

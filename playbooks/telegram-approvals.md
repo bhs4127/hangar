@@ -42,7 +42,7 @@ yesterday's digest after today's arrived can't hit the wrong item.
 
 | Command | Pipeline steps | Does | Phase |
 |---|---|---|---|
-| `go <label>` | 2–9 | re-gate, clarity gate, branch, edit, build, PR, preview deploy; reply with old → new + preview link | 1 |
+| `go <label>` | 2–9 | re-gate, fill the gaps, branch, edit, build, PR, preview deploy; reply with old → new + preview link | 1 |
 | `ok <label>` | 10 | owner okays the preview as fit to show the client; reply with the preview-link email draft | 1 |
 | `send <label>` | 11 or 14 | send the draft just shown, from the client's alias, in-thread | 1 |
 | `hold <label>` | — | stop work on this change; note it in TODOS for a laptop session | 1 |
@@ -77,7 +77,7 @@ as in the pipeline: `go`, then `ship`/`confirm`.
    from a stranger's subject line.
 3. **Re-gate, never trust a summary.** `go` and `ship` re-fetch the email by its full
    Resend id (`node automation/mail-sweep.mjs get <id>`) and re-run authentication,
-   rule 7 and the clarity gate themselves. A sweep's verdict is a hint, not a pass.
+   rule 7 themselves. A sweep's verdict is a hint, not a pass.
 4. **One label, one change, one branch.** If a label matches no open inbox item, or more
    than one, reply `unknown label` / `ambiguous label` and stop.
 5. **Telegram carries no bodies or addresses.** Replies say what changed in our own words
@@ -100,9 +100,10 @@ as in the pipeline: `go`, then `ship`/`confirm`.
 2. Re-fetch and re-gate (rule 3). Failure → reply `held: <reason>`, stop.
 3. Classify and pick the change playbook (pipeline step 3). Project work → reply
    `project work — needs the laptop`, stop.
-4. Clarity gate (step 4). Missing or ambiguous value → reply with the drafted clarifying
-   question in full and `send <label> to ask it`. A `send` then sends the question
-   in-thread; the client's answer comes back through the sweep, and `go` runs again.
+4. Fill the gaps (step 4). Decide what's open and list it for the preview email. Only when
+   a preview can't show the answer → reply with the drafted question in full and `send
+   <label> to ask it`. A `send` then sends the question in-thread; the client's answer
+   comes back through the sweep, and `go` runs again.
 5. Pull the spoke, branch `change/<yyyymmdd>-<desc>`, apply the playbook, build,
    open the PR, deploy the preview (steps 5–9) — exactly as in a laptop session.
 6. Update the TODOS item: branch, PR, preview alias, stage `awaiting owner ok`.

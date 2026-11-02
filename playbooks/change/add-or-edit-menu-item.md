@@ -1,7 +1,7 @@
 # Change playbook — add or edit a menu item
 
 This recipe is **step 6** of the pipeline in [playbooks/README.md](../README.md). Steps
-1–5 (identify client, classify, clarity gate, pull spoke, branch) and 7–12 (validate,
+1–5 (identify client, classify, fill the gaps, pull spoke, branch) and 7–12 (validate,
 PR, preview, approve, reply, state layer) are identical for every change.
 
 ## Use when
@@ -9,13 +9,13 @@ PR, preview, approve, reply, state layer) are identical for every change.
 The client asks to add, change, or remove a menu item, or any of its fields.
 *"Add a pollo asado taco, $4.50." "Carnitas is $14 now." "Take the flan off."*
 
-## Inputs required — stop and ask if any is missing (rules 4–5)
+## Inputs — assume what's missing and name it in the preview email (rules 4–5)
 
 | Field | Rule |
 |---|---|
 | Section | Must resolve to an existing section in `menu.json` (recipe step 2). |
 | Item name | Exact, in the client's wording. |
-| Price | **Verbatim from the client**, format `$N` or `$N.NN`. Never inferred, rounded, or carried over from "similar items". |
+| Price | Format `$N` or `$N.NN`. Verbatim when the client gave one. If not, use a similar item's price and name it in the preview email. |
 | Description | Optional. The client's words, light copyedit OK. Don't write marketing copy they didn't say. |
 | Tags | Optional, only from the schema enum: `vegetarian` `vegan` `gluten-free` `spicy` `popular` `new`. Apply only when stated or unambiguous ("it's our veggie taco" → `vegetarian` is fine; guessing spice level is not). |
 
@@ -27,16 +27,16 @@ touches `price` and nothing else.
 1. Open `src/content/data/menu.json` in the spoke.
 2. Locate the target section by name:
    - Exact match → proceed.
-   - Near match (request says "Appetizers", menu has "Starters") → ask: *"Your menu
-     section is called 'Starters' — same thing?"*
-   - No match → ask whether to create the section and where it sits in the section
-     order. **Never create a section silently.**
+   - Near match (request says "Appetizers", menu has "Starters") → use it, and say so in
+     the preview email.
+   - No match → create the section where it fits best in the section order. **Never
+     create a section silently:** the preview email names it.
 3. Add the item (default position: end of the section, unless the client says where) or
    update the named fields of the existing item.
 4. **Removal** only on an explicit request to remove. Echo exactly what's being removed
    in the PR and the reply.
-5. **Duplicates:** if an item with that name already exists in the section, ask whether
-   this is an edit to it or genuinely a second item.
+5. **Duplicates:** if an item with that name already exists in the section, treat this
+   as an edit to it, and say so in the preview email.
 
 ## Validate
 
@@ -60,4 +60,5 @@ field changes (old → new). Reply draft:
   The strict-format answer is two items ("Tortilla Soup — Cup" / "— Bowl") with the
   client's OK; otherwise escalate.
 - **A price change with no matching item anywhere** — likely a transcription mismatch
-  with the printed menu. Ask, listing the closest item names.
+  with the printed menu. Apply it to the closest item, and name that item in the preview
+  email.
